@@ -1,0 +1,41 @@
+apply plugin: 'kotlin2js'
+
+dependencies {
+    compile project(":babylonKt")
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
+}
+
+compileKotlin2Js {
+    kotlinOptions.metaInfo = true
+    kotlinOptions.outputFile = "$buildDir/web/main.js"
+    kotlinOptions.sourceMap = true
+    kotlinOptions.suppressWarnings = true
+    kotlinOptions.verbose = true
+    kotlinOptions.moduleKind = "umd"
+    kotlinOptions.main = "call"
+}
+
+task copyKotlin(type: Copy) {
+    configurations.compile.each { File file ->
+        from(zipTree(file.absolutePath), {
+            includeEmptyDirs = false
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+            }
+        })
+    }
+    from compileKotlin2Js.destinationDir
+    into "${buildDir}/web"
+
+    dependsOn classes
+}
+
+task copyHTML(type: Copy, group: "Custom", description: "Copies sources to the dest directory") {
+    from "src/main/web"
+    into "${buildDir}/web"
+
+    dependsOn copyKotlin
+}
+assemble.dependsOn copyHTML

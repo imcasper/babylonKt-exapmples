@@ -41,8 +41,3 @@ allprojects {
         google()
     }
 }
-
-subprojects {
-    group "casper.HighLand"
-    version "1.0-SNAPSHOT"
-}

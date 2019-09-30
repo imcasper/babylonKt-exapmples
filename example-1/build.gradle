@@ -11,7 +11,7 @@ dependencies {
 
 compileKotlin2Js {
     kotlinOptions.metaInfo = true
-    kotlinOptions.outputFile = "$buildDir/web/main.js"
+    kotlinOptions.outputFile = "$buildDir/web/js/main.js"
     kotlinOptions.sourceMap = true
     kotlinOptions.suppressWarnings = true
     kotlinOptions.verbose = true
@@ -30,7 +30,7 @@ task copyKotlin(type: Copy) {
         })
     }
     from compileKotlin2Js.destinationDir
-    into "${buildDir}/web"
+    into "${buildDir}/web/js"
 
     dependsOn classes
 }

@@ -1,0 +1,4 @@
+requirejs(['main'], function (main) {
+});
+
+

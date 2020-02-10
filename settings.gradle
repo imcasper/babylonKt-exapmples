@@ -12,3 +12,6 @@ rootProject.name = 'babylonKt-examples'
 
 include('babylonKt')
 include('example-1')
+include('example-loader')
+include('example-animation')
+include('example-performance')

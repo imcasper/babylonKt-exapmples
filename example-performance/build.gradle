@@ -1,0 +1,43 @@
+apply plugin: 'kotlin2js'
+
+group "casper"
+version "1.0-SNAPSHOT"
+
+dependencies {
+    compile project(":babylonKt")
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
+}
+
+compileKotlin2Js {
+    kotlinOptions {
+        metaInfo = true
+        sourceMap = true
+        sourceMapEmbedSources = "always"
+        moduleKind = "umd"
+    }
+}
+
+task copyKotlin(type: Copy) {
+    configurations.compile.each { file ->
+        from(zipTree(file.absolutePath), {
+            includeEmptyDirs = false
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+            }
+        })
+    }
+    from compileKotlin2Js.destinationDir
+    into "${buildDir}/html/js"
+
+    dependsOn classes
+}
+
+task copyHTML(type: Copy, group: "Custom", description: "Copies sources to the dest directory") {
+    from "src/main/resources"
+    into "${buildDir}/html"
+
+    dependsOn copyKotlin
+}
+assemble.dependsOn copyHTML

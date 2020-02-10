@@ -1,3 +1,9 @@
 /.gradle
 /.idea
 /example-1/build
+/example-loader/build/
+/example-loader/.gradle/
+/example-animation/build/
+/example-animation/.gradle/5.2.1/
+/example-loader/src/main/resources/.idea/
+/example-performance/src/main/resources/.idea/

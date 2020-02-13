@@ -45,9 +45,9 @@ fun main() {
 					instance.cullingStrategy = AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY
 					instance.parent = root
 					instance.animations = original.animations
-					instance._ranges = original._ranges
+				//	instance._ranges = original._ranges
 
-					instance.getAnimationRanges().forEach { animationRange ->
+					instance.getAnimationRanges().filterNotNull().forEach { animationRange ->
 							instance.beginAnimation(animationRange.name, true, random.nextDouble(0.5, 5.0))
 						}
 				}

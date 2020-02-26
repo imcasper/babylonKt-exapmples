@@ -12,9 +12,13 @@ import BABYLON.extension.runRenderLoop
 fun main() {
 	val scene = createScene("renderCanvas", true)
 	scene.createDefaultCameraOrLight(true, true, true)
-	scene.createDefaultEnvironment()
 
-	SceneLoader.Append("", "cube.babylon", scene)
+	SceneLoader.ShowLoadingScreen = false
+	SceneLoader.LoadAssetContainer("", "cube.babylon", scene, {
+		it.addAllToScene()
+	})
 
 	scene.runRenderLoop()
+
+
 }

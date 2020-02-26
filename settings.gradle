@@ -4,14 +4,15 @@
  * The settings file is used to specify which projects to include in your build.
  *
  * Detailed information about configuring a multi-project build in Gradle can be found
- * in the user manual at https://docs.gradle.org/5.6.2/userguide/multi_project_builds.html
+ * in the user manual at https://docs.gradle.org/6.1/userguide/multi_project_builds.html
  */
 enableFeaturePreview('GRADLE_METADATA')
 
 rootProject.name = 'babylonKt-examples'
-
-include('babylonKt')
-include('example-1')
-include('example-loader')
-include('example-animation')
-include('example-performance')
+include(':babylonKt')
+include(':babylon-helper')
+include(':example-simple')
+include(':example-loader')
+include(':example-animation')
+include(':example-performance')
+include(':example-experiment')

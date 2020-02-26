@@ -1,0 +1,342 @@
+
+atlas.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+axis
+  rotate: false
+  xy: 552, 180
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+buttons
+  rotate: false
+  xy: 8, 424
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+bw0
+  rotate: false
+  xy: 324, 716
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+bw1
+  rotate: false
+  xy: 812, 572
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+bw2
+  rotate: false
+  xy: 972, 540
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+bw3
+  rotate: false
+  xy: 552, 156
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+bw4
+  rotate: false
+  xy: 792, 248
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+bw5
+  rotate: false
+  xy: 856, 412
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+bw6
+  rotate: false
+  xy: 904, 460
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+bw7
+  rotate: false
+  xy: 348, 716
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+bw8
+  rotate: false
+  xy: 972, 516
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+bw_noise
+  rotate: false
+  xy: 324, 740
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+concrete
+  rotate: false
+  xy: 552, 228
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+diamond
+  rotate: false
+  xy: 696, 400
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+height_relief
+  rotate: false
+  xy: 8, 152
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+height_rock
+  rotate: false
+  xy: 696, 480
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+height_rock1
+  rotate: false
+  xy: 8, 8
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+height_rock2
+  rotate: false
+  xy: 868, 868
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+height_rock3
+  rotate: false
+  xy: 152, 8
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+height_rock4
+  rotate: false
+  xy: 296, 8
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+height_test
+  rotate: false
+  xy: 868, 724
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+iron
+  rotate: false
+  xy: 696, 320
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+iron_ore
+  rotate: false
+  xy: 632, 228
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+noise
+  rotate: false
+  xy: 596, 740
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+normal_hill
+  rotate: false
+  xy: 280, 424
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+normal_plain
+  rotate: false
+  xy: 440, 8
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+normal_rock
+  rotate: false
+  xy: 552, 596
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+normals
+  rotate: false
+  xy: 8, 696
+  size: 300, 300
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+oil
+  rotate: false
+  xy: 840, 644
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+plastic
+  rotate: false
+  xy: 920, 644
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+relief
+  rotate: false
+  xy: 552, 452
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+rock
+  rotate: false
+  xy: 712, 240
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sand
+  rotate: false
+  xy: 840, 564
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+seamXY
+  rotate: false
+  xy: 792, 272
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+seamXZ
+  rotate: false
+  xy: 600, 180
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+seamYZ
+  rotate: false
+  xy: 648, 180
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+soil
+  rotate: false
+  xy: 920, 564
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+steel
+  rotate: false
+  xy: 812, 484
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+steel_blue
+  rotate: false
+  xy: 892, 484
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+steel_green
+  rotate: false
+  xy: 776, 400
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+steel_metallic
+  rotate: false
+  xy: 280, 152
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+steel_red
+  rotate: false
+  xy: 776, 320
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+template4x4
+  rotate: false
+  xy: 856, 436
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+tex1
+  rotate: false
+  xy: 576, 156
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+tex2
+  rotate: false
+  xy: 816, 248
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+tex3
+  rotate: false
+  xy: 856, 388
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+unknown
+  rotate: false
+  xy: 696, 596
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+water
+  rotate: false
+  xy: 552, 308
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1

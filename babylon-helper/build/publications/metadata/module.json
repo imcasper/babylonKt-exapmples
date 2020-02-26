@@ -1,0 +1,38 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../babylon-helper/1.0.0/babylon-helper-1.0.0.module",
+    "group": "casper",
+    "module": "babylon-helper",
+    "version": "1.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "6.1.1",
+      "buildId": "llchwzxjq5hhvoa7ibt6gnpzxy"
+    }
+  },
+  "variants": [
+    {
+      "name": "metadata-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "files": [
+        {
+          "name": "babylon-helper-metadata-1.0.0.jar",
+          "url": "babylon-helper-metadata-1.0.0.jar",
+          "size": 261,
+          "sha512": "a1f69c1098114481f1f22134ffa05dcc6ce6a8f992ef501c3c8364c2e156178fde297d9b3db82b677345cdeabcce49284e8eb2c94365aa7dc1ebe3ffb075e1a1",
+          "sha256": "20c9e38428b476ec976ec0f2cbc9d187f02717c82879988f5ba78cccbaf59268",
+          "sha1": "3bbcc68703e0ba1377e84d6a0ed95c01788bd975",
+          "md5": "1796baa01d7fc72d208d5a07f9ed1661"
+        }
+      ]
+    }
+  ]
+}

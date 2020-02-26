@@ -1,0 +1,99 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../babylon-helper/1.0.0/babylon-helper-1.0.0.module",
+    "group": "casper",
+    "module": "babylon-helper",
+    "version": "1.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "6.1.1",
+      "buildId": "llchwzxjq5hhvoa7ibt6gnpzxy"
+    }
+  },
+  "variants": [
+    {
+      "name": "js-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "files": [
+        {
+          "name": "babylon-helper-js-1.0.0.jar",
+          "url": "babylon-helper-js-1.0.0.jar",
+          "size": 31957,
+          "sha512": "a9c7a32b8dc6eda6e9daa0d98367fdecd94bdaad6dc3d84c7032de2e54a62dff52b07aadf494063692da4e0b1fa69ae8a958c546e88e002c92f59fbd391168e2",
+          "sha256": "71347b663fd09f448f082677b79f6f4fa9c24e78bf699c666035e51c844369cc",
+          "sha1": "f349403a70a1f0145435fb05368477f8810407c7",
+          "md5": "d40d8ff108fe2eb5d9ea1b86039052cc"
+        }
+      ]
+    },
+    {
+      "name": "js-runtime",
+      "attributes": {
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "casper.types",
+          "module": "typesKt",
+          "version": {
+            "requires": "1.0.0"
+          }
+        },
+        {
+          "group": "casper.signal",
+          "module": "signalKt",
+          "version": {
+            "requires": "1.0.0"
+          }
+        },
+        {
+          "group": "casper",
+          "module": "babylonKt",
+          "version": {
+            "requires": "1.1.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-js",
+          "version": {
+            "requires": "1.3.60"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "babylon-helper-js-1.0.0.jar",
+          "url": "babylon-helper-js-1.0.0.jar",
+          "size": 31957,
+          "sha512": "a9c7a32b8dc6eda6e9daa0d98367fdecd94bdaad6dc3d84c7032de2e54a62dff52b07aadf494063692da4e0b1fa69ae8a958c546e88e002c92f59fbd391168e2",
+          "sha256": "71347b663fd09f448f082677b79f6f4fa9c24e78bf699c666035e51c844369cc",
+          "sha1": "f349403a70a1f0145435fb05368477f8810407c7",
+          "md5": "d40d8ff108fe2eb5d9ea1b86039052cc"
+        }
+      ]
+    },
+    {
+      "name": "metadata-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "available-at": {
+        "url": "../../babylon-helper-metadata/1.0.0/babylon-helper-metadata-1.0.0.module",
+        "group": "casper",
+        "module": "babylon-helper-metadata",
+        "version": "1.0.0"
+      }
+    }
+  ]
+}

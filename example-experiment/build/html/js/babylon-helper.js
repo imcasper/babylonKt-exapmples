@@ -21,25 +21,31 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
   var AssetContainer = $module$babylonjs.AssetContainer;
   var plus = Kotlin.kotlin.collections.plus_b32j0n$;
   var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
+  var equals = Kotlin.equals;
+  var TransformNode = $module$babylonjs.TransformNode;
+  var Disposable = $module$typesKt.casper.core.Disposable;
   var indexOf = Kotlin.kotlin.collections.indexOf_mjy6jw$;
   var getOrNull = Kotlin.kotlin.collections.getOrNull_8ujjk8$;
   var Error_init = Kotlin.kotlin.Error_init_pdl1vj$;
-  var TransformNode = $module$babylonjs.TransformNode;
   var contains = Kotlin.kotlin.collections.contains_mjy6jw$;
+  var toMutableList = Kotlin.kotlin.collections.toMutableList_us0mfu$;
   var addAll = Kotlin.kotlin.collections.addAll_ipc267$;
+  var firstOrNull = Kotlin.kotlin.collections.firstOrNull_us0mfu$;
+  var ShadowGenerator = $module$babylonjs.ShadowGenerator;
+  var AbstractMesh = $module$babylonjs.AbstractMesh;
+  var InstancedMesh = $module$babylonjs.InstancedMesh;
   var contains_0 = Kotlin.kotlin.collections.contains_2ws7j4$;
   var Texture = $module$babylonjs.Texture;
-  var equals = Kotlin.equals;
   var Vector2 = $module$babylonjs.Vector2;
   var Pair = Kotlin.kotlin.Pair;
+  var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
   var Map = Kotlin.kotlin.collections.Map;
   var numberToInt = Kotlin.numberToInt;
   var toPrecision = $module$typesKt.casper.format.toPrecision_j6vyb1$;
   var EngineInstrumentation = $module$babylonjs.EngineInstrumentation;
   var TextBlock = $module$babylonjs_gui.TextBlock;
+  var Control$Companion = $module$babylonjs_gui.Control;
   var AdvancedDynamicTexture$Companion = $module$babylonjs_gui.AdvancedDynamicTexture;
-  var AbstractMesh = $module$babylonjs.AbstractMesh;
-  var InstancedMesh = $module$babylonjs.InstancedMesh;
   var defineInlineFunction = Kotlin.defineInlineFunction;
   var wrapFunction = Kotlin.wrapFunction;
   var split = Kotlin.kotlin.text.split_ip8yn$;
@@ -49,7 +55,7 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
   var AABBox2i = $module$typesKt.casper.geometry.aabb.AABBox2i;
   var removePrefix = Kotlin.kotlin.text.removePrefix_gsj5wt$;
   var removeSuffix = Kotlin.kotlin.text.removeSuffix_gsj5wt$;
-  var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
+  var toMutableList_0 = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var indexOf_0 = Kotlin.kotlin.text.indexOf_l5u8uk$;
   var replace = Kotlin.kotlin.text.replace_680rmw$;
   var XMLHttpRequest_init = XMLHttpRequest;
@@ -87,7 +93,7 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
   function AssetGroupManager(loadManager) {
     this.loadManager = loadManager;
     this.values = observableMapOf([]);
-    this.loadManager.map.thenAdd_qlkmfe$(AssetGroupManager_init$lambda(this));
+    this.loadManager.map.thenAdd_by9f6q$(AssetGroupManager_init$lambda(this));
   }
   AssetGroupManager.prototype.loader_61zpoe$ = function (fileName) {
     return this.loadManager.get_ivxn3r$(fileName);
@@ -585,13 +591,154 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
     simpleName: 'MeshMerger',
     interfaces: []
   };
-  function Model(data, instances) {
-    this.data = data;
-    this.instances = instances;
+  function Model(data, parent, options) {
+    if (parent === void 0)
+      parent = null;
+    if (options === void 0)
+      options = null;
+    this.onScene_0 = false;
+    this._isDisposed_0 = false;
+    this.parts_0 = ArrayList_init();
+    this.options_ve5i4s$_0 = options != null ? options : new ModelCreateOptions();
+    this.data_twymu8$_0 = data;
+    this.node = new TransformNode('', null);
+    this.updateContent_0();
+    if (parent != null) {
+      this.node.parent = parent;
+      this.addToScene();
+    }
   }
+  Object.defineProperty(Model.prototype, 'options', {
+    get: function () {
+      return this.options_ve5i4s$_0;
+    },
+    set: function (value) {
+      if (equals(this.options_ve5i4s$_0, value) || this._isDisposed_0)
+        return;
+      this.options_ve5i4s$_0 = value;
+      this.updateContent_0();
+    }
+  });
+  Object.defineProperty(Model.prototype, 'data', {
+    get: function () {
+      return this.data_twymu8$_0;
+    },
+    set: function (value) {
+      if (equals(this.data_twymu8$_0, value) || this._isDisposed_0)
+        return;
+      this.data_twymu8$_0 = value;
+      this.updateContent_0();
+    }
+  });
+  Model.prototype.dispose = function () {
+    this.clear_0();
+    this.node.dispose();
+    this._isDisposed_0 = true;
+  };
+  Model.prototype.isDisposed = function () {
+    return this._isDisposed_0;
+  };
+  Model.prototype.addToScene = function () {
+    if (this.onScene_0 || this._isDisposed_0)
+      return;
+    this.onScene_0 = true;
+    addMeshToScene(this.node);
+    this.addShadow_0();
+  };
+  Model.prototype.removeFromScene = function () {
+    if (!this.onScene_0 || this._isDisposed_0)
+      return;
+    this.onScene_0 = false;
+    removeMeshFromScene(this.node);
+    this.removeShadow_0();
+  };
+  Model.prototype.addShadow_0 = function () {
+    if (this.options.castShadow) {
+      ShadowHelper$Companion_getInstance().addCaster_mnqvv$(this.node);
+    }
+    if (this.options.receiveShadow) {
+      ShadowHelper$Companion_getInstance().addReceiver_mnqvv$(this.node);
+    }
+  };
+  Model.prototype.removeShadow_0 = function () {
+    ShadowHelper$Companion_getInstance().removeReceiver_mnqvv$(this.node);
+    ShadowHelper$Companion_getInstance().removeCaster_mnqvv$(this.node);
+  };
+  Model.prototype.updateContent_0 = function () {
+    this.clear_0();
+    this.node.name = this.data.name;
+    this.setInstances_0(ModelFactory$Companion_getInstance().createInstances_53ia2n$(this.data, this.options));
+    if (this.onScene_0) {
+      addMeshToScene(this.node);
+      this.addShadow_0();
+    }
+  };
+  Model.prototype.clear_0 = function () {
+    var tmp$;
+    tmp$ = this.parts_0.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      element.dispose();
+    }
+    this.parts_0.clear();
+  };
+  Model.prototype.setInstances_0 = function (instances) {
+    this.parts_0.addAll_brywnq$(instances);
+    if (!this.options.ignoresLights) {
+      var $receiver = this.data.assetContainer.lights;
+      var tmp$;
+      for (tmp$ = 0; tmp$ !== $receiver.length; ++tmp$) {
+        var element = $receiver[tmp$];
+        var light = element.clone(element.name);
+        if (light != null) {
+          this.parts_0.add_11rb$(light);
+        }
+      }
+    }
+    if (!this.options.ignoreCameras) {
+      var $receiver_0 = this.data.assetContainer.cameras;
+      var tmp$_0;
+      for (tmp$_0 = 0; tmp$_0 !== $receiver_0.length; ++tmp$_0) {
+        var element_0 = $receiver_0[tmp$_0];
+        var camera = element_0.clone(element_0.name);
+        this.parts_0.add_11rb$(camera);
+      }
+    }
+    var tmp$_1;
+    tmp$_1 = this.parts_0.iterator();
+    while (tmp$_1.hasNext()) {
+      var element_1 = tmp$_1.next();
+      element_1.parent = this.node;
+    }
+  };
   Model.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'Model',
+    interfaces: [Disposable]
+  };
+  function ModelCreateOptions(ignoreCameras, ignoresLights, isPickable, cullingStrategy, castShadow, receiveShadow) {
+    if (ignoreCameras === void 0)
+      ignoreCameras = true;
+    if (ignoresLights === void 0)
+      ignoresLights = true;
+    if (isPickable === void 0)
+      isPickable = null;
+    if (cullingStrategy === void 0)
+      cullingStrategy = null;
+    if (castShadow === void 0)
+      castShadow = true;
+    if (receiveShadow === void 0)
+      receiveShadow = true;
+    this.ignoreCameras = ignoreCameras;
+    this.ignoresLights = ignoresLights;
+    this.isPickable = isPickable;
+    this.cullingStrategy = cullingStrategy;
+    this.castShadow = castShadow;
+    this.receiveShadow = receiveShadow;
+  }
+  ModelCreateOptions.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'ModelCreateOptions',
     interfaces: []
   };
   function ModelData(name, scene, assetContainer, instances) {
@@ -628,50 +775,49 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
     simpleName: 'ModelData',
     interfaces: []
   };
-  function ModelCreateOptions(ignoreCameras, ignoresLights, isPickable, cullingStrategy) {
-    if (ignoreCameras === void 0)
-      ignoreCameras = true;
-    if (ignoresLights === void 0)
-      ignoresLights = true;
-    if (isPickable === void 0)
-      isPickable = null;
-    if (cullingStrategy === void 0)
-      cullingStrategy = null;
-    this.ignoreCameras = ignoreCameras;
-    this.ignoresLights = ignoresLights;
-    this.isPickable = isPickable;
-    this.cullingStrategy = cullingStrategy;
-  }
-  ModelCreateOptions.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'ModelCreateOptions',
-    interfaces: []
-  };
   function ModelFactory() {
     ModelFactory$Companion_getInstance();
   }
   function ModelFactory$Companion() {
     ModelFactory$Companion_instance = this;
   }
-  ModelFactory$Companion.prototype.createAndPlace_urgq93$ = function (data, root, options) {
-    if (root === void 0)
-      root = null;
-    if (options === void 0)
-      options = null;
-    var main = this.create_53ia2n$(data, options);
-    addMeshToScene(main);
-    if (root != null) {
-      main.parent = root;
+  ModelFactory$Companion.prototype.createModelData_greupd$ = function (scene, name, container) {
+    var tmp$, tmp$_0, tmp$_1;
+    var instances = ArrayList_init();
+    tmp$ = container.meshes;
+    for (tmp$_0 = 0; tmp$_0 !== tmp$.length; ++tmp$_0) {
+      var originalMesh = tmp$[tmp$_0];
+      if (Kotlin.isType(originalMesh, Mesh)) {
+        addAll(instances, this.createInstancesFromMesh_0(originalMesh));
+        if ((tmp$_1 = originalMesh.geometry) != null) {
+          if (!contains(container.geometries, tmp$_1)) {
+            container.geometries = container.geometries.concat([tmp$_1]);
+          }
+        }
+      }
+       else {
+        throw Error_init('Unsupported mesh type: ' + originalMesh);
+      }
     }
-    return main;
+    return new ModelData(name, scene, container, instances);
   };
-  ModelFactory$Companion.prototype.create_53ia2n$ = function (data, options) {
-    if (options === void 0)
-      options = null;
-    var options_0 = options != null ? options : new ModelCreateOptions();
-    return this.wrapTransformNode_0(this.createModel_0(data, options_0), options_0);
+  ModelFactory$Companion.prototype.createInstancesFromMesh_0 = function (originalMesh) {
+    var scene = originalMesh.getScene();
+    originalMesh.isVisible = false;
+    var instances = toMutableList(originalMesh.instances);
+    instances.add_11rb$(originalMesh.createInstance(originalMesh.name));
+    var tmp$;
+    tmp$ = instances.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      scene.removeMesh(element);
+    }
+    return instances;
   };
-  ModelFactory$Companion.prototype.createModel_0 = function (data, options) {
+  ModelFactory$Companion.prototype.createInstances_53ia2n$ = function (data, _options) {
+    if (_options === void 0)
+      _options = null;
+    var options = _options != null ? _options : new ModelCreateOptions();
     var instances = ArrayList_init();
     var tmp$;
     tmp$ = data.instances.iterator();
@@ -686,7 +832,13 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
       }
       instances.add_11rb$(instance);
     }
-    return new Model(data, instances);
+    var $receiver = data.assetContainer.meshes;
+    var tmp$_0;
+    for (tmp$_0 = 0; tmp$_0 !== $receiver.length; ++tmp$_0) {
+      var element_0 = $receiver[tmp$_0];
+      element_0._resyncLightSources();
+    }
+    return instances;
   };
   ModelFactory$Companion.prototype.createInstance_0 = function (source) {
     var scene = source.getScene();
@@ -694,67 +846,6 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
     copyMeshState(source, target);
     scene.removeMesh(target);
     return target;
-  };
-  ModelFactory$Companion.prototype.wrapTransformNode_0 = function (model, options) {
-    var scene = model.data.scene;
-    var node = new TransformNode('', null);
-    var tmp$;
-    tmp$ = model.instances.iterator();
-    while (tmp$.hasNext()) {
-      var element = tmp$.next();
-      element.parent = node;
-    }
-    if (!options.ignoresLights) {
-      var $receiver = model.data.assetContainer.lights;
-      var tmp$_0;
-      for (tmp$_0 = 0; tmp$_0 !== $receiver.length; ++tmp$_0) {
-        var element_0 = $receiver[tmp$_0];
-        element_0.clone(element_0.name);
-      }
-    }
-    if (!options.ignoreCameras) {
-      var $receiver_0 = model.data.assetContainer.cameras;
-      var tmp$_1;
-      for (tmp$_1 = 0; tmp$_1 !== $receiver_0.length; ++tmp$_1) {
-        var element_1 = $receiver_0[tmp$_1];
-        element_1.clone(element_1.name);
-      }
-    }
-    return node;
-  };
-  ModelFactory$Companion.prototype.createModelData_greupd$ = function (scene, name, container) {
-    var tmp$, tmp$_0, tmp$_1;
-    var instances = ArrayList_init();
-    tmp$ = container.meshes;
-    for (tmp$_0 = 0; tmp$_0 !== tmp$.length; ++tmp$_0) {
-      var originalMesh = tmp$[tmp$_0];
-      if (Kotlin.isType(originalMesh, Mesh)) {
-        addAll(instances, this.createMeshInstances_0(originalMesh));
-        if ((tmp$_1 = originalMesh.geometry) != null) {
-          if (!contains(container.geometries, tmp$_1)) {
-            container.geometries = container.geometries.concat([tmp$_1]);
-          }
-        }
-      }
-    }
-    return new ModelData(name, scene, container, instances);
-  };
-  ModelFactory$Companion.prototype.createMeshInstances_0 = function (originalMesh) {
-    var instances = ArrayList_init();
-    var scene = originalMesh.getScene();
-    originalMesh.convertToUnIndexedMesh();
-    scene.removeMesh(originalMesh);
-    var originalMeshInstances = originalMesh.instances.slice();
-    var mainInstance = originalMesh.createInstance(originalMesh.name);
-    scene.removeMesh(mainInstance);
-    instances.add_11rb$(mainInstance);
-    var tmp$;
-    for (tmp$ = 0; tmp$ !== originalMeshInstances.length; ++tmp$) {
-      var element = originalMeshInstances[tmp$];
-      scene.removeMesh(element);
-      instances.add_11rb$(element);
-    }
-    return instances;
   };
   ModelFactory$Companion.$metadata$ = {
     kind: Kind_OBJECT,
@@ -773,18 +864,107 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
     simpleName: 'ModelFactory',
     interfaces: []
   };
-  function createInstance($receiver, options) {
-    if (options === void 0)
-      options = null;
-    return ModelFactory$Companion_getInstance().create_53ia2n$($receiver, options);
+  function ShadowHelper() {
+    ShadowHelper$Companion_getInstance();
   }
-  function createAndPlaceInstance($receiver, root, options) {
-    if (root === void 0)
-      root = null;
-    if (options === void 0)
-      options = null;
-    return ModelFactory$Companion_getInstance().createAndPlace_urgq93$($receiver, root, options);
+  function ShadowHelper$Companion() {
+    ShadowHelper$Companion_instance = this;
   }
+  ShadowHelper$Companion.prototype.getShadowGenerator_jkzhlf$ = function (scene) {
+    var tmp$;
+    if ((tmp$ = firstOrNull(scene.lights)) != null) {
+      var tmp$_0;
+      if ((tmp$_0 = tmp$.getShadowGenerator()) != null) {
+        var tmp$_1;
+        return Kotlin.isType(tmp$_1 = tmp$_0, ShadowGenerator) ? tmp$_1 : null;
+      }
+    }
+    return null;
+  };
+  ShadowHelper$Companion.prototype.addCaster_mnqvv$ = function (node) {
+    var tmp$;
+    if ((tmp$ = this.getShadowGenerator_jkzhlf$(node.getScene())) != null) {
+      this.addCaster_pz0rhp$(tmp$, node);
+    }
+  };
+  ShadowHelper$Companion.prototype.removeCaster_mnqvv$ = function (node) {
+    var tmp$;
+    if ((tmp$ = this.getShadowGenerator_jkzhlf$(node.getScene())) != null) {
+      this.removeCaster_pz0rhp$(tmp$, node);
+    }
+  };
+  function ShadowHelper$Companion$addCaster$lambda(closure$shadowGenerator, this$ShadowHelper$) {
+    return function (it) {
+      this$ShadowHelper$.addCaster_pz0rhp$(closure$shadowGenerator, it);
+      return Unit;
+    };
+  }
+  ShadowHelper$Companion.prototype.addCaster_pz0rhp$ = function (shadowGenerator, node) {
+    if (Kotlin.isType(node, AbstractMesh)) {
+      shadowGenerator.addShadowCaster(node);
+    }
+    forChildren(node, ShadowHelper$Companion$addCaster$lambda(shadowGenerator, this));
+  };
+  function ShadowHelper$Companion$addReceiver$lambda(this$ShadowHelper$) {
+    return function (it) {
+      this$ShadowHelper$.addReceiver_mnqvv$(it);
+      return Unit;
+    };
+  }
+  ShadowHelper$Companion.prototype.addReceiver_mnqvv$ = function (node) {
+    if (Kotlin.isType(node, InstancedMesh)) {
+      node.sourceMesh.receiveShadows = true;
+    }
+     else if (Kotlin.isType(node, Mesh)) {
+      node.receiveShadows = true;
+    }
+    forChildren(node, ShadowHelper$Companion$addReceiver$lambda(this));
+  };
+  function ShadowHelper$Companion$removeReceiver$lambda(this$ShadowHelper$) {
+    return function (it) {
+      this$ShadowHelper$.removeReceiver_mnqvv$(it);
+      return Unit;
+    };
+  }
+  ShadowHelper$Companion.prototype.removeReceiver_mnqvv$ = function (node) {
+    if (!Kotlin.isType(node, InstancedMesh))
+      if (Kotlin.isType(node, Mesh)) {
+        node.receiveShadows = false;
+      }
+    forChildren(node, ShadowHelper$Companion$removeReceiver$lambda(this));
+  };
+  function ShadowHelper$Companion$removeCaster$lambda(closure$shadowGenerator, this$ShadowHelper$) {
+    return function (it) {
+      this$ShadowHelper$.removeCaster_pz0rhp$(closure$shadowGenerator, it);
+      return Unit;
+    };
+  }
+  ShadowHelper$Companion.prototype.removeCaster_pz0rhp$ = function (shadowGenerator, node) {
+    if (Kotlin.isType(node, InstancedMesh)) {
+      shadowGenerator.removeShadowCaster(node);
+    }
+     else if (Kotlin.isType(node, Mesh)) {
+      shadowGenerator.removeShadowCaster(node);
+    }
+    forChildren(node, ShadowHelper$Companion$removeCaster$lambda(shadowGenerator, this));
+  };
+  ShadowHelper$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var ShadowHelper$Companion_instance = null;
+  function ShadowHelper$Companion_getInstance() {
+    if (ShadowHelper$Companion_instance === null) {
+      new ShadowHelper$Companion();
+    }
+    return ShadowHelper$Companion_instance;
+  }
+  ShadowHelper.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'ShadowHelper',
+    interfaces: []
+  };
   function TextureReplacer() {
     TextureReplacer$Companion_getInstance();
   }
@@ -876,9 +1056,9 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
     var atlasWidth = pageSize.x;
     var atlasHeight = pageSize.y;
     var regionX = box.position.x;
-    var regionY = pageSize.y - box.size.y - box.position.y | 0;
-    var regionWidth = box.size.x;
-    var regionHeight = box.size.y;
+    var regionY = pageSize.y - box.dimension.y - box.position.y | 0;
+    var regionWidth = box.dimension.x;
+    var regionHeight = box.dimension.y;
     var calculator = UVReplacer$Companion$create$lambda(regionX, regionWidth, atlasWidth, regionY, regionHeight, atlasHeight);
     return new Pair(page, calculator);
   };
@@ -949,12 +1129,111 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
     simpleName: 'UVReplacer',
     interfaces: []
   };
+  function IShadow() {
+  }
+  IShadow.$metadata$ = {
+    kind: Kind_INTERFACE,
+    simpleName: 'IShadow',
+    interfaces: []
+  };
+  function Stage() {
+  }
+  Stage.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Stage',
+    interfaces: []
+  };
   function copyMeshState(source, target) {
     target.position = source.position;
     target.rotation = source.rotation;
     target.scaling = source.scaling;
     target.rotationQuaternion = source.rotationQuaternion;
     target.setPivotMatrix(source.getPivotMatrix());
+  }
+  function createAnimation(source, loop, speedRatio) {
+    if (loop === void 0)
+      loop = true;
+    if (speedRatio === void 0)
+      speedRatio = 1.0;
+    var $receiver = source.getAnimationRanges();
+    var tmp$;
+    for (tmp$ = 0; tmp$ !== $receiver.length; ++tmp$) {
+      var element = $receiver[tmp$];
+      if (element != null) {
+        source.beginAnimation(element.name, loop, speedRatio);
+      }
+    }
+  }
+  function playAnimation$lambda(closure$loop, closure$speedRatio) {
+    return function (it) {
+      playAnimation(it, closure$loop, closure$speedRatio);
+      return Unit;
+    };
+  }
+  function playAnimation($receiver, loop, speedRatio) {
+    if (loop === void 0)
+      loop = true;
+    if (speedRatio === void 0)
+      speedRatio = 1.0;
+    createAnimation($receiver, loop, speedRatio);
+    forChildren($receiver, playAnimation$lambda(loop, speedRatio));
+  }
+  function forEachAnimatable$lambda(closure$recursive, closure$operation) {
+    return function (it) {
+      forEachAnimatable(it, closure$recursive, closure$operation);
+      return Unit;
+    };
+  }
+  function forEachAnimatable($receiver, recursive, operation) {
+    if (recursive === void 0)
+      recursive = true;
+    var $receiver_0 = $receiver.getScene().getAllAnimatablesByTarget($receiver);
+    var tmp$;
+    for (tmp$ = 0; tmp$ !== $receiver_0.length; ++tmp$) {
+      var element = $receiver_0[tmp$];
+      operation(element);
+    }
+    if (recursive) {
+      forChildren($receiver, forEachAnimatable$lambda(recursive, operation));
+    }
+  }
+  function stopAnimation$lambda(it) {
+    it.goToFrame(0.0);
+    it.stop();
+    return Unit;
+  }
+  function stopAnimation($receiver) {
+    forEachAnimatable($receiver, void 0, stopAnimation$lambda);
+  }
+  function pauseAnimation$lambda(it) {
+    it.pause();
+    return Unit;
+  }
+  function pauseAnimation($receiver) {
+    forEachAnimatable($receiver, void 0, pauseAnimation$lambda);
+  }
+  function resumeAnimation$lambda(it) {
+    it.restart();
+    return Unit;
+  }
+  function resumeAnimation($receiver) {
+    forEachAnimatable($receiver, void 0, resumeAnimation$lambda);
+  }
+  function setAnimationFrame$lambda(it) {
+    createAnimation(it, true, 1.0);
+    return Unit;
+  }
+  function setAnimationFrame$lambda_0(closure$frame) {
+    return function (it) {
+      it.goToFrame(closure$frame);
+      it.pause();
+      return Unit;
+    };
+  }
+  function setAnimationFrame($receiver, frame) {
+    createAnimation($receiver, true, 1.0);
+    forChildren($receiver, setAnimationFrame$lambda);
+    forEachAnimatable($receiver, void 0, setAnimationFrame$lambda_0(frame));
   }
   function clone($receiver) {
     var textureMap = LinkedHashMap_init();
@@ -1063,10 +1342,10 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
           var key_9 = element_2.geometry;
           var tmp$_24;
           (tmp$_23 = (Kotlin.isType(tmp$_24 = geometryMap, Map) ? tmp$_24 : throwCCE()).get_11rb$(key_9)) != null ? (tmp$_23.applyToMesh(copy_2), Unit) : null;
+          var key_10 = element_2.material;
+          var tmp$_25;
+          copy_2.material = (Kotlin.isType(tmp$_25 = materialMap, Map) ? tmp$_25 : throwCCE()).get_11rb$(key_10);
         }
-        var key_10 = element_2.material;
-        var tmp$_25;
-        copy_2.material = (Kotlin.isType(tmp$_25 = materialMap, Map) ? tmp$_25 : throwCCE()).get_11rb$(key_10);
       }
     }
     var target = new AssetContainer($receiver.scene);
@@ -1082,10 +1361,13 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
     this.scene = scene;
     this.instrumentation = new EngineInstrumentation(this.scene.getEngine());
     this.output = new TextBlock();
+    var tmp$, tmp$_0;
     this.output.text = '';
     this.output.color = 'white';
     this.output.fontSize = 16;
     this.output.height = '180px';
+    this.output.horizontalAlignment = typeof (tmp$ = Control$Companion._HORIZONTAL_ALIGNMENT_LEFT) === 'number' ? tmp$ : throwCCE();
+    this.output.verticalAlignment = typeof (tmp$_0 = Control$Companion._VERTICAL_ALIGNMENT_BOTTOM) === 'number' ? tmp$_0 : throwCCE();
     if (customRoot == null) {
       var advancedTexture = AdvancedDynamicTexture$Companion.CreateFullscreenUI('UI');
       advancedTexture.addControl(this.output);
@@ -1128,6 +1410,30 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
   FPS.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'FPS',
+    interfaces: []
+  };
+  function Inspector(scene) {
+    this.scene = scene;
+    this.isVisible_0 = false;
+    this.scene.onKeyboardObservable.add(Inspector_init$lambda(this));
+  }
+  function Inspector_init$lambda(this$Inspector) {
+    return function (info, f) {
+      if (info.event.ctrlKey && info.event.altKey) {
+        this$Inspector.isVisible_0 = !this$Inspector.isVisible_0;
+        if (this$Inspector.isVisible_0) {
+          this$Inspector.scene.debugLayer.show();
+        }
+         else {
+          this$Inspector.scene.debugLayer.hide();
+        }
+      }
+      return Unit;
+    };
+  }
+  Inspector.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Inspector',
     interfaces: []
   };
   function forEachTexture($receiver, operation) {
@@ -1204,9 +1510,6 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
     if (Kotlin.isType($receiver, AbstractMesh)) {
       $receiver.getScene().addMesh($receiver);
     }
-    if (Kotlin.isType($receiver, InstancedMesh)) {
-      $receiver.sourceMesh._resyncLightSources();
-    }
     forChildren($receiver, addMeshToScene$lambda);
   }
   function removeMeshFromScene$lambda(it) {
@@ -1218,60 +1521,6 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
       $receiver.getScene().removeMesh($receiver);
     }
     forChildren($receiver, removeMeshFromScene$lambda);
-  }
-  function playAnimation$lambda(closure$loop, closure$speedRatio) {
-    return function (it) {
-      playAnimation(it, closure$loop, closure$speedRatio);
-      return Unit;
-    };
-  }
-  function playAnimation($receiver, loop, speedRatio) {
-    if (speedRatio === void 0)
-      speedRatio = 1.0;
-    var $receiver_0 = $receiver.getAnimationRanges();
-    var tmp$;
-    for (tmp$ = 0; tmp$ !== $receiver_0.length; ++tmp$) {
-      var element = $receiver_0[tmp$];
-      if (element != null) {
-        $receiver.beginAnimation(element.name, loop, speedRatio);
-      }
-    }
-    forChildren($receiver, playAnimation$lambda(loop, speedRatio));
-  }
-  function stopAnimation$lambda(it) {
-    stopAnimation(it);
-    return Unit;
-  }
-  function stopAnimation($receiver) {
-    var $receiver_0 = $receiver.getAnimationRanges();
-    var tmp$;
-    for (tmp$ = 0; tmp$ !== $receiver_0.length; ++tmp$) {
-      var element = $receiver_0[tmp$];
-      if (element != null) {
-        var animatable = $receiver.beginAnimation(element.name, true, 1.0);
-        animatable != null ? (animatable.stop(), Unit) : null;
-      }
-    }
-    forChildren($receiver, stopAnimation$lambda);
-  }
-  function setAnimationFrame$lambda(closure$frame) {
-    return function (it) {
-      setAnimationFrame(it, closure$frame);
-      return Unit;
-    };
-  }
-  function setAnimationFrame($receiver, frame) {
-    var $receiver_0 = $receiver.getAnimationRanges();
-    var tmp$;
-    for (tmp$ = 0; tmp$ !== $receiver_0.length; ++tmp$) {
-      var element = $receiver_0[tmp$];
-      if (element != null) {
-        var animatable = $receiver.beginAnimation(element.name, true, 1.0);
-        animatable != null ? (animatable.goToFrame(frame), Unit) : null;
-        animatable != null ? (animatable.pause(), Unit) : null;
-      }
-    }
-    forChildren($receiver, setAnimationFrame$lambda(frame));
   }
   function AtlasPage(texture, info) {
     this.texture = texture;
@@ -1509,7 +1758,7 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
     tmp$ = pageSources.iterator();
     while (tmp$.hasNext()) {
       var element = tmp$.next();
-      var lines = toMutableList(split(element, ['\n']));
+      var lines = toMutableList_0(split(element, ['\n']));
       var title = lines.removeAt_za3lpa$(0);
       var pageRoot = new TextNode();
       pageRoot.name = title;
@@ -1659,14 +1908,16 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
   });
   package$model.MeshMerger = MeshMerger;
   package$model.Model = Model;
-  package$model.ModelData = ModelData;
   package$model.ModelCreateOptions = ModelCreateOptions;
+  package$model.ModelData = ModelData;
   Object.defineProperty(ModelFactory, 'Companion', {
     get: ModelFactory$Companion_getInstance
   });
   package$model.ModelFactory = ModelFactory;
-  package$model.createInstance_w7ozni$ = createInstance;
-  package$model.createAndPlaceInstance_tr50zu$ = createAndPlaceInstance;
+  Object.defineProperty(ShadowHelper, 'Companion', {
+    get: ShadowHelper$Companion_getInstance
+  });
+  package$model.ShadowHelper = ShadowHelper;
   Object.defineProperty(TextureReplacer, 'Companion', {
     get: TextureReplacer$Companion_getInstance
   });
@@ -1675,19 +1926,25 @@ define(['exports', 'kotlin', 'signalKt', 'babylonjs', 'typesKt', 'babylonjs-gui'
     get: UVReplacer$Companion_getInstance
   });
   package$model.UVReplacer = UVReplacer;
+  var package$stage = package$casper.stage || (package$casper.stage = {});
+  package$stage.IShadow = IShadow;
+  package$stage.Stage = Stage;
   var package$util = package$casper.util || (package$casper.util = {});
   package$util.copyMeshState_kijftg$ = copyMeshState;
+  package$util.playAnimation_ys0c4h$ = playAnimation;
+  package$util.stopAnimation_jig5h0$ = stopAnimation;
+  package$util.pauseAnimation_jig5h0$ = pauseAnimation;
+  package$util.resumeAnimation_jig5h0$ = resumeAnimation;
+  package$util.setAnimationFrame_32rpl6$ = setAnimationFrame;
   package$util.clone_m14ew5$ = clone;
   package$util.FPS = FPS;
+  package$util.Inspector = Inspector;
   package$util.forEachTexture_vnvga7$ = forEachTexture;
   package$util.forEachColor_xu1u5d$ = forEachColor;
   package$util.toStringLines_lqj46j$ = toStringLines;
   package$util.forChildren_wzp6uw$ = forChildren;
   package$util.addMeshToScene_jig5h0$ = addMeshToScene;
   package$util.removeMeshFromScene_jig5h0$ = removeMeshFromScene;
-  package$util.playAnimation_ys0c4h$ = playAnimation;
-  package$util.stopAnimation_jig5h0$ = stopAnimation;
-  package$util.setAnimationFrame_32rpl6$ = setAnimationFrame;
   var package$atlas = package$util.atlas || (package$util.atlas = {});
   package$atlas.AtlasPage = AtlasPage;
   package$atlas.Atlas = Atlas;

@@ -20,6 +20,7 @@
   var $$importsForInline$$ = _.$$importsForInline$$ || (_.$$importsForInline$$ = {});
   var Pair = Kotlin.kotlin.Pair;
   var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
+  var Collection = Kotlin.kotlin.collections.Collection;
   var Error_init = Kotlin.kotlin.Error_init_pdl1vj$;
   var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var SerialClassDescImpl = $module$kotlinx_serialization_kotlinx_serialization_runtime.kotlinx.serialization.internal.SerialClassDescImpl;
@@ -69,6 +70,30 @@
   ObservableCollection.$metadata$ = {
     kind: Kind_INTERFACE,
     simpleName: 'ObservableCollection',
+    interfaces: [Collection]
+  };
+  function ObservableMap() {
+  }
+  ObservableMap.prototype.then_4eanvs$ = function (addListener, removeListener) {
+    return new Pair(this.addFuture().then_qlkmfe$(addListener), this.removeFuture().then_qlkmfe$(removeListener));
+  };
+  ObservableMap.prototype.cancel_7im85o$ = function (forAdd, forRemove) {
+    if (forAdd != null) {
+      this.addFuture().cancel_vasy06$(forAdd);
+    }
+    if (forRemove != null) {
+      this.removeFuture().cancel_vasy06$(forRemove);
+    }
+  };
+  ObservableMap.prototype.thenAdd_by9f6q$ = function (listener) {
+    return this.addFuture().then_qlkmfe$(listener);
+  };
+  ObservableMap.prototype.thenRemove_by9f6q$ = function (listener) {
+    return this.removeFuture().then_qlkmfe$(listener);
+  };
+  ObservableMap.$metadata$ = {
+    kind: Kind_INTERFACE,
+    simpleName: 'ObservableMap',
     interfaces: []
   };
   function ObservableMutableList() {
@@ -307,7 +332,7 @@
   ObservableMutableMap.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'ObservableMutableMap',
-    interfaces: [ObservableCollection, MutableMap]
+    interfaces: [ObservableMap, MutableMap]
   };
   function ObservableMutableSet() {
     ObservableMutableSet$Companion_getInstance();
@@ -990,33 +1015,10 @@
     simpleName: 'Observer',
     interfaces: [Disposable]
   };
-  function ObserverHolder() {
-    this.slots_0 = ArrayList_init();
-  }
-  ObserverHolder.prototype.dispose = function () {
-    this.clear();
-  };
-  ObserverHolder.prototype.clear = function () {
-    var tmp$;
-    tmp$ = this.slots_0.iterator();
-    while (tmp$.hasNext()) {
-      var element = tmp$.next();
-      element.dispose();
-    }
-    this.slots_0.clear();
-  };
-  ObserverHolder.prototype.add_vasy06$ = function (observer) {
-    this.slots_0.add_11rb$(observer);
-  };
-  ObserverHolder.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'ObserverHolder',
-    interfaces: [Disposable]
-  };
   function then($receiver, holder, listener) {
     var tmp$;
     if ((tmp$ = $receiver.then_qlkmfe$(listener)) != null) {
-      holder.add_vasy06$(tmp$);
+      holder.add_emx09j$(tmp$);
       return true;
     }
     return false;
@@ -1024,24 +1026,37 @@
   function then_0($receiver, holder, forAdd, forRemove) {
     var tmp$, tmp$_0;
     if ((tmp$ = $receiver.thenAdd_qlkmfe$(forAdd)) != null) {
-      holder.add_vasy06$(tmp$);
+      holder.add_emx09j$(tmp$);
     }
     if ((tmp$_0 = $receiver.thenRemove_qlkmfe$(forRemove)) != null) {
-      holder.add_vasy06$(tmp$_0);
+      holder.add_emx09j$(tmp$_0);
     }
   }
   function then_1($receiver, holder, onAccept, onReject) {
     var tmp$, tmp$_0;
     if ((tmp$ = $receiver.thenAccept_qlkmfe$(onAccept)) != null) {
-      holder.add_vasy06$(tmp$);
+      holder.add_emx09j$(tmp$);
     }
     if ((tmp$_0 = $receiver.thenReject_1o0k09$(onReject)) != null) {
-      holder.add_vasy06$(tmp$_0);
+      holder.add_emx09j$(tmp$_0);
+    }
+  }
+  function thenAccept($receiver, holder, onAccept) {
+    var tmp$;
+    if ((tmp$ = $receiver.thenAccept_qlkmfe$(onAccept)) != null) {
+      holder.add_emx09j$(tmp$);
+    }
+  }
+  function thenReject($receiver, holder, onReject) {
+    var tmp$;
+    if ((tmp$ = $receiver.thenReject_1o0k09$(onReject)) != null) {
+      holder.add_emx09j$(tmp$);
     }
   }
   var package$casper = _.casper || (_.casper = {});
   var package$collection = package$casper.collection || (package$casper.collection = {});
   package$collection.ObservableCollection = ObservableCollection;
+  package$collection.ObservableMap = ObservableMap;
   Object.defineProperty(ObservableMutableList, 'Companion', {
     get: ObservableMutableList$Companion_getInstance
   });
@@ -1089,38 +1104,39 @@
   package$signal.SingleSignal = SingleSignal;
   var package$slot = package$signal.slot || (package$signal.slot = {});
   package$slot.Observer = Observer;
-  package$slot.ObserverHolder = ObserverHolder;
-  package$slot.then_ieb2jr$ = then;
-  package$slot.then_dk0ch4$ = then_0;
-  package$slot.then_y53wav$ = then_1;
+  package$slot.then_jw5g2i$ = then;
+  package$slot.then_gb8wsp$ = then_0;
+  package$slot.then_th5uma$ = then_1;
+  package$slot.thenAccept_jhdqno$ = thenAccept;
+  package$slot.thenReject_uymowb$ = thenReject;
   ObservableMutableList$$serializer.prototype.patch_mynpiu$ = GeneratedSerializer.prototype.patch_mynpiu$;
-  ObservableMutableList.prototype.cancel_7im85o$ = ObservableCollection.prototype.cancel_7im85o$;
   ObservableMutableList.prototype.then_uc1utc$ = ObservableCollection.prototype.then_uc1utc$;
+  ObservableMutableList.prototype.cancel_7im85o$ = ObservableCollection.prototype.cancel_7im85o$;
   ObservableMutableList.prototype.thenAdd_qlkmfe$ = ObservableCollection.prototype.thenAdd_qlkmfe$;
   ObservableMutableList.prototype.thenRemove_qlkmfe$ = ObservableCollection.prototype.thenRemove_qlkmfe$;
-  ObservableMutableMap.prototype.then_uc1utc$ = ObservableCollection.prototype.then_uc1utc$;
-  ObservableMutableMap.prototype.cancel_7im85o$ = ObservableCollection.prototype.cancel_7im85o$;
-  ObservableMutableMap.prototype.thenAdd_qlkmfe$ = ObservableCollection.prototype.thenAdd_qlkmfe$;
-  ObservableMutableMap.prototype.thenRemove_qlkmfe$ = ObservableCollection.prototype.thenRemove_qlkmfe$;
+  ObservableMutableMap.prototype.then_4eanvs$ = ObservableMap.prototype.then_4eanvs$;
+  ObservableMutableMap.prototype.cancel_7im85o$ = ObservableMap.prototype.cancel_7im85o$;
+  ObservableMutableMap.prototype.thenAdd_by9f6q$ = ObservableMap.prototype.thenAdd_by9f6q$;
+  ObservableMutableMap.prototype.thenRemove_by9f6q$ = ObservableMap.prototype.thenRemove_by9f6q$;
   ObservableMutableSet$$serializer.prototype.patch_mynpiu$ = GeneratedSerializer.prototype.patch_mynpiu$;
-  ObservableMutableSet.prototype.cancel_7im85o$ = ObservableCollection.prototype.cancel_7im85o$;
   ObservableMutableSet.prototype.then_uc1utc$ = ObservableCollection.prototype.then_uc1utc$;
+  ObservableMutableSet.prototype.cancel_7im85o$ = ObservableCollection.prototype.cancel_7im85o$;
   ObservableMutableSet.prototype.thenAdd_qlkmfe$ = ObservableCollection.prototype.thenAdd_qlkmfe$;
   ObservableMutableSet.prototype.thenRemove_qlkmfe$ = ObservableCollection.prototype.thenRemove_qlkmfe$;
-  PromiseWritable.prototype.cancel_7im85o$ = Promise.prototype.cancel_7im85o$;
   PromiseWritable.prototype.then_fri4qn$ = Promise.prototype.then_fri4qn$;
+  PromiseWritable.prototype.cancel_7im85o$ = Promise.prototype.cancel_7im85o$;
   PromiseWritable.prototype.thenAccept_qlkmfe$ = Promise.prototype.thenAccept_qlkmfe$;
   PromiseWritable.prototype.thenReject_1o0k09$ = Promise.prototype.thenReject_1o0k09$;
-  PromiseSignal.prototype.cancel_7im85o$ = PromiseWritable.prototype.cancel_7im85o$;
   PromiseSignal.prototype.then_fri4qn$ = PromiseWritable.prototype.then_fri4qn$;
+  PromiseSignal.prototype.cancel_7im85o$ = PromiseWritable.prototype.cancel_7im85o$;
   PromiseSignal.prototype.thenAccept_qlkmfe$ = PromiseWritable.prototype.thenAccept_qlkmfe$;
   PromiseSignal.prototype.thenReject_1o0k09$ = PromiseWritable.prototype.thenReject_1o0k09$;
-  PromiseUnion.prototype.cancel_7im85o$ = Promise.prototype.cancel_7im85o$;
   PromiseUnion.prototype.then_fri4qn$ = Promise.prototype.then_fri4qn$;
+  PromiseUnion.prototype.cancel_7im85o$ = Promise.prototype.cancel_7im85o$;
   PromiseUnion.prototype.thenAccept_qlkmfe$ = Promise.prototype.thenAccept_qlkmfe$;
   PromiseUnion.prototype.thenReject_1o0k09$ = Promise.prototype.thenReject_1o0k09$;
-  SinglePromiseSignal.prototype.cancel_7im85o$ = PromiseWritable.prototype.cancel_7im85o$;
   SinglePromiseSignal.prototype.then_fri4qn$ = PromiseWritable.prototype.then_fri4qn$;
+  SinglePromiseSignal.prototype.cancel_7im85o$ = PromiseWritable.prototype.cancel_7im85o$;
   SinglePromiseSignal.prototype.thenAccept_qlkmfe$ = PromiseWritable.prototype.thenAccept_qlkmfe$;
   SinglePromiseSignal.prototype.thenReject_1o0k09$ = PromiseWritable.prototype.thenReject_1o0k09$;
   Kotlin.defineModule('signalKt', _);

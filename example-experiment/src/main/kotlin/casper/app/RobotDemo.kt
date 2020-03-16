@@ -1,15 +1,11 @@
 package casper.app
 
-import BABYLON.Color3
-import BABYLON.PBRMaterial
-import BABYLON.Scene
-import BABYLON.Texture
+import BABYLON.*
 import casper.asset.Assets
-import casper.model.MaterialReplacer
-import casper.model.ModelData
-import casper.model.createAndPlaceInstance
+import casper.model.Model
+import casper.model.ModelCreateOptions
 
-class RobotDemo(val scene: Scene, val assets:Assets) {
+class RobotDemo(val scene: Scene, val shadow:Shadow, val assets:Assets) {
 	val steelMaterial = PBRMaterial("", scene)
 
 	init {
@@ -23,56 +19,48 @@ class RobotDemo(val scene: Scene, val assets:Assets) {
 //		steelMaterial.bumpTexture?.coordinatesIndex = 0
 
 		steelMaterial.useRoughnessFromMetallicTextureAlpha = true
-	}
-	private fun createRobotData(original: ModelData): ModelData {
-		val modelData = original.clone("")
-		//	create extended UV map
-//		modelData.assetContainer.geometries.forEach {
-//			UVReplacer.cloneUV(it, VertexBuffer.UVKind, VertexBuffer.UV2Kind)
-//			UVReplacer.cloneUV(it, VertexBuffer.UVKind, VertexBuffer.UV3Kind)
-//		}
 
-		//	replace Red by steel material
-		MaterialReplacer.replace(modelData) {
-			steelMaterial
-//			if (it.name == "Red") steelMaterial else null
-		}
-
-//		val atlas = manager.getAtlas("atlas.atlas")!!
-//		AtlasHelper.replace(modelData, "atlas/unknown.png", atlas, "unknown")
-//		AtlasHelper.replace(modelData, "atlas/steel_metallic.png", atlas, "steel_metallic")
-//		AtlasHelper.replace(modelData, "atlas/normal_hill.png", atlas, "normal_hill")
-		return modelData
+		createRobot()
 	}
 
 	private fun createRobot() {
-		//	materials
+		val oilMaterial = PBRMaterial("oil-material", scene)
+		oilMaterial.alpha = 0.6
 
-		val soilMaterial = PBRMaterial("", scene)
-		soilMaterial.albedoTexture = Texture("atlas/soil.png", scene)
-		soilMaterial.metallic = 0.0
-		soilMaterial.roughness = 0.9
-
-		val oilMaterial = PBRMaterial("", scene)
-		oilMaterial.albedoColor = Color3(0.02, 0.01, 0.03)
-		oilMaterial.metallicTexture = Texture("atlas/oil.png", scene)
-		oilMaterial.roughness = 0.4
-		oilMaterial.alpha = 0.9
-
-		val robot_truck = createRobotData(assets.robot_truck)
-
-		val model = robot_truck.createAndPlaceInstance()
-
-
-//		val cargoModified = assets.robot_cargo.clone("")
-//		MaterialReplacer.replace(cargoModified) {
-//			if (it.name == "Red") oilMaterial else null
+//		val cubeModel = Model(assets.cube, null)
+//		cubeModel.node.position = Vector3(2.0, 0.0, 0.0)
+//		cubeModel.addToScene()
+//
+//		assets.cube.assetContainer.meshes.forEach {
+//			if (it is Mesh) {
+//				it.material = oilMaterial
+//			}
 //		}
-//		val cargo = cargoModified.createAndPlaceInstance()
-//		cargo.position = Vector3(0.0, 0.0, 0.0)
-//		cargo.setAnimationFrame(80.0)
+
+		val sphere = MeshBuilder.CreateSphere("test", SphereOptions())
+//		sphere.isVisible =false
+		scene.removeMesh(sphere)
 
 
-		//	TextureReplacer.replace(robotTruckModified, "atlas/steel.png", atlas, "steel")
+		val sphere2 = sphere.createInstance("")
+		sphere2.position = Vector3(2.5, 0.0, 0.0)
+		sphere2.sourceMesh.material = oilMaterial
+		sphere2.sourceMesh.receiveShadows = true
+
+		(scene.lights.first().getShadowGenerator() as ShadowGenerator).addShadowCaster(sphere)
+		(scene.lights.first().getShadowGenerator() as ShadowGenerator).addShadowCaster(sphere2)
+
+		assets.robot_builder.assetContainer.meshes.forEach {
+			if (it is Mesh) {
+				it.material = oilMaterial
+			}
+		}
+
+		val model2 = Model(assets.robot_builder)
+		model2.node.position = Vector3(2.0, 0.0, 0.0)
+		model2.addToScene()
+
+
+
 	}
 }

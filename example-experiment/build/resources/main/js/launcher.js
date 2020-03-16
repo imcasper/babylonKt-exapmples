@@ -1,5 +1,5 @@
 
-requirejs(['example-experiment'], function (main) {
+requirejs(['example-experiment', 'babylonjs-inspector'], function (main) {
 });
 
 

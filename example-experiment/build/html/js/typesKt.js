@@ -14,8 +14,14 @@
   }
 }(this, function (_, Kotlin, $module$kotlinx_serialization_kotlinx_serialization_runtime) {
   'use strict';
-  var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
+  var $$importsForInline$$ = _.$$importsForInline$$ || (_.$$importsForInline$$ = {});
+  var defineInlineFunction = Kotlin.defineInlineFunction;
+  var wrapFunction = Kotlin.wrapFunction;
+  var Kind_OBJECT = Kotlin.Kind.OBJECT;
+  var Error_init = Kotlin.kotlin.Error_init_pdl1vj$;
   var Kind_CLASS = Kotlin.Kind.CLASS;
+  var Kind_INTERFACE = Kotlin.Kind.INTERFACE;
+  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
   var Long$Companion$MIN_VALUE = Kotlin.Long.MIN_VALUE;
   var Long$Companion$MAX_VALUE = Kotlin.Long.MAX_VALUE;
   var isFinite = Kotlin.kotlin.isFinite_yrwdxr$;
@@ -23,9 +29,7 @@
   var abs = Kotlin.kotlin.math.abs_s8cxhz$;
   var roundToInt = Kotlin.kotlin.math.roundToInt_yrwdxr$;
   var toString = Kotlin.kotlin.text.toString_dqglrj$;
-  var Error_init = Kotlin.kotlin.Error_init_pdl1vj$;
   var kotlin_js_internal_DoubleCompanionObject = Kotlin.kotlin.js.internal.DoubleCompanionObject;
-  var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var Throwable = Error;
   var SerialClassDescImpl = $module$kotlinx_serialization_kotlinx_serialization_runtime.kotlinx.serialization.internal.SerialClassDescImpl;
   var UnknownFieldException = $module$kotlinx_serialization_kotlinx_serialization_runtime.kotlinx.serialization.UnknownFieldException;
@@ -34,15 +38,16 @@
   var MissingFieldException = $module$kotlinx_serialization_kotlinx_serialization_runtime.kotlinx.serialization.MissingFieldException;
   var Math_0 = Math;
   var abs_0 = Kotlin.kotlin.math.abs_za3lpa$;
-  var Pair = Kotlin.kotlin.Pair;
-  var equals = Kotlin.equals;
-  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
   var ensureNotNull = Kotlin.ensureNotNull;
   var Iterator = Kotlin.kotlin.collections.Iterator;
+  var Pair = Kotlin.kotlin.Pair;
+  var equals = Kotlin.equals;
   var Enum = Kotlin.kotlin.Enum;
   var throwISE = Kotlin.throwISE;
   var numberToInt = Kotlin.numberToInt;
   var println = Kotlin.kotlin.io.println_s8jyv4$;
+  var math = Kotlin.kotlin.math;
+  var Array_0 = Array;
   var L_9223372036854775807 = new Kotlin.Long(1, -2147483648);
   var throwCCE = Kotlin.throwCCE;
   var hashCode = Kotlin.hashCode;
@@ -51,6 +56,141 @@
   Axis3d.prototype.constructor = Axis3d;
   Axis3i.prototype = Object.create(Enum.prototype);
   Axis3i.prototype.constructor = Axis3i;
+  function Map2D(dimension, array) {
+    Map2D$Companion_getInstance();
+    this.dimension = dimension;
+    this.array_0 = array;
+    if (this.array_0.length !== Kotlin.imul(this.dimension.x, this.dimension.y))
+      throw Error_init('Invalid array size. Need: ' + Kotlin.imul(this.dimension.x, this.dimension.y));
+  }
+  function Map2D$Companion() {
+    Map2D$Companion_instance = this;
+  }
+  Map2D$Companion.prototype.create_82l4xo$ = defineInlineFunction('typesKt.casper.collection.map.Map2D.Companion.create_82l4xo$', wrapFunction(function () {
+    var Map2D_init = _.casper.collection.map.Map2D;
+    var Array_0 = Array;
+    return function (T_0, isT, dimension, builder) {
+      var array = Array_0(Kotlin.imul(dimension.x, dimension.y));
+      var tmp$;
+      tmp$ = array.length - 1 | 0;
+      for (var i = 0; i <= tmp$; i++) {
+        array[i] = builder(i);
+      }
+      return new Map2D_init(dimension, array);
+    };
+  }));
+  Map2D$Companion.prototype.positionFromIndex_40acdi$ = function (index, dimension) {
+    var x = index % dimension.x;
+    var y = index / dimension.x | 0;
+    return new Vector2i(x, y);
+  };
+  Map2D$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var Map2D$Companion_instance = null;
+  function Map2D$Companion_getInstance() {
+    if (Map2D$Companion_instance === null) {
+      new Map2D$Companion();
+    }
+    return Map2D$Companion_instance;
+  }
+  Map2D.prototype.isOutside_bz62pc$ = function (position) {
+    return !position.greaterOrEq_bz62pc$(Vector2i$Companion_getInstance().ZERO) || !position.less_bz62pc$(this.dimension);
+  };
+  Map2D.prototype.isInside_bz62pc$ = function (position) {
+    return position.greaterOrEq_bz62pc$(Vector2i$Companion_getInstance().ZERO) && position.less_bz62pc$(this.dimension);
+  };
+  Map2D.prototype.set_52kd3f$ = function (position, value) {
+    this.array_0[this.indexFromPosition_bz62pc$(position)] = value;
+  };
+  Map2D.prototype.get_bz62pc$ = function (position) {
+    return this.array_0[this.indexFromPosition_bz62pc$(position)];
+  };
+  Map2D.prototype.set_vq7693$ = function (x, y, value) {
+    this.array_0[this.indexFromPosition_vux9f0$(x, y)] = value;
+  };
+  Map2D.prototype.setByIndex_wxm5ur$ = function (index, value) {
+    this.array_0[index] = value;
+  };
+  Map2D.prototype.getByIndex_za3lpa$ = function (index) {
+    return this.array_0[index];
+  };
+  Map2D.prototype.get_vux9f0$ = function (x, y) {
+    return this.array_0[this.indexFromPosition_vux9f0$(x, y)];
+  };
+  Map2D.prototype.indexFromPosition_bz62pc$ = function (pos) {
+    return pos.x + Kotlin.imul(this.dimension.x, pos.y) | 0;
+  };
+  Map2D.prototype.positionFromIndex_za3lpa$ = function (index) {
+    var x = index % this.dimension.x;
+    var y = index / this.dimension.x | 0;
+    return new Vector2i(x, y);
+  };
+  Map2D.prototype.indexFromPosition_vux9f0$ = function (x, y) {
+    return x + Kotlin.imul(this.dimension.x, y) | 0;
+  };
+  Map2D.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Map2D',
+    interfaces: []
+  };
+  function Map3D(dimension, array) {
+    Map3D$Companion_getInstance();
+    this.dimension = dimension;
+    this.array_0 = array;
+    if (this.array_0.length !== Kotlin.imul(this.dimension.x, this.dimension.y))
+      throw Error_init('Invalid array size. Need: ' + Kotlin.imul(Kotlin.imul(this.dimension.x, this.dimension.y), this.dimension.z));
+  }
+  function Map3D$Companion() {
+    Map3D$Companion_instance = this;
+  }
+  Map3D$Companion.prototype.create_rb2iop$ = defineInlineFunction('typesKt.casper.collection.map.Map3D.Companion.create_rb2iop$', wrapFunction(function () {
+    var Map3D_init = _.casper.collection.map.Map3D;
+    var Array_0 = Array;
+    return function (T_0, isT, dimension, builder) {
+      var array = Array_0(Kotlin.imul(Kotlin.imul(dimension.x, dimension.y), dimension.z));
+      var tmp$;
+      tmp$ = array.length - 1 | 0;
+      for (var i = 0; i <= tmp$; i++) {
+        array[i] = builder();
+      }
+      return new Map3D_init(dimension, array);
+    };
+  }));
+  Map3D$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var Map3D$Companion_instance = null;
+  function Map3D$Companion_getInstance() {
+    if (Map3D$Companion_instance === null) {
+      new Map3D$Companion();
+    }
+    return Map3D$Companion_instance;
+  }
+  Map3D.prototype.isOutside_bz62oh$ = function (position) {
+    return !position.greaterOrEq_bz62oh$(Vector3i$Companion_getInstance().ZERO) || !position.less_bz62oh$(this.dimension);
+  };
+  Map3D.prototype.isInside_bz62oh$ = function (position) {
+    return position.greaterOrEq_bz62oh$(Vector3i$Companion_getInstance().ZERO) && position.less_bz62oh$(this.dimension);
+  };
+  Map3D.prototype.set_5jlzhm$ = function (position, value) {
+    this.array_0[this.getPositionIndex_0(position)] = value;
+  };
+  Map3D.prototype.get_bz62oh$ = function (position) {
+    return this.array_0[this.getPositionIndex_0(position)];
+  };
+  Map3D.prototype.getPositionIndex_0 = function (pos) {
+    return pos.x + Kotlin.imul(this.dimension.x, pos.y + Kotlin.imul(this.dimension.y, pos.z) | 0) | 0;
+  };
+  Map3D.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'Map3D',
+    interfaces: []
+  };
   function Disposable() {
   }
   Disposable.$metadata$ = {
@@ -72,6 +212,32 @@
   function getDisposable(item, onDispose) {
     return new getDisposable$ObjectLiteral(onDispose, item);
   }
+  function DisposableHolder() {
+    this.items_dsnsb7$_0 = ArrayList_init();
+  }
+  DisposableHolder.prototype.dispose = function () {
+    this.clear();
+  };
+  DisposableHolder.prototype.clear = function () {
+    var tmp$;
+    tmp$ = this.items_dsnsb7$_0.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      element.dispose();
+    }
+    this.items_dsnsb7$_0.clear();
+  };
+  DisposableHolder.prototype.add_emx09j$ = function (disposable) {
+    this.items_dsnsb7$_0.add_11rb$(disposable);
+  };
+  DisposableHolder.prototype.remove_emx09j$ = function (disposable) {
+    this.items_dsnsb7$_0.remove_11rb$(disposable);
+  };
+  DisposableHolder.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'DisposableHolder',
+    interfaces: [Disposable]
+  };
   function toPrecision($receiver, precision) {
     var precisionFactor = pow(10, precision);
     var normal = $receiver * precisionFactor;
@@ -96,106 +262,12 @@
     return getColorComponentToHex($receiver.x) + getColorComponentToHex($receiver.y) + getColorComponentToHex($receiver.z);
   }
   function getColorComponentToHex(value) {
-    var hex = toString(roundToInt(value * 255.0), 16);
+    var max = 255.0;
+    var hex = toString(roundToInt(clamp_1(value * max, 0.0, max)), 16);
     while (hex.length < 2) {
       hex = '0' + hex;
     }
     return hex;
-  }
-  function extrapolateVector3d(A, B, weightA) {
-    if (weightA < 0 || weightA > 1)
-      throw Error_init('weight must be in interval [0..1]');
-    var weightB = 1 - weightA;
-    return new Vector3d(A.x * weightA + B.x * weightB, A.y * weightA + B.y * weightB, A.z * weightA + B.z * weightB);
-  }
-  function scaleTriangle3d(source, scale) {
-    var center = source.v0.plus_bz62om$(source.v1).plus_bz62om$(source.v2).div_14dthe$(3.0);
-    return new Triangle(center.plus_bz62om$(source.v0.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v1.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v2.minus_bz62om$(center).times_14dthe$(scale)));
-  }
-  function scaleLine3d(source, scale) {
-    var center = source.v0.plus_bz62om$(source.v1).div_14dthe$(2.0);
-    return new Line(center.plus_bz62om$(source.v0.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v1.minus_bz62om$(center).times_14dthe$(scale)));
-  }
-  function scaleQuad3d(source, scale) {
-    var center = source.v0.plus_bz62om$(source.v1).plus_bz62om$(source.v2).plus_bz62om$(source.v3).div_14dthe$(4.0);
-    return new Quad(center.plus_bz62om$(source.v0.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v1.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v2.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v3.minus_bz62om$(center).times_14dthe$(scale)));
-  }
-  function pow($receiver, x) {
-    return powInt($receiver, x);
-  }
-  function clamp($receiver, min, max) {
-    return clampInt($receiver, min, max);
-  }
-  function clamp_0($receiver, min, max) {
-    return clampLong($receiver, min, max);
-  }
-  function clamp_1($receiver, min, max) {
-    return clampDouble($receiver, min, max);
-  }
-  function powInt(b, e) {
-    if (e < 0) {
-      return 1 / powInt(b, -e | 0) | 0;
-    }
-    var base = b;
-    var exp = e;
-    var result = 1;
-    while (true) {
-      if ((exp & 1) === 1) {
-        result = Kotlin.imul(result, base);
-      }
-      exp = exp >> 1;
-      if (exp === 0) {
-        break;
-      }
-      base = Kotlin.imul(base, base);
-    }
-    return result;
-  }
-  function clampInt(value, min, max) {
-    if (max <= min)
-      throw Error_init('Invalid interval ' + min + ' - ' + max);
-    if (value < min)
-      return min;
-    if (value >= max)
-      return max - 1 | 0;
-    return value;
-  }
-  function clampLong(value, min, max) {
-    if (max.compareTo_11rb$(min) <= 0)
-      throw Error_init('Invalid interval ' + min.toString() + ' - ' + max.toString());
-    if (value.compareTo_11rb$(min) < 0)
-      return min;
-    if (value.compareTo_11rb$(max) >= 0)
-      return max.subtract(Kotlin.Long.fromInt(1));
-    return value;
-  }
-  function clampDouble(value, min, max) {
-    if (max < min)
-      throw Error_init('Invalid interval ' + min + ' - ' + max);
-    if (value < min)
-      return min;
-    if (value >= max)
-      return max;
-    return value;
-  }
-  function normal($receiver, dest) {
-    var result = $receiver % dest;
-    if (dest > 0) {
-      if (result < 0) {
-        return result + dest | 0;
-      }
-       else {
-        return result;
-      }
-    }
-     else {
-      if (result > 0) {
-        return result + dest | 0;
-      }
-       else {
-        return result;
-      }
-    }
   }
   function Matrix23d(m0, m1) {
     this.m0 = m0;
@@ -479,6 +551,7 @@
     this.X = new Vector2d(1.0, 0.0);
     this.Y = new Vector2d(0.0, 1.0);
     this.XY = new Vector2d(1.0, 1.0);
+    this.ONE = this.XY;
   }
   Vector2d$Companion.prototype.serializer = function () {
     return Vector2d$$serializer_getInstance();
@@ -579,16 +652,16 @@
     var b_0 = other.y;
     return new Vector2d(tmp$, Math_0.min(a_0, b_0));
   };
-  Vector2d.prototype.greater_bz62pc$ = function (other) {
+  Vector2d.prototype.greater_bz62ph$ = function (other) {
     return this.x > other.x && this.y > other.y;
   };
-  Vector2d.prototype.greaterOrEq_bz62pc$ = function (other) {
+  Vector2d.prototype.greaterOrEq_bz62ph$ = function (other) {
     return this.x >= other.x && this.y >= other.y;
   };
-  Vector2d.prototype.less_bz62pc$ = function (other) {
+  Vector2d.prototype.less_bz62ph$ = function (other) {
     return this.x < other.x && this.y < other.y;
   };
-  Vector2d.prototype.lessOrEq_bz62pc$ = function (other) {
+  Vector2d.prototype.lessOrEq_bz62ph$ = function (other) {
     return this.x <= other.x && this.y <= other.y;
   };
   Vector2d.prototype.unaryMinus = function () {
@@ -672,6 +745,11 @@
     simpleName: 'Vector2d',
     interfaces: []
   };
+  function Vector2d_init_0(i, $this) {
+    $this = $this || Object.create(Vector2d.prototype);
+    Vector2d.call($this, i, i);
+    return $this;
+  }
   Vector2d.prototype.component1 = function () {
     return this.x;
   };
@@ -701,6 +779,7 @@
     this.X = new Vector2i(1, 0);
     this.Y = new Vector2i(0, 1);
     this.XY = new Vector2i(1, 1);
+    this.ONE = this.XY;
     this.BASIS = [this.ZERO, this.Y, this.X, this.XY];
   }
   Vector2i$Companion.prototype.serializer = function () {
@@ -879,6 +958,11 @@
     simpleName: 'Vector2i',
     interfaces: []
   };
+  function Vector2i_init_0(i, $this) {
+    $this = $this || Object.create(Vector2i.prototype);
+    Vector2i.call($this, i, i);
+    return $this;
+  }
   Vector2i.prototype.component1 = function () {
     return this.x;
   };
@@ -905,6 +989,7 @@
     this.XZ = new Vector3d(1.0, 0.0, 1.0);
     this.XY = new Vector3d(1.0, 1.0, 0.0);
     this.XYZ = new Vector3d(1.0, 1.0, 1.0);
+    this.ONE = this.XYZ;
   }
   Vector3d$Companion.prototype.mono_14dthe$ = function (value) {
     return new Vector3d(value, value, value);
@@ -1146,6 +1231,11 @@
     simpleName: 'Vector3d',
     interfaces: []
   };
+  function Vector3d_init_0(i, $this) {
+    $this = $this || Object.create(Vector3d.prototype);
+    Vector3d.call($this, i, i, i);
+    return $this;
+  }
   Vector3d.prototype.component1 = function () {
     return this.x;
   };
@@ -1185,6 +1275,7 @@
     this.XZ = new Vector3i(1, 0, 1);
     this.XY = new Vector3i(1, 1, 0);
     this.XYZ = new Vector3i(1, 1, 1);
+    this.ONE = this.XYZ;
     this.BASIS = [this.ZERO, this.Z, this.Y, this.YZ, this.X, this.XZ, this.XY, this.XYZ];
   }
   Vector3i$Companion.prototype.serializer = function () {
@@ -1407,6 +1498,11 @@
     simpleName: 'Vector3i',
     interfaces: []
   };
+  function Vector3i_init_0(i, $this) {
+    $this = $this || Object.create(Vector3i.prototype);
+    Vector3i.call($this, i, i, i);
+    return $this;
+  }
   Vector3i.prototype.component1 = function () {
     return this.x;
   };
@@ -1430,10 +1526,8 @@
     Vector4d$Companion_instance = this;
     this.ZERO = new Vector4d(0.0, 0.0, 0.0, 0.0);
     this.XYZW = new Vector4d(1.0, 1.0, 1.0, 1.0);
+    this.ONE = this.XYZW;
   }
-  Vector4d$Companion.prototype.mono_14dthe$ = function (value) {
-    return new Vector4d(value, value, value, value);
-  };
   Vector4d$Companion.prototype.serializer = function () {
     return Vector4d$$serializer_getInstance();
   };
@@ -1586,6 +1680,11 @@
     simpleName: 'Vector4d',
     interfaces: []
   };
+  function Vector4d_init_0(i, $this) {
+    $this = $this || Object.create(Vector4d.prototype);
+    Vector4d.call($this, i, i, i, i);
+    return $this;
+  }
   Vector4d.prototype.component1 = function () {
     return this.x;
   };
@@ -1612,14 +1711,140 @@
   Vector4d.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.x, other.x) && Kotlin.equals(this.y, other.y) && Kotlin.equals(this.z, other.z) && Kotlin.equals(this.w, other.w)))));
   };
-  function AABBox2i(position, size) {
-    this.position = position;
-    this.size = size;
+  function AABBox2Iterator(source) {
+    this.source = source;
+    this.x_0 = 0;
+    this.y_0 = 0;
+    this.next_0 = null;
+    this.x_0 = this.source.min.x;
+    this.y_0 = this.source.min.y;
+    this.next_0 = new Vector2i(this.x_0, this.y_0);
   }
+  AABBox2Iterator.prototype.next = function () {
+    var result = ensureNotNull(this.next_0);
+    if ((this.x_0 = this.x_0 + 1 | 0, this.x_0) > this.source.max.x) {
+      this.x_0 = this.source.min.x;
+      if ((this.y_0 = this.y_0 + 1 | 0, this.y_0) > this.source.max.y) {
+        this.y_0 = this.source.min.y;
+        this.next_0 = null;
+        return result;
+      }
+    }
+    this.next_0 = new Vector2i(this.x_0, this.y_0);
+    return result;
+  };
+  AABBox2Iterator.prototype.hasNext = function () {
+    return this.next_0 != null;
+  };
+  AABBox2Iterator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'AABBox2Iterator',
+    interfaces: [Iterator]
+  };
+  function AABBox2d(position, dimension) {
+    this.position = position;
+    this.dimension = dimension;
+    this.min = this.position;
+    this.max = this.position.plus_bz62ph$(this.dimension).minus_bz62ph$(Vector2d$Companion_getInstance().ONE);
+    if (!this.dimension.greaterOrEq_bz62ph$(Vector2d$Companion_getInstance().ZERO))
+      throw Error_init('Invalid box dimension ' + this.dimension);
+  }
+  AABBox2d.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'AABBox2d',
+    interfaces: []
+  };
+  AABBox2d.prototype.component1 = function () {
+    return this.position;
+  };
+  AABBox2d.prototype.component2 = function () {
+    return this.dimension;
+  };
+  AABBox2d.prototype.copy_97zyx8$ = function (position, dimension) {
+    return new AABBox2d(position === void 0 ? this.position : position, dimension === void 0 ? this.dimension : dimension);
+  };
+  AABBox2d.prototype.toString = function () {
+    return 'AABBox2d(position=' + Kotlin.toString(this.position) + (', dimension=' + Kotlin.toString(this.dimension)) + ')';
+  };
+  AABBox2d.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.position) | 0;
+    result = result * 31 + Kotlin.hashCode(this.dimension) | 0;
+    return result;
+  };
+  AABBox2d.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.position, other.position) && Kotlin.equals(this.dimension, other.dimension)))));
+  };
+  function AABBox2i(position, dimension) {
+    this.position = position;
+    this.dimension = dimension;
+    this.min = this.position;
+    this.max = this.position.plus_bz62pc$(this.dimension).minus_bz62pc$(Vector2i$Companion_getInstance().ONE);
+    if (!this.dimension.greaterOrEq_bz62pc$(Vector2i$Companion_getInstance().ZERO))
+      throw Error_init('Invalid box dimension ' + this.dimension);
+  }
+  AABBox2i.prototype.iterator = function () {
+    return new AABBox2Iterator(this);
+  };
   AABBox2i.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'AABBox2i',
     interfaces: []
+  };
+  AABBox2i.prototype.component1 = function () {
+    return this.position;
+  };
+  AABBox2i.prototype.component2 = function () {
+    return this.dimension;
+  };
+  AABBox2i.prototype.copy_bsca3w$ = function (position, dimension) {
+    return new AABBox2i(position === void 0 ? this.position : position, dimension === void 0 ? this.dimension : dimension);
+  };
+  AABBox2i.prototype.toString = function () {
+    return 'AABBox2i(position=' + Kotlin.toString(this.position) + (', dimension=' + Kotlin.toString(this.dimension)) + ')';
+  };
+  AABBox2i.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.position) | 0;
+    result = result * 31 + Kotlin.hashCode(this.dimension) | 0;
+    return result;
+  };
+  AABBox2i.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.position, other.position) && Kotlin.equals(this.dimension, other.dimension)))));
+  };
+  function AABBox3Iterator(source) {
+    this.source = source;
+    this.x_0 = 0;
+    this.y_0 = 0;
+    this.z_0 = 0;
+    this.next_0 = null;
+    this.x_0 = this.source.min.x;
+    this.y_0 = this.source.min.y;
+    this.z_0 = this.source.min.z;
+    this.next_0 = new Vector3i(this.x_0, this.y_0, this.z_0);
+  }
+  AABBox3Iterator.prototype.next = function () {
+    var result = ensureNotNull(this.next_0);
+    if ((this.x_0 = this.x_0 + 1 | 0, this.x_0) > this.source.max.x) {
+      this.x_0 = this.source.min.x;
+      if ((this.y_0 = this.y_0 + 1 | 0, this.y_0) > this.source.max.y) {
+        this.y_0 = this.source.min.y;
+        if ((this.z_0 = this.z_0 + 1 | 0, this.z_0) > this.source.max.z) {
+          this.next_0 = null;
+          return result;
+        }
+      }
+    }
+    this.next_0 = new Vector3i(this.x_0, this.y_0, this.z_0);
+    return result;
+  };
+  AABBox3Iterator.prototype.hasNext = function () {
+    return this.next_0 != null;
+  };
+  AABBox3Iterator.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'AABBox3Iterator',
+    interfaces: [Iterator]
   };
   function AABBox3d(min, max) {
     AABBox3d$Companion_getInstance();
@@ -1873,7 +2098,7 @@
     return result;
   };
   AABBox3i.prototype.iterator = function () {
-    return new AABBoxIterator(this);
+    return new AABBox3Iterator(this);
   };
   AABBox3i.prototype.toString = function () {
     return 'AABBox3i(min=' + this.min + ', max=' + this.max + ')';
@@ -2047,40 +2272,6 @@
   AABBoxFaceIterator.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'AABBoxFaceIterator',
-    interfaces: [Iterator]
-  };
-  function AABBoxIterator(source) {
-    this.source = source;
-    this.x_0 = 0;
-    this.y_0 = 0;
-    this.z_0 = 0;
-    this.next_0 = null;
-    this.x_0 = this.source.min.x;
-    this.y_0 = this.source.min.y;
-    this.z_0 = this.source.min.z;
-    this.next_0 = new Vector3i(this.x_0, this.y_0, this.z_0);
-  }
-  AABBoxIterator.prototype.next = function () {
-    var result = ensureNotNull(this.next_0);
-    if ((this.x_0 = this.x_0 + 1 | 0, this.x_0) > this.source.max.x) {
-      this.x_0 = this.source.min.x;
-      if ((this.y_0 = this.y_0 + 1 | 0, this.y_0) > this.source.max.y) {
-        this.y_0 = this.source.min.y;
-        if ((this.z_0 = this.z_0 + 1 | 0, this.z_0) > this.source.max.z) {
-          this.next_0 = null;
-          return result;
-        }
-      }
-    }
-    this.next_0 = new Vector3i(this.x_0, this.y_0, this.z_0);
-    return result;
-  };
-  AABBoxIterator.prototype.hasNext = function () {
-    return this.next_0 != null;
-  };
-  AABBoxIterator.$metadata$ = {
-    kind: Kind_CLASS,
-    simpleName: 'AABBoxIterator',
     interfaces: [Iterator]
   };
   function Axis3d(name, ordinal, index, value) {
@@ -2890,6 +3081,526 @@
   function getTriangleNormal(v0, v1, v2) {
     return v2.minus_bz62om$(v0).cross_bz62om$(v1.minus_bz62om$(v0)).normalize();
   }
+  function extrapolateVector3d(A, B, weightA) {
+    if (weightA < 0 || weightA > 1)
+      throw Error_init('weight must be in interval [0..1]');
+    var weightB = 1 - weightA;
+    return new Vector3d(A.x * weightA + B.x * weightB, A.y * weightA + B.y * weightB, A.z * weightA + B.z * weightB);
+  }
+  function scaleTriangle3d(source, scale) {
+    var center = source.v0.plus_bz62om$(source.v1).plus_bz62om$(source.v2).div_14dthe$(3.0);
+    return new Triangle(center.plus_bz62om$(source.v0.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v1.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v2.minus_bz62om$(center).times_14dthe$(scale)));
+  }
+  function scaleLine3d(source, scale) {
+    var center = source.v0.plus_bz62om$(source.v1).div_14dthe$(2.0);
+    return new Line(center.plus_bz62om$(source.v0.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v1.minus_bz62om$(center).times_14dthe$(scale)));
+  }
+  function scaleQuad3d(source, scale) {
+    var center = source.v0.plus_bz62om$(source.v1).plus_bz62om$(source.v2).plus_bz62om$(source.v3).div_14dthe$(4.0);
+    return new Quad(center.plus_bz62om$(source.v0.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v1.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v2.minus_bz62om$(center).times_14dthe$(scale)), center.plus_bz62om$(source.v3.minus_bz62om$(center).times_14dthe$(scale)));
+  }
+  function pow($receiver, x) {
+    return powInt($receiver, x);
+  }
+  function clamp($receiver, min, max) {
+    return clampInt($receiver, min, max);
+  }
+  function clamp_0($receiver, min, max) {
+    return clampLong($receiver, min, max);
+  }
+  function clamp_1($receiver, min, max) {
+    return clampDouble($receiver, min, max);
+  }
+  function powInt(b, e) {
+    if (e < 0) {
+      return 1 / powInt(b, -e | 0) | 0;
+    }
+    var base = b;
+    var exp = e;
+    var result = 1;
+    while (true) {
+      if ((exp & 1) === 1) {
+        result = Kotlin.imul(result, base);
+      }
+      exp = exp >> 1;
+      if (exp === 0) {
+        break;
+      }
+      base = Kotlin.imul(base, base);
+    }
+    return result;
+  }
+  function clampInt(value, min, max) {
+    if (max <= min)
+      throw Error_init('Invalid interval ' + min + ' - ' + max);
+    if (value < min)
+      return min;
+    if (value >= max)
+      return max - 1 | 0;
+    return value;
+  }
+  function clampLong(value, min, max) {
+    if (max.compareTo_11rb$(min) <= 0)
+      throw Error_init('Invalid interval ' + min.toString() + ' - ' + max.toString());
+    if (value.compareTo_11rb$(min) < 0)
+      return min;
+    if (value.compareTo_11rb$(max) >= 0)
+      return max.subtract(Kotlin.Long.fromInt(1));
+    return value;
+  }
+  function clampDouble(value, min, max) {
+    if (max < min)
+      throw Error_init('Invalid interval ' + min + ' - ' + max);
+    if (value < min)
+      return min;
+    if (value >= max)
+      return max;
+    return value;
+  }
+  function normal($receiver, dest) {
+    var result = $receiver % dest;
+    if (dest > 0) {
+      if (result < 0) {
+        return result + dest | 0;
+      }
+       else {
+        return result;
+      }
+    }
+     else {
+      if (result > 0) {
+        return result + dest | 0;
+      }
+       else {
+        return result;
+      }
+    }
+  }
+  function linearInterpolate$lambda(a, b, x) {
+    return a * (1.0 - x) + b * x;
+  }
+  var linearInterpolate;
+  function cosineInterpolate$lambda(a, b, x) {
+    var ft = x * math.PI;
+    var f = (1.0 - Math_0.cos(ft)) * 0.5;
+    return a * (1.0 - f) + b * f;
+  }
+  var cosineInterpolate;
+  function FunctionCache(source, cache) {
+    this.source = source;
+    this.cache = cache;
+    this.get = FunctionCache$get$lambda(this);
+  }
+  function FunctionCache$get$lambda(this$FunctionCache) {
+    return function (x, y) {
+      var value = this$FunctionCache.source(x, y);
+      var pos = new Vector2i(roundToInt(x), roundToInt(y));
+      if (this$FunctionCache.cache.isInside_bz62pc$(pos)) {
+        this$FunctionCache.cache.set_52kd3f$(pos, value);
+      }
+      return value;
+    };
+  }
+  FunctionCache.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'FunctionCache',
+    interfaces: []
+  };
+  function FunctionStatistic() {
+    FunctionStatistic$Companion_getInstance();
+    this.valueAccumulated_0 = 0.0;
+    this.values_0 = ArrayList_init();
+    this.minValue_etvucv$_0 = kotlin_js_internal_DoubleCompanionObject.MAX_VALUE;
+    this.maxValue_21yy2p$_0 = kotlin_js_internal_DoubleCompanionObject.MIN_VALUE;
+  }
+  Object.defineProperty(FunctionStatistic.prototype, 'size', {
+    get: function () {
+      return this.values_0.size;
+    }
+  });
+  Object.defineProperty(FunctionStatistic.prototype, 'minValue', {
+    get: function () {
+      return this.minValue_etvucv$_0;
+    },
+    set: function (minValue) {
+      this.minValue_etvucv$_0 = minValue;
+    }
+  });
+  Object.defineProperty(FunctionStatistic.prototype, 'maxValue', {
+    get: function () {
+      return this.maxValue_21yy2p$_0;
+    },
+    set: function (maxValue) {
+      this.maxValue_21yy2p$_0 = maxValue;
+    }
+  });
+  Object.defineProperty(FunctionStatistic.prototype, 'average', {
+    get: function () {
+      return this.valueAccumulated_0 / this.values_0.size;
+    }
+  });
+  Object.defineProperty(FunctionStatistic.prototype, 'dispersion', {
+    get: function () {
+      if (this.values_0.isEmpty())
+        return kotlin_js_internal_DoubleCompanionObject.NaN;
+      var average = this.average;
+      var D = {v: 0.0};
+      var tmp$;
+      tmp$ = this.values_0.iterator();
+      while (tmp$.hasNext()) {
+        var element = tmp$.next();
+        var $receiver = average - element;
+        D.v += Math_0.pow($receiver, 2);
+      }
+      D.v /= this.size;
+      return D.v;
+    }
+  });
+  Object.defineProperty(FunctionStatistic.prototype, 'standardDeviation', {
+    get: function () {
+      var x = this.dispersion;
+      return Math_0.sqrt(x);
+    }
+  });
+  FunctionStatistic.prototype.add_14dthe$ = function (value) {
+    this.values_0.add_11rb$(value);
+    var a = this.minValue;
+    this.minValue = Math_0.min(a, value);
+    var a_0 = this.maxValue;
+    this.maxValue = Math_0.max(a_0, value);
+    this.valueAccumulated_0 += value;
+  };
+  function FunctionStatistic$Companion() {
+    FunctionStatistic$Companion_instance = this;
+  }
+  FunctionStatistic$Companion.prototype.calculate_kk19x4$ = function (input, area) {
+    var tmp$;
+    var statistic = new FunctionStatistic();
+    tmp$ = area.iterator();
+    while (tmp$.hasNext()) {
+      var pos = tmp$.next();
+      var value = input(pos.x, pos.y);
+      statistic.add_14dthe$(value);
+    }
+    return statistic;
+  };
+  FunctionStatistic$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var FunctionStatistic$Companion_instance = null;
+  function FunctionStatistic$Companion_getInstance() {
+    if (FunctionStatistic$Companion_instance === null) {
+      new FunctionStatistic$Companion();
+    }
+    return FunctionStatistic$Companion_instance;
+  }
+  FunctionStatistic.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'FunctionStatistic',
+    interfaces: []
+  };
+  function addModifier$lambda(closure$modifier, this$addModifier) {
+    return function (x, y) {
+      return closure$modifier(this$addModifier(x, y));
+    };
+  }
+  function addModifier($receiver, modifier) {
+    return addModifier$lambda(modifier, $receiver);
+  }
+  function addModifier$lambda_0(closure$modifier, this$addModifier) {
+    return function (x, y) {
+      return closure$modifier(this$addModifier, x, y);
+    };
+  }
+  function addModifier_0($receiver, modifier) {
+    return addModifier$lambda_0(modifier, $receiver);
+  }
+  function clamp$lambda(this$clamp, closure$min, closure$max) {
+    return function (x, y) {
+      return clamp_1(this$clamp(x, y), closure$min, closure$max);
+    };
+  }
+  function clamp_2($receiver, min, max) {
+    return clamp$lambda($receiver, min, max);
+  }
+  function plus($receiver, modifier) {
+    return addModifier_0($receiver, modifier);
+  }
+  function plus_0($receiver, modifier) {
+    return addModifier($receiver, modifier);
+  }
+  function plus$lambda(closure$value, this$plus) {
+    return function (x, y) {
+      return closure$value + this$plus(x, y);
+    };
+  }
+  function plus_1($receiver, value) {
+    return plus$lambda(value, $receiver);
+  }
+  function times$lambda(closure$value, this$times) {
+    return function (x, y) {
+      return closure$value * this$times(x, y);
+    };
+  }
+  function times($receiver, value) {
+    return times$lambda(value, $receiver);
+  }
+  function scaleArguments$lambda(closure$scale) {
+    return function (source, x, y) {
+      return source(x * closure$scale.x, y * closure$scale.y);
+    };
+  }
+  function scaleArguments(scale) {
+    return scaleArguments$lambda(scale);
+  }
+  function translateArguments$lambda(closure$offset) {
+    return function (source, x, y) {
+      return source(x + closure$offset.x, y + closure$offset.y);
+    };
+  }
+  function translateArguments(offset) {
+    return translateArguments$lambda(offset);
+  }
+  function scaleAndTranslateArguments$lambda(closure$scale, closure$translate) {
+    return function (source, x, y) {
+      return source(x * closure$scale.x + closure$translate.x, y * closure$scale.y + closure$translate.y);
+    };
+  }
+  function scaleAndTranslateArguments(scale, translate) {
+    return scaleAndTranslateArguments$lambda(scale, translate);
+  }
+  function PerlinNoise1d(persistence, octaves, interpolateFunction) {
+    if (persistence === void 0)
+      persistence = 0.5;
+    if (octaves === void 0)
+      octaves = 8;
+    if (interpolateFunction === void 0)
+      interpolateFunction = cosineInterpolate;
+    this.persistence = persistence;
+    this.octaves = octaves;
+    this.interpolateFunction = interpolateFunction;
+    this.output = PerlinNoise1d$output$lambda(this);
+  }
+  PerlinNoise1d.prototype.smoothNoise1d_0 = function (x, noise) {
+    return noise(x) / 2.0 + noise(x - 1 | 0) / 4.0 + noise(x + 1 | 0) / 4.0;
+  };
+  PerlinNoise1d.prototype.interpolate1d_0 = function (x, noise1dFunction) {
+    var integer_X = roundToInt(Math_0.floor(x));
+    var fractional_X = x - integer_X;
+    var v1 = this.smoothNoise1d_0(integer_X, noise1dFunction);
+    var v2 = this.smoothNoise1d_0(integer_X + 1 | 0, noise1dFunction);
+    return this.interpolateFunction(v1, v2, fractional_X);
+  };
+  function PerlinNoise1d$output$lambda(this$PerlinNoise1d) {
+    return function (x) {
+      var tmp$;
+      var total = 0.0;
+      tmp$ = this$PerlinNoise1d.octaves;
+      for (var i = 0; i < tmp$; i++) {
+        var frequency = pow(2, i);
+        var $receiver = this$PerlinNoise1d.persistence;
+        var amplitude = Math_0.pow($receiver, i);
+        total += this$PerlinNoise1d.interpolate1d_0(x * frequency, random1dFunctions[i % 8]) * amplitude;
+      }
+      return total;
+    };
+  }
+  PerlinNoise1d.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'PerlinNoise1d',
+    interfaces: []
+  };
+  function PerlinNoise2d(persistence, octaveAmount, interpolateFunction, smoothed) {
+    if (persistence === void 0)
+      persistence = 0.5;
+    if (octaveAmount === void 0)
+      octaveAmount = 8;
+    if (interpolateFunction === void 0)
+      interpolateFunction = cosineInterpolate;
+    if (smoothed === void 0)
+      smoothed = true;
+    this.persistence = persistence;
+    this.octaveAmount = octaveAmount;
+    this.interpolateFunction = interpolateFunction;
+    this.smoothed = smoothed;
+    this.normalizer_0 = 0;
+    this.octaves_0 = null;
+    this.randomWithFactor_0 = PerlinNoise2d$randomWithFactor$lambda;
+    if (this.octaveAmount < 1)
+      throw Error_init('Octave amount must be positive (now: ' + this.octaveAmount + ')');
+    var array = Array_0(this.octaveAmount);
+    var tmp$;
+    tmp$ = array.length - 1 | 0;
+    for (var i = 0; i <= tmp$; i++) {
+      var frequency = pow(2, i);
+      var $receiver = this.persistence;
+      var amplitude = Math_0.pow($receiver, i);
+      var simpleNumber = simpleNumberList[(i + 128 | 0) % simpleNumberList.length];
+      array[i] = new PerlinNoise2d$OctaveCache(frequency, amplitude, simpleNumber, random2dFunctions[i % random2dFunctions.length]);
+    }
+    this.octaves_0 = array;
+    var amplitude_0 = {v: 0.0};
+    var $receiver_0 = this.octaves_0;
+    var tmp$_0;
+    for (tmp$_0 = 0; tmp$_0 !== $receiver_0.length; ++tmp$_0) {
+      var element = $receiver_0[tmp$_0];
+      amplitude_0.v += element.amplitude;
+    }
+    this.normalizer_0 = (this.smoothed ? 2.0 : 1.0) / amplitude_0.v;
+    this.output = PerlinNoise2d$output$lambda(this);
+  }
+  function PerlinNoise2d$OctaveCache(frequency, amplitude, simpleNumber, randomFunction) {
+    this.frequency = frequency;
+    this.amplitude = amplitude;
+    this.simpleNumber = simpleNumber;
+    this.randomFunction = randomFunction;
+  }
+  PerlinNoise2d$OctaveCache.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'OctaveCache',
+    interfaces: []
+  };
+  PerlinNoise2d.prototype.getSmoothed_lu1900$ = function (x, y) {
+    var tmp$, tmp$_0;
+    var total = 0.0;
+    tmp$ = this.octaves_0;
+    for (tmp$_0 = 0; tmp$_0 !== tmp$.length; ++tmp$_0) {
+      var octave = tmp$[tmp$_0];
+      total += this.interpolate2dSmooth_0(x * octave.frequency, y * octave.frequency, octave.randomFunction) * octave.amplitude;
+    }
+    return total * this.normalizer_0;
+  };
+  PerlinNoise2d.prototype.smoothNoise2d_0 = function (x, y, noise) {
+    var corners = (noise(x - 1 | 0, y - 1 | 0) + noise(x + 1 | 0, y - 1 | 0) + noise(x - 1 | 0, y + 1 | 0) + noise(x + 1 | 0, y + 1 | 0)) / 16;
+    var sides = (noise(x - 1 | 0, y) + noise(x + 1 | 0, y) + noise(x, y - 1 | 0) + noise(x, y + 1 | 0)) / 8;
+    var center = noise(x, y) / 4;
+    return corners + sides + center;
+  };
+  PerlinNoise2d.prototype.interpolate2dFlat_0 = function (x, y, randomFactor) {
+    var baseX = numberToInt(x);
+    var fractionalX = x - baseX;
+    var baseY = numberToInt(y);
+    var fractionalY = y - baseY;
+    var v1 = this.randomWithFactor_0(baseX, baseY, randomFactor);
+    var v2 = this.randomWithFactor_0(baseX + 1 | 0, baseY, randomFactor);
+    var v3 = this.randomWithFactor_0(baseX, baseY + 1 | 0, randomFactor);
+    var v4 = this.randomWithFactor_0(baseX + 1 | 0, baseY + 1 | 0, randomFactor);
+    var i1 = this.interpolateFunction(v1, v2, fractionalX);
+    var i2 = this.interpolateFunction(v3, v4, fractionalX);
+    return this.interpolateFunction(i1, i2, fractionalY);
+  };
+  PerlinNoise2d.prototype.interpolate2dSmooth_0 = function (x, y, randomFunction) {
+    var baseX = numberToInt(x);
+    var fractionalX = x - baseX;
+    var baseY = numberToInt(y);
+    var fractionalY = y - baseY;
+    var v1 = this.smoothNoise2d_0(baseX, baseY, randomFunction);
+    var v2 = this.smoothNoise2d_0(baseX + 1 | 0, baseY, randomFunction);
+    var v3 = this.smoothNoise2d_0(baseX, baseY + 1 | 0, randomFunction);
+    var v4 = this.smoothNoise2d_0(baseX + 1 | 0, baseY + 1 | 0, randomFunction);
+    var i1 = this.interpolateFunction(v1, v2, fractionalX);
+    var i2 = this.interpolateFunction(v3, v4, fractionalX);
+    return this.interpolateFunction(i1, i2, fractionalY);
+  };
+  function PerlinNoise2d$randomWithFactor$lambda(x, y, factor) {
+    var it = x + Kotlin.imul(y, factor) | 0;
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 15731 | 0) + 789221 | 0) + 1376312589 & 2147483647) / 1.073741824E9;
+  }
+  function PerlinNoise2d$output$lambda(this$PerlinNoise2d) {
+    return function (x, y) {
+      var tmp$, tmp$_0;
+      var total = 0.0;
+      tmp$ = this$PerlinNoise2d.octaves_0;
+      for (tmp$_0 = 0; tmp$_0 !== tmp$.length; ++tmp$_0) {
+        var octave = tmp$[tmp$_0];
+        total += this$PerlinNoise2d.interpolate2dFlat_0(x * octave.frequency, y * octave.frequency, octave.simpleNumber) * octave.amplitude;
+      }
+      return total * this$PerlinNoise2d.normalizer_0;
+    };
+  }
+  PerlinNoise2d.$metadata$ = {
+    kind: Kind_CLASS,
+    simpleName: 'PerlinNoise2d',
+    interfaces: []
+  };
+  var simpleNumberList;
+  function random1dFunctions$lambda(it) {
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 15731 | 0) + 789221 | 0) + 1376312589 & 2147483647) / 1.073741824E9;
+  }
+  function random1dFunctions$lambda_0(it) {
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 10909 | 0) + 745027 | 0) + 1376312589 & 2147483647) / 1.073741824E9;
+  }
+  function random1dFunctions$lambda_1(it) {
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 11699 | 0) + 806453 | 0) + 2147483647 & 2147483647) / 1.073741824E9;
+  }
+  function random1dFunctions$lambda_2(it) {
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 12347 | 0) + 886381 | 0) + 2147483647 & 2147483647) / 1.073741824E9;
+  }
+  function random1dFunctions$lambda_3(it) {
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 13613 | 0) + 918763 | 0) + 1073676287 & 2147483647) / 1.073741824E9;
+  }
+  function random1dFunctions$lambda_4(it) {
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 14867 | 0) + 994579 | 0) + 1073676287 & 2147483647) / 1.073741824E9;
+  }
+  function random1dFunctions$lambda_5(it) {
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 15731 | 0) + 789221 | 0) + 433494437 & 2147483647) / 1.073741824E9;
+  }
+  function random1dFunctions$lambda_6(it) {
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 15731 | 0) + 789221 | 0) + 433494437 & 2147483647) / 1.073741824E9;
+  }
+  var random1dFunctions;
+  function random2dFunctions$lambda(x, y) {
+    var it = x + (y * 53 | 0) | 0;
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 15731 | 0) + 789221 | 0) + 1376312589 & 2147483647) / 1.073741824E9;
+  }
+  function random2dFunctions$lambda_0(x, y) {
+    var it = x + (y * 101 | 0) | 0;
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 10909 | 0) + 745027 | 0) + 1376312589 & 2147483647) / 1.073741824E9;
+  }
+  function random2dFunctions$lambda_1(x, y) {
+    var it = x + (y * 151 | 0) | 0;
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 11699 | 0) + 806453 | 0) + 2147483647 & 2147483647) / 1.073741824E9;
+  }
+  function random2dFunctions$lambda_2(x, y) {
+    var it = x + (y * 199 | 0) | 0;
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 12347 | 0) + 886381 | 0) + 2147483647 & 2147483647) / 1.073741824E9;
+  }
+  function random2dFunctions$lambda_3(x, y) {
+    var it = x + (y * 263 | 0) | 0;
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 13613 | 0) + 918763 | 0) + 1073676287 & 2147483647) / 1.073741824E9;
+  }
+  function random2dFunctions$lambda_4(x, y) {
+    var it = x + (y * 317 | 0) | 0;
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 14867 | 0) + 994579 | 0) + 1073676287 & 2147483647) / 1.073741824E9;
+  }
+  function random2dFunctions$lambda_5(x, y) {
+    var it = x + (y * 383 | 0) | 0;
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 15731 | 0) + 789221 | 0) + 433494437 & 2147483647) / 1.073741824E9;
+  }
+  function random2dFunctions$lambda_6(x, y) {
+    var it = x + (y * 443 | 0) | 0;
+    var n = it << 13 ^ it;
+    return 1.0 - (Kotlin.imul(n, (Kotlin.imul(n, n) * 15731 | 0) + 789221 | 0) + 433494437 & 2147483647) / 1.073741824E9;
+  }
+  var random2dFunctions;
   var BLACK;
   var SILVER;
   var GRAY;
@@ -3097,29 +3808,28 @@
     SafeNumber_init_0(int, $this);
     return $this;
   }
+  $$importsForInline$$.typesKt = _;
+  Object.defineProperty(Map2D, 'Companion', {
+    get: Map2D$Companion_getInstance
+  });
   var package$casper = _.casper || (_.casper = {});
+  var package$collection = package$casper.collection || (package$casper.collection = {});
+  var package$map = package$collection.map || (package$collection.map = {});
+  package$map.Map2D = Map2D;
+  Object.defineProperty(Map3D, 'Companion', {
+    get: Map3D$Companion_getInstance
+  });
+  package$map.Map3D = Map3D;
   var package$core = package$casper.core || (package$casper.core = {});
   package$core.Disposable = Disposable;
   package$core.getDisposable_7uhc0p$ = getDisposable;
+  package$core.DisposableHolder = DisposableHolder;
   var package$format = package$casper.format || (package$casper.format = {});
   package$format.toPrecision_j6vyb1$ = toPrecision;
   package$format.toHexString_g4o0je$ = toHexString;
   package$format.toHexString_g4o1a3$ = toHexString_0;
   package$format.getColorComponentToHex_14dthe$ = getColorComponentToHex;
   var package$geometry = package$casper.geometry || (package$casper.geometry = {});
-  package$geometry.extrapolateVector3d_ppr5tq$ = extrapolateVector3d;
-  package$geometry.scaleTriangle3d_otly2k$ = scaleTriangle3d;
-  package$geometry.scaleLine3d_fpbbko$ = scaleLine3d;
-  package$geometry.scaleQuad3d_sy2cjf$ = scaleQuad3d;
-  package$geometry.pow_dqglrj$ = pow;
-  package$geometry.clamp_e4yvb3$ = clamp;
-  package$geometry.clamp_ekzx8g$ = clamp_0;
-  package$geometry.clamp_nig4hr$ = clamp_1;
-  package$geometry.powInt_vux9f0$ = powInt;
-  package$geometry.clampInt_qt1dr2$ = clampInt;
-  package$geometry.clampLong_b9bd0d$ = clampLong;
-  package$geometry.clampDouble_yvo9jy$ = clampDouble;
-  package$geometry.normal_dqglrj$ = normal;
   package$geometry.Matrix23d = Matrix23d;
   package$geometry.Matrix33d = Matrix33d;
   package$geometry.Matrix43d = Matrix43d;
@@ -3134,6 +3844,7 @@
     get: Vector2d$$serializer_getInstance
   });
   package$geometry.Vector2d_init_rzesio$ = Vector2d_init;
+  package$geometry.Vector2d_init_14dthe$ = Vector2d_init_0;
   package$geometry.Vector2d = Vector2d;
   Object.defineProperty(Vector2i, 'Companion', {
     get: Vector2i$Companion_getInstance
@@ -3142,6 +3853,7 @@
     get: Vector2i$$serializer_getInstance
   });
   package$geometry.Vector2i_init_y4apw$ = Vector2i_init;
+  package$geometry.Vector2i_init_za3lpa$ = Vector2i_init_0;
   package$geometry.Vector2i = Vector2i;
   Object.defineProperty(Vector3d, 'Companion', {
     get: Vector3d$Companion_getInstance
@@ -3150,6 +3862,7 @@
     get: Vector3d$$serializer_getInstance
   });
   package$geometry.Vector3d_init_50q2a6$ = Vector3d_init;
+  package$geometry.Vector3d_init_14dthe$ = Vector3d_init_0;
   package$geometry.Vector3d = Vector3d;
   Object.defineProperty(Vector3i, 'Companion', {
     get: Vector3i$Companion_getInstance
@@ -3158,6 +3871,7 @@
     get: Vector3i$$serializer_getInstance
   });
   package$geometry.Vector3i_init_ies85i$ = Vector3i_init;
+  package$geometry.Vector3i_init_za3lpa$ = Vector3i_init_0;
   package$geometry.Vector3i = Vector3i;
   Object.defineProperty(Vector4d, 'Companion', {
     get: Vector4d$Companion_getInstance
@@ -3166,9 +3880,13 @@
     get: Vector4d$$serializer_getInstance
   });
   package$geometry.Vector4d_init_wtkrek$ = Vector4d_init;
+  package$geometry.Vector4d_init_14dthe$ = Vector4d_init_0;
   package$geometry.Vector4d = Vector4d;
   var package$aabb = package$geometry.aabb || (package$geometry.aabb = {});
+  package$aabb.AABBox2Iterator = AABBox2Iterator;
+  package$aabb.AABBox2d = AABBox2d;
   package$aabb.AABBox2i = AABBox2i;
+  package$aabb.AABBox3Iterator = AABBox3Iterator;
   Object.defineProperty(AABBox3d, 'Companion', {
     get: AABBox3d$Companion_getInstance
   });
@@ -3186,7 +3904,6 @@
   package$aabb.AABBox3i_init_tpbzec$ = AABBox3i_init;
   package$aabb.AABBox3i = AABBox3i;
   package$aabb.AABBoxFaceIterator = AABBoxFaceIterator;
-  package$aabb.AABBoxIterator = AABBoxIterator;
   Object.defineProperty(Axis3d, 'NEGATIVE_X', {
     get: Axis3d$NEGATIVE_X_getInstance
   });
@@ -3251,6 +3968,72 @@
   package$polygon.Quad = Quad;
   package$polygon.Triangle = Triangle;
   package$polygon.getTriangleNormal_xdm3fa$ = getTriangleNormal;
+  var package$math = package$casper.math || (package$casper.math = {});
+  package$math.extrapolateVector3d_ppr5tq$ = extrapolateVector3d;
+  package$math.scaleTriangle3d_otly2k$ = scaleTriangle3d;
+  package$math.scaleLine3d_fpbbko$ = scaleLine3d;
+  package$math.scaleQuad3d_sy2cjf$ = scaleQuad3d;
+  package$math.pow_dqglrj$ = pow;
+  package$math.clamp_e4yvb3$ = clamp;
+  package$math.clamp_ekzx8g$ = clamp_0;
+  package$math.clamp_nig4hr$ = clamp_1;
+  package$math.powInt_vux9f0$ = powInt;
+  package$math.clampInt_qt1dr2$ = clampInt;
+  package$math.clampLong_b9bd0d$ = clampLong;
+  package$math.clampDouble_yvo9jy$ = clampDouble;
+  package$math.normal_dqglrj$ = normal;
+  var package$function = package$math.function || (package$math.function = {});
+  Object.defineProperty(package$function, 'linearInterpolate', {
+    get: function () {
+      return linearInterpolate;
+    }
+  });
+  Object.defineProperty(package$function, 'cosineInterpolate', {
+    get: function () {
+      return cosineInterpolate;
+    }
+  });
+  package$function.FunctionCache = FunctionCache;
+  Object.defineProperty(FunctionStatistic, 'Companion', {
+    get: FunctionStatistic$Companion_getInstance
+  });
+  package$function.FunctionStatistic = FunctionStatistic;
+  package$function.addModifier_apjkfh$ = addModifier;
+  package$function.addModifier_3eyu8d$ = addModifier_0;
+  package$function.clamp_x0to83$ = clamp_2;
+  package$function.plus_3eyu8d$ = plus;
+  package$function.plus_apjkfh$ = plus_0;
+  package$function.plus_dlq3jp$ = plus_1;
+  package$function.times_dlq3jp$ = times;
+  package$function.scaleArguments_bz62ph$ = scaleArguments;
+  package$function.translateArguments_bz62ph$ = translateArguments;
+  package$function.scaleAndTranslateArguments_97zyx8$ = scaleAndTranslateArguments;
+  var package$perlin = package$math.perlin || (package$math.perlin = {});
+  package$perlin.PerlinNoise1d = PerlinNoise1d;
+  PerlinNoise2d.OctaveCache = PerlinNoise2d$OctaveCache;
+  package$perlin.PerlinNoise2d = PerlinNoise2d;
+  var package$random = package$math.random || (package$math.random = {});
+  Object.defineProperty(package$random, 'simpleNumberList', {
+    get: function () {
+      return simpleNumberList;
+    }
+  });
+  Object.defineProperty(package$random, 'random1dFunctions', {
+    get: function () {
+      return random1dFunctions;
+    },
+    set: function (value) {
+      random1dFunctions = value;
+    }
+  });
+  Object.defineProperty(package$random, 'random2dFunctions', {
+    get: function () {
+      return random2dFunctions;
+    },
+    set: function (value) {
+      random2dFunctions = value;
+    }
+  });
   var package$types = package$casper.types || (package$casper.types = {});
   Object.defineProperty(package$types, 'BLACK', {
     get: function () {
@@ -3354,6 +4137,11 @@
   AABBox3d$$serializer.prototype.patch_mynpiu$ = GeneratedSerializer.prototype.patch_mynpiu$;
   AABBox3i$$serializer.prototype.patch_mynpiu$ = GeneratedSerializer.prototype.patch_mynpiu$;
   SafeNumber$$serializer.prototype.patch_mynpiu$ = GeneratedSerializer.prototype.patch_mynpiu$;
+  linearInterpolate = linearInterpolate$lambda;
+  cosineInterpolate = cosineInterpolate$lambda;
+  simpleNumberList = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997, 1009, 1013, 1019, 1021, 1031, 1033, 1039, 1049, 1051, 1061, 1063, 1069, 1087, 1091, 1093, 1097, 1103, 1109, 1117, 1123, 1129, 1151, 1153, 1163, 1171, 1181, 1187, 1193, 1201, 1213, 1217, 1223, 1229, 1231, 1237, 1249, 1259, 1277, 1279, 1283, 1289, 1291, 1297, 1301, 1303, 1307, 1319, 1321, 1327, 1361, 1367, 1373, 1381, 1399, 1409, 1423, 1427, 1429, 1433, 1439, 1447, 1451, 1453, 1459, 1471, 1481, 1483, 1487, 1489, 1493, 1499, 1511, 1523, 1531, 1543, 1549, 1553, 1559, 1567, 1571, 1579, 1583, 1597, 1601, 1607, 1609, 1613, 1619, 1621, 1627, 1637, 1657, 1663, 1667, 1669, 1693, 1697, 1699, 1709, 1721, 1723, 1733, 1741, 1747, 1753, 1759, 1777, 1783, 1787, 1789, 1801, 1811, 1823, 1831, 1847, 1861, 1867, 1871, 1873, 1877, 1879, 1889, 1901, 1907, 1913, 1931, 1933, 1949, 1951, 1973, 1979, 1987, 1993, 1997, 1999, 2003, 2011, 2017, 2027, 2029, 2039, 2053, 2063, 2069, 2081, 2083, 2087, 2089, 2099, 2111, 2113, 2129, 2131, 2137, 2141, 2143, 2153, 2161, 2179, 2203, 2207, 2213, 2221, 2237, 2239, 2243, 2251, 2267, 2269, 2273, 2281, 2287, 2293, 2297, 2309, 2311, 2333, 2339, 2341, 2347, 2351, 2357, 2371, 2377, 2381, 2383, 2389, 2393, 2399, 2411, 2417, 2423, 2437, 2441, 2447, 2459, 2467, 2473, 2477, 2503, 2521, 2531, 2539, 2543, 2549, 2551, 2557, 2579, 2591, 2593, 2609, 2617, 2621, 2633, 2647, 2657, 2659, 2663, 2671, 2677, 2683, 2687, 2689, 2693, 2699, 2707, 2711, 2713, 2719, 2729, 2731, 2741, 2749, 2753, 2767, 2777, 2789, 2791, 2797, 2801, 2803, 2819, 2833, 2837, 2843, 2851, 2857, 2861, 2879, 2887, 2897, 2903, 2909, 2917, 2927, 2939, 2953, 2957, 2963, 2969, 2971, 2999, 3001, 3011, 3019, 3023, 3037, 3041, 3049, 3061, 3067, 3079, 3083, 3089, 3109, 3119, 3121, 3137, 3163, 3167, 3169, 3181, 3187, 3191, 3203, 3209, 3217, 3221, 3229, 3251, 3253, 3257, 3259, 3271, 3299, 3301, 3307, 3313, 3319, 3323, 3329, 3331, 3343, 3347, 3359, 3361, 3371, 3373, 3389, 3391, 3407, 3413, 3433, 3449, 3457, 3461, 3463, 3467, 3469, 3491, 3499, 3511, 3517, 3527, 3529, 3533, 3539, 3541, 3547, 3557, 3559, 3571];
+  random1dFunctions = [random1dFunctions$lambda, random1dFunctions$lambda_0, random1dFunctions$lambda_1, random1dFunctions$lambda_2, random1dFunctions$lambda_3, random1dFunctions$lambda_4, random1dFunctions$lambda_5, random1dFunctions$lambda_6];
+  random2dFunctions = [random2dFunctions$lambda, random2dFunctions$lambda_0, random2dFunctions$lambda_1, random2dFunctions$lambda_2, random2dFunctions$lambda_3, random2dFunctions$lambda_4, random2dFunctions$lambda_5, random2dFunctions$lambda_6];
   BLACK = colorFromBytes(0, 0, 0);
   SILVER = colorFromBytes(192, 192, 192);
   GRAY = colorFromBytes(128, 128, 128);

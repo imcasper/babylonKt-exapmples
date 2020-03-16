@@ -31,26 +31,22 @@
   var Color4 = $module$babylonjs.Color4;
   var println = Kotlin.kotlin.io.println_s8jyv4$;
   var runRenderLoop = $module$babylonKt.BABYLON.extension.runRenderLoop_w7gcas$;
-  var ModelFactory = $module$babylon_helper.casper.model.ModelFactory;
-  var addMeshToScene = $module$babylon_helper.casper.util.addMeshToScene_jig5h0$;
-  var AxesViewer = $module$babylonjs.AxesViewer;
-  var Color3 = $module$babylonjs.Color3;
-  var equals = Kotlin.equals;
+  var DirectionalLight = $module$babylonjs.DirectionalLight;
+  var Inspector = $module$babylon_helper.casper.util.Inspector;
+  var Kind_CLASS = Kotlin.Kind.CLASS;
   var PBRMaterial = $module$babylonjs.PBRMaterial;
-  var MeshMerger = $module$babylon_helper.casper.model.MeshMerger;
+  var MeshBuilder$Companion = $module$babylonjs.MeshBuilder;
+  var SphereOptions = $module$babylonKt.BABYLON.SphereOptions;
+  var first = Kotlin.kotlin.collections.first_us0mfu$;
+  var ShadowGenerator = $module$babylonjs.ShadowGenerator;
+  var throwCCE = Kotlin.throwCCE;
+  var Mesh = $module$babylonjs.Mesh;
+  var Model = $module$babylon_helper.casper.model.Model;
+  var Texture = $module$babylonjs.Texture;
   var AbstractMesh = $module$babylonjs.AbstractMesh;
   var forChildren = $module$babylon_helper.casper.util.forChildren_wzp6uw$;
-  var playAnimation = $module$babylon_helper.casper.util.playAnimation_ys0c4h$;
-  var DirectionalLight = $module$babylonjs.DirectionalLight;
-  var Kind_CLASS = Kotlin.Kind.CLASS;
-  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
-  var MaterialReplacer = $module$babylon_helper.casper.model.MaterialReplacer;
-  var Texture = $module$babylonjs.Texture;
-  var createAndPlaceInstance = $module$babylon_helper.casper.model.createAndPlaceInstance_tr50zu$;
   var InstancedMesh = $module$babylonjs.InstancedMesh;
-  var first = Kotlin.kotlin.collections.first_us0mfu$;
-  var throwCCE = Kotlin.throwCCE;
-  var ShadowGenerator = $module$babylonjs.ShadowGenerator;
+  var ArcRotateCamera = $module$babylonjs.ArcRotateCamera;
   var PromiseSignal = $module$signalKt.casper.signal.PromiseSignal;
   var PromiseUnion = $module$signalKt.casper.signal.PromiseUnion;
   var Throwable = Error;
@@ -78,7 +74,6 @@
   function main() {
     var tmp$;
     var scene = createScene('renderCanvas', true);
-    scene.useRightHandedSystem = true;
     scene.createDefaultCamera(true, true, true);
     (tmp$ = scene.activeCamera) != null ? (tmp$.position = new Vector3(5.0, 5.0, 5.0)) : null;
     SceneLoader$Companion.ShowLoadingScreen = false;
@@ -90,79 +85,13 @@
     this.scene = scene;
     this.manager = manager;
     this.assets = assets;
-    this.scene.debugLayer.show();
     this.createSkyBox();
-    new ShadowDemo(this.scene, this.assets);
+    var shadow = new Shadow(this.scene);
+    new Inspector(this.scene);
+    new RobotDemo(this.scene, shadow, this.assets);
   }
-  Demo.prototype.createMat = function () {
-    addMeshToScene(ModelFactory.Companion.create_53ia2n$(this.assets.materials));
-    new AxesViewer(this.scene);
-  };
-  function Demo$createMine$lambda$lambda(it) {
-    if (Kotlin.isType(it, AbstractMesh)) {
-      it.isPickable = false;
-      it.cullingStrategy = AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
-    }
-    return Unit;
-  }
-  function Demo$createMine$lambda(closure$models, closure$positionList, closure$modelData2) {
-    return function (f, f_0) {
-      var tmp$;
-      tmp$ = closure$models.iterator();
-      while (tmp$.hasNext()) {
-        var element = tmp$.next();
-        element.position.x = element.position.x + 0.05;
-        element.position = element.position;
-      }
-      for (var iteration = 1; iteration <= 7; iteration++) {
-        if (closure$positionList.isEmpty())
-          return;
-        var position = closure$positionList.removeAt_za3lpa$(0);
-        var model = ModelFactory.Companion.createAndPlace_urgq93$(closure$modelData2);
-        forChildren(model, Demo$createMine$lambda$lambda);
-        model.position = position;
-        model.scaling = new Vector3(0.5, 0.5, 0.5);
-        playAnimation(model, true);
-        closure$models.add_11rb$(model);
-      }
-      return Unit;
-    };
-  }
-  Demo.prototype.createMine = function () {
-    var tmp$;
-    var $receiver = this.assets.robot_builder.assetContainer.materials;
-    var tmp$_0;
-    for (tmp$_0 = 0; tmp$_0 !== $receiver.length; ++tmp$_0) {
-      var element = $receiver[tmp$_0];
-      var companyColor = new Color3(0.0, 0.1, 0.7);
-      var companyColor2 = new Color3(0.0, 0.1, 0.7);
-      if (equals(element.name, 'Red') && Kotlin.isType(element, PBRMaterial)) {
-        element.albedoColor = companyColor;
-      }
-      if (equals(element.name, 'Green') && Kotlin.isType(element, PBRMaterial)) {
-        element.albedoColor = companyColor2;
-      }
-    }
-    tmp$ = MeshMerger.Companion.merge_uw5ica$(this.assets.robot_builder, this.assets.robot_builder.name);
-    if (tmp$ == null) {
-      return;
-    }
-    var modelData2 = tmp$;
-    var positionList = ArrayList_init();
-    var R = 6;
-    for (var x = -R | 0; x <= R; x++) {
-      for (var y = -R | 0; y <= R; y++) {
-        for (var z = -R | 0; z <= R; z++) {
-          positionList.add_11rb$(new Vector3(x, y, z));
-        }
-      }
-    }
-    var models = ArrayList_init();
-    this.scene.onAfterRenderObservable.add(Demo$createMine$lambda(models, positionList, modelData2));
-    println(this.assets.robot_builder.instances.size.toString() + '=>' + modelData2.instances.size);
-  };
   Demo.prototype.createSkyBox = function () {
-    var light = new DirectionalLight('light', (new Vector3(-1.0, -1.0, -0.5)).normalize(), this.scene);
+    var light = new DirectionalLight('light', (new Vector3(-1.0, -1.0, -1.0)).normalize(), this.scene);
     light.intensity = 5.0;
   };
   Demo.$metadata$ = {
@@ -170,8 +99,9 @@
     simpleName: 'Demo',
     interfaces: []
   };
-  function RobotDemo(scene, assets) {
+  function RobotDemo(scene, shadow, assets) {
     this.scene = scene;
+    this.shadow = shadow;
     this.assets = assets;
     this.steelMaterial = new PBRMaterial('', this.scene);
     var tmp$, tmp$_0;
@@ -180,86 +110,82 @@
     this.steelMaterial.metallicTexture = new Texture('atlas/steel_metallic.png', this.scene);
     (tmp$_0 = this.steelMaterial.metallicTexture) != null ? (tmp$_0.coordinatesIndex = 0) : null;
     this.steelMaterial.useRoughnessFromMetallicTextureAlpha = true;
+    this.createRobot_0();
   }
-  function RobotDemo$createRobotData$lambda(this$RobotDemo) {
-    return function (it) {
-      return this$RobotDemo.steelMaterial;
-    };
-  }
-  RobotDemo.prototype.createRobotData_0 = function (original) {
-    var modelData = original.clone_61zpoe$('');
-    MaterialReplacer.Companion.replace_klijsx$(modelData, RobotDemo$createRobotData$lambda(this));
-    return modelData;
-  };
   RobotDemo.prototype.createRobot_0 = function () {
-    var soilMaterial = new PBRMaterial('', this.scene);
-    soilMaterial.albedoTexture = new Texture('atlas/soil.png', this.scene);
-    soilMaterial.metallic = 0.0;
-    soilMaterial.roughness = 0.9;
-    var oilMaterial = new PBRMaterial('', this.scene);
-    oilMaterial.albedoColor = new Color3(0.02, 0.01, 0.03);
-    oilMaterial.metallicTexture = new Texture('atlas/oil.png', this.scene);
-    oilMaterial.roughness = 0.4;
-    oilMaterial.alpha = 0.9;
-    var robot_truck = this.createRobotData_0(this.assets.robot_truck);
-    var model = createAndPlaceInstance(robot_truck);
+    var tmp$, tmp$_0;
+    var oilMaterial = new PBRMaterial('oil-material', this.scene);
+    oilMaterial.alpha = 0.6;
+    var sphere = MeshBuilder$Companion.CreateSphere('test', new SphereOptions());
+    this.scene.removeMesh(sphere);
+    var sphere2 = sphere.createInstance('');
+    sphere2.position = new Vector3(2.5, 0.0, 0.0);
+    sphere2.sourceMesh.material = oilMaterial;
+    sphere2.sourceMesh.receiveShadows = true;
+    (Kotlin.isType(tmp$ = first(this.scene.lights).getShadowGenerator(), ShadowGenerator) ? tmp$ : throwCCE()).addShadowCaster(sphere);
+    (Kotlin.isType(tmp$_0 = first(this.scene.lights).getShadowGenerator(), ShadowGenerator) ? tmp$_0 : throwCCE()).addShadowCaster(sphere2);
+    var $receiver = this.assets.robot_builder.assetContainer.meshes;
+    var tmp$_1;
+    for (tmp$_1 = 0; tmp$_1 !== $receiver.length; ++tmp$_1) {
+      var element = $receiver[tmp$_1];
+      if (Kotlin.isType(element, Mesh)) {
+        element.material = oilMaterial;
+      }
+    }
+    var model2 = new Model(this.assets.robot_builder);
+    model2.node.position = new Vector3(2.0, 0.0, 0.0);
+    model2.addToScene();
   };
   RobotDemo.$metadata$ = {
     kind: Kind_CLASS,
     simpleName: 'RobotDemo',
     interfaces: []
   };
-  function ShadowDemo(scene, assets) {
+  function Shadow(scene) {
     this.scene = scene;
-    this.assets = assets;
-    var tmp$;
-    this.light = Kotlin.isType(tmp$ = first(this.scene.lights), Object) ? tmp$ : throwCCE();
+    var tmp$, tmp$_0;
+    this.camera = Kotlin.isType(tmp$ = this.scene.activeCamera, ArcRotateCamera) ? tmp$ : throwCCE();
+    this.light = Kotlin.isType(tmp$_0 = first(this.scene.lights), DirectionalLight) ? tmp$_0 : throwCCE();
     this.shadowGenerator = new ShadowGenerator(1024.0, this.light);
-    for (var x = 0; x <= 6; x++) {
-      for (var y = 0; y <= 6; y++) {
-        this.createModel_0(new Vector3(x * 10.0 - 30.0, 0.5, y * 10.0 - 30.0));
-      }
-    }
-    var cube = createAndPlaceInstance(this.assets.cube);
-    cube.position = new Vector3(0.0, -1.0, 0.0);
-    cube.scaling = new Vector3(100.0, 1.0, 100.0);
-    new AxesViewer(this.scene);
-    this.addShadowReceiver_0(this.shadowGenerator, cube);
+    this.camera.minZ = 5.0;
+    this.light.shadowFrustumSize = 100.0;
+    this.light.autoCalcShadowZBounds = true;
+    this.light.autoUpdateExtends = false;
+    this.scene.onBeforeRenderObservable.add(Shadow_init$lambda(this));
   }
-  ShadowDemo.prototype.createModel_0 = function (position) {
-    var model = createAndPlaceInstance(this.assets.animation);
-    playAnimation(model, true);
-    this.addShadowCaster_0(this.shadowGenerator, model);
-    this.addShadowReceiver_0(this.shadowGenerator, model);
-    model.position = position;
-  };
-  function ShadowDemo$addShadowCaster$lambda(closure$shadowGenerator, this$ShadowDemo) {
+  function Shadow$addShadowCaster$lambda(this$Shadow) {
     return function (it) {
-      this$ShadowDemo.addShadowCaster_0(closure$shadowGenerator, it);
+      this$Shadow.addShadowCaster_mnqvv$(it);
       return Unit;
     };
   }
-  ShadowDemo.prototype.addShadowCaster_0 = function (shadowGenerator, node) {
+  Shadow.prototype.addShadowCaster_mnqvv$ = function (node) {
     if (Kotlin.isType(node, AbstractMesh)) {
-      shadowGenerator.addShadowCaster(node);
+      this.shadowGenerator.addShadowCaster(node);
     }
-    forChildren(node, ShadowDemo$addShadowCaster$lambda(shadowGenerator, this));
+    forChildren(node, Shadow$addShadowCaster$lambda(this));
   };
-  function ShadowDemo$addShadowReceiver$lambda(closure$shadowGenerator, this$ShadowDemo) {
+  function Shadow$addShadowReceiver$lambda(this$Shadow) {
     return function (it) {
-      this$ShadowDemo.addShadowReceiver_0(closure$shadowGenerator, it);
+      this$Shadow.addShadowReceiver_mnqvv$(it);
       return Unit;
     };
   }
-  ShadowDemo.prototype.addShadowReceiver_0 = function (shadowGenerator, node) {
+  Shadow.prototype.addShadowReceiver_mnqvv$ = function (node) {
     if (Kotlin.isType(node, InstancedMesh)) {
       node.sourceMesh.receiveShadows = true;
     }
-    forChildren(node, ShadowDemo$addShadowReceiver$lambda(shadowGenerator, this));
+    forChildren(node, Shadow$addShadowReceiver$lambda(this));
   };
-  ShadowDemo.$metadata$ = {
+  function Shadow_init$lambda(this$Shadow) {
+    return function (f, f_0) {
+      this$Shadow.light.position = new Vector3(this$Shadow.camera.target.x, this$Shadow.light.shadowFrustumSize / 2.0, this$Shadow.camera.target.z);
+      return Unit;
+    };
+  }
+  Shadow.$metadata$ = {
     kind: Kind_CLASS,
-    simpleName: 'ShadowDemo',
+    simpleName: 'Shadow',
     interfaces: []
   };
   function createAssetsArrayLoader$lambda(closure$manager, closure$result) {
@@ -311,7 +237,7 @@
   package$app.main = main;
   package$app.Demo = Demo;
   package$app.RobotDemo = RobotDemo;
-  package$app.ShadowDemo = ShadowDemo;
+  package$app.Shadow = Shadow;
   var package$asset = package$casper.asset || (package$casper.asset = {});
   package$asset.createAssetsArrayLoader_kpwjgh$ = createAssetsArrayLoader;
   package$asset.Assets = Assets;

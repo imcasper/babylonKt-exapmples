@@ -12,7 +12,7 @@
   "createdBy": {
     "gradle": {
       "version": "6.1.1",
-      "buildId": "llchwzxjq5hhvoa7ibt6gnpzxy"
+      "buildId": "r5kcsci6tzctrnzsoyt6trj2ai"
     }
   },
   "variants": [
@@ -26,11 +26,11 @@
         {
           "name": "babylon-helper-js-1.0.0.jar",
           "url": "babylon-helper-js-1.0.0.jar",
-          "size": 31957,
-          "sha512": "a9c7a32b8dc6eda6e9daa0d98367fdecd94bdaad6dc3d84c7032de2e54a62dff52b07aadf494063692da4e0b1fa69ae8a958c546e88e002c92f59fbd391168e2",
-          "sha256": "71347b663fd09f448f082677b79f6f4fa9c24e78bf699c666035e51c844369cc",
-          "sha1": "f349403a70a1f0145435fb05368477f8810407c7",
-          "md5": "d40d8ff108fe2eb5d9ea1b86039052cc"
+          "size": 105252,
+          "sha512": "faf2147437fe05f7caa1f88cec08750c8abbaab84ad004297ebef3dcd838f3375f2e1af81dfd3612adf73b521c6caa6999775a32996865fa2215d1b5e2283ea2",
+          "sha256": "e998d0746d63d95d4cdf8d2349229c76445f095f7a635f320cc1be6a1e5c0188",
+          "sha1": "1171e389f19bc26b2954ccab8ad8fce32fd1776e",
+          "md5": "8fc9e2faa9e55a2ba1de002d34d61cef"
         }
       ]
     },
@@ -74,11 +74,11 @@
         {
           "name": "babylon-helper-js-1.0.0.jar",
           "url": "babylon-helper-js-1.0.0.jar",
-          "size": 31957,
-          "sha512": "a9c7a32b8dc6eda6e9daa0d98367fdecd94bdaad6dc3d84c7032de2e54a62dff52b07aadf494063692da4e0b1fa69ae8a958c546e88e002c92f59fbd391168e2",
-          "sha256": "71347b663fd09f448f082677b79f6f4fa9c24e78bf699c666035e51c844369cc",
-          "sha1": "f349403a70a1f0145435fb05368477f8810407c7",
-          "md5": "d40d8ff108fe2eb5d9ea1b86039052cc"
+          "size": 105252,
+          "sha512": "faf2147437fe05f7caa1f88cec08750c8abbaab84ad004297ebef3dcd838f3375f2e1af81dfd3612adf73b521c6caa6999775a32996865fa2215d1b5e2283ea2",
+          "sha256": "e998d0746d63d95d4cdf8d2349229c76445f095f7a635f320cc1be6a1e5c0188",
+          "sha1": "1171e389f19bc26b2954ccab8ad8fce32fd1776e",
+          "md5": "8fc9e2faa9e55a2ba1de002d34d61cef"
         }
       ]
     },

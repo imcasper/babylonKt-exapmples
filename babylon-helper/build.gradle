@@ -52,3 +52,6 @@ kotlin {
         }
     }
 }
+
+//  need clean source map every time
+compileKotlinJs.dependsOn cleanJsSourceMap

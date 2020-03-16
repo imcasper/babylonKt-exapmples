@@ -1,29 +1,46 @@
 package casper.model
 
 import BABYLON.*
-import casper.util.addMeshToScene
 import casper.util.copyMeshState
-
-class ModelCreateOptions(val ignoreCameras: Boolean = true, val ignoresLights: Boolean = true, val isPickable: Boolean? = null, val cullingStrategy: Double? = null)
+import kotlin.Error
 
 class ModelFactory {
 
 	companion object {
-		fun createAndPlace(data: ModelData, root: TransformNode? = null, options: ModelCreateOptions? = null): TransformNode {
-			val main = create(data, options)
-			main.addMeshToScene()
-			if (root != null) {
-				main.parent = root
+
+		fun createModelData(scene: Scene, name: String, container: AssetContainer): ModelData {
+			val instances = mutableListOf<InstancedMesh>()
+			for (originalMesh in container.meshes) {
+				if (originalMesh is Mesh) {
+					instances += createInstancesFromMesh(originalMesh)
+
+					originalMesh.geometry?.let { geometry ->
+						if (!container.geometries.contains(geometry)) {
+							container.geometries += geometry
+						}
+					}
+				} else {
+					throw Error("Unsupported mesh type: $originalMesh")
+				}
 			}
-			return main
+			return ModelData(name, scene, container, instances)
 		}
 
-		fun create(data: ModelData, options: ModelCreateOptions? = null): TransformNode {
-			val options = options ?: ModelCreateOptions()
-			return wrapTransformNode(createModel(data, options), options)
+		private fun createInstancesFromMesh(originalMesh: Mesh): List<InstancedMesh> {
+			val scene = originalMesh.getScene()
+			originalMesh.isVisible = false
+
+			val instances = originalMesh.instances.toMutableList()
+			instances.add( originalMesh.createInstance(originalMesh.name))
+
+			instances.forEach {
+				scene.removeMesh(it)
+			}
+			return instances
 		}
 
-		private fun createModel(data: ModelData, options: ModelCreateOptions): Model {
+		fun createInstances(data: ModelData, _options: ModelCreateOptions? = null): List<InstancedMesh> {
+			val options = _options ?: ModelCreateOptions()
 			val instances = mutableListOf<InstancedMesh>()
 			data.instances.forEach { originalInstance ->
 				val instance = createInstance(originalInstance)
@@ -35,7 +52,11 @@ class ModelFactory {
 				}
 				instances.add(instance)
 			}
-			return Model(data, instances)
+			//	need for change instance amount ^_^
+			data.assetContainer.meshes.forEach {
+				it._resyncLightSources()
+			}
+			return instances
 		}
 
 		private fun createInstance(source: InstancedMesh): InstancedMesh {
@@ -45,68 +66,5 @@ class ModelFactory {
 			scene.removeMesh(target)
 			return target
 		}
-
-		private fun wrapTransformNode(model: Model, options: ModelCreateOptions): TransformNode {
-			val scene = model.data.scene
-			val node = TransformNode("", null)
-			model.instances.forEach {
-				it.parent = node
-			}
-			if (!options.ignoresLights) {
-				model.data.assetContainer.lights.forEach {
-					//	light automatically added in clone
-					it.clone(it.name)
-				}
-			}
-			if (!options.ignoreCameras) {
-				model.data.assetContainer.cameras.forEach {
-					//	todo: camera automatically added in clone?
-					it.clone(it.name)
-				}
-			}
-			return node
-		}
-
-		fun createModelData(scene: Scene, name:String, container: AssetContainer): ModelData {
-			val instances = mutableListOf<InstancedMesh>()
-			for (originalMesh in container.meshes) {
-				if (originalMesh is Mesh) {
-					instances += createMeshInstances(originalMesh)
-
-					originalMesh.geometry?.let { geometry ->
-						if (!container.geometries.contains(geometry)) {
-							container.geometries += geometry
-						}
-					}
-				}
-			}
-			return ModelData(name, scene, container, instances)
-		}
-
-		private fun createMeshInstances(originalMesh: Mesh): List<InstancedMesh> {
-			val instances = mutableListOf<InstancedMesh>()
-			val scene = originalMesh.getScene()
-			originalMesh.convertToUnIndexedMesh()
-			scene.removeMesh(originalMesh)
-
-			val originalMeshInstances = originalMesh.instances.copyOf()
-
-			val mainInstance = originalMesh.createInstance(originalMesh.name)
-			scene.removeMesh(mainInstance)
-			instances.add(mainInstance)
-			originalMeshInstances.forEach { subInstances ->
-				scene.removeMesh(subInstances)
-				instances.add(subInstances)
-			}
-			return instances
-		}
 	}
-}
-
-fun ModelData.createInstance(options: ModelCreateOptions? = null): TransformNode {
-	return ModelFactory.create(this, options)
-}
-
-fun ModelData.createAndPlaceInstance(root: TransformNode? = null, options: ModelCreateOptions? = null): TransformNode {
-	return ModelFactory.createAndPlace(this, root, options)
 }

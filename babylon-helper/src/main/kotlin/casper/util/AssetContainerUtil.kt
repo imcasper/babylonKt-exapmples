@@ -77,8 +77,8 @@ fun AssetContainer.clone(): AssetContainer {
 
 			if (it is Mesh && copy is Mesh) {
 				geometryMap.get(it.geometry)?.applyToMesh(copy)
+				copy.material = materialMap.get(it.material)
 			}
-			copy.material = materialMap.get(it.material)
 		}
 	}
 

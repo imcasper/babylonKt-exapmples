@@ -18,9 +18,9 @@ class UVReplacer {
 			val atlasWidth = pageSize.x.toDouble()
 			val atlasHeight = pageSize.y.toDouble()
 			val regionX = box.position.x.toDouble()
-			val regionY = (pageSize.y - box.size.y - box.position.y).toDouble()
-			val regionWidth = box.size.x.toDouble()
-			val regionHeight = box.size.y.toDouble()
+			val regionY = (pageSize.y - box.dimension.y - box.position.y).toDouble()
+			val regionWidth = box.dimension.x.toDouble()
+			val regionHeight = box.dimension.y.toDouble()
 
 			val calculator: (Vector2) -> (Vector2) = {
 				Vector2(

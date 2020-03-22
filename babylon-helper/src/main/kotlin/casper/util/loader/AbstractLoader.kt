@@ -1,14 +1,14 @@
 package casper.util.loader
 
-import casper.signal.Promise
-import casper.signal.SinglePromiseSignal
+import casper.signal.EitherFuture
+import casper.signal.EitherSignal
 import org.w3c.xhr.XMLHttpRequest
 import org.w3c.xhr.XMLHttpRequestResponseType
 
-inline fun <reified T> loadAbstractData(url: String, responseType: XMLHttpRequestResponseType): Promise<T, String> {
+inline fun <reified T> loadAbstractData(url: String, responseType: XMLHttpRequestResponseType): EitherFuture<T, String> {
 	val request = XMLHttpRequest()
 
-	val future = SinglePromiseSignal<T, String>()
+	val future = EitherSignal<T, String>()
 	request.onloadend = {
 		if (request.status == 200.toShort()) {
 			val response = request.response

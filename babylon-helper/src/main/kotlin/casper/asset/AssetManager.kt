@@ -5,26 +5,26 @@ import BABYLON.Texture
 import casper.loader.createTextureLoader
 import casper.loader.createModelLoader
 import casper.model.ModelData
-import casper.signal.Promise
+import casper.signal.EitherFuture
 import casper.util.atlas.Atlas
 import casper.util.loader.createAtlasLoader
 
-typealias AssetPromise<Data> = Promise<Data, String>
+typealias AssetFuture<Data> = EitherFuture<Data, String>
 
 class AssetManager(val scene: Scene) {
 	val models = AssetGroupManager(AssetGroupLoadManager { fileName -> createModelLoader(scene, fileName) })
 	val textures = AssetGroupManager(AssetGroupLoadManager { fileName -> createTextureLoader(scene, fileName) })
 	val atlases = AssetGroupManager(AssetGroupLoadManager { fileName -> createAtlasLoader(scene, fileName) })
 
-	fun loadModel(fileName: String): AssetPromise<ModelData> {
+	fun loadModel(fileName: String): AssetFuture<ModelData> {
 		return models.loader(fileName)
 	}
 
-	fun loadTexture(fileName: String): AssetPromise<Texture> {
+	fun loadTexture(fileName: String): AssetFuture<Texture> {
 		return textures.loader(fileName)
 	}
 
-	fun loadAtlas(fileName: String): AssetPromise<Atlas> {
+	fun loadAtlas(fileName: String): AssetFuture<Atlas> {
 		return atlases.loader(fileName)
 	}
 

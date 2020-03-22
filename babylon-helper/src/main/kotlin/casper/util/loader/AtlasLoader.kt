@@ -2,8 +2,9 @@ package casper.util.loader
 
 import BABYLON.Scene
 import BABYLON.Texture
-import casper.signal.Promise
-import casper.signal.SinglePromiseSignal
+import casper.signal.EitherFuture
+import casper.signal.EitherPromise
+import casper.signal.EitherSignal
 import casper.util.atlas.Atlas
 import casper.util.atlas.AtlasInfo
 import casper.util.atlas.AtlasPage
@@ -17,8 +18,8 @@ fun createAtlas(scene: Scene, info: AtlasInfo): Atlas {
 	return Atlas(pages)
 }
 
-fun createAtlasLoader(scene: Scene, atlasUrl: String): Promise<Atlas, String> {
-	val future = SinglePromiseSignal<Atlas, String>()
+fun createAtlasLoader(scene: Scene, atlasUrl: String): EitherFuture<Atlas, String> {
+	val future = EitherSignal<Atlas, String>()
 
 	loadTextData(atlasUrl).then({
 		try {
@@ -34,7 +35,7 @@ fun createAtlasLoader(scene: Scene, atlasUrl: String): Promise<Atlas, String> {
 	return future
 }
 
-private fun checkImageAndCreateAtlas(future: SinglePromiseSignal<Atlas, String>, scene: Scene, atlasInfo: AtlasInfo) {
+private fun checkImageAndCreateAtlas(future: EitherPromise<Atlas, String>, scene: Scene, atlasInfo: AtlasInfo) {
 	var waiting = atlasInfo.pages.size
 
 	atlasInfo.pages.forEach { page ->

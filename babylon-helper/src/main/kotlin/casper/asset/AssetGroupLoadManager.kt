@@ -2,8 +2,8 @@ package casper.asset
 
 import casper.collection.observableMapOf
 
-class AssetGroupLoadManager<Data>(val createAssetLoader: (fileName: String) -> AssetPromise<Data>) {
-	val map = observableMapOf<String, AssetPromise<Data>>()
+class AssetGroupLoadManager<Data>(val createAssetLoader: (fileName: String) -> AssetFuture<Data>) {
+	val map = observableMapOf<String, AssetFuture<Data>>()
 
 	fun isLoading(): Boolean {
 		map.values.forEach {
@@ -12,7 +12,7 @@ class AssetGroupLoadManager<Data>(val createAssetLoader: (fileName: String) -> A
 		return false
 	}
 
-	fun get(fileUrl: String, reload: Boolean = false): AssetPromise<Data> {
+	fun get(fileUrl: String, reload: Boolean = false): AssetFuture<Data> {
 		var loader = map.get(fileUrl)
 		if (loader == null || reload) {
 			loader = createAssetLoader(fileUrl)

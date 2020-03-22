@@ -18,8 +18,8 @@ class FPS(val scene: Scene, customRoot: Container? = null) {
 		output.color = "white";
 		output.fontSize = 16;
 		output.height = "180px";
-		output.horizontalAlignment = Control._HORIZONTAL_ALIGNMENT_LEFT as Number
-		output.verticalAlignment = Control._VERTICAL_ALIGNMENT_BOTTOM  as Number
+		output.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT as Number
+		output.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM  as Number
 
 		// GUI
 		if (customRoot == null) {

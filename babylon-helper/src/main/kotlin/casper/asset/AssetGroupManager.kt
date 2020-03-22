@@ -15,7 +15,7 @@ class AssetGroupManager<Data>(val loadManager: AssetGroupLoadManager<Data>) {
 		}
 	}
 
-	fun loader(fileName: String):AssetPromise<Data> {
+	fun loader(fileName: String):AssetFuture<Data> {
 		return loadManager.get(fileName)
 	}
 

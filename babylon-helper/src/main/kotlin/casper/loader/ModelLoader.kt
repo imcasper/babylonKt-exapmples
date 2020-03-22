@@ -4,10 +4,11 @@ import BABYLON.Scene
 import BABYLON.SceneLoader
 import casper.model.ModelData
 import casper.model.ModelFactory
-import casper.signal.SinglePromiseSignal
+import casper.signal.EitherFuture
+import casper.signal.EitherSignal
 
-fun createModelLoader(scene: Scene, fileUrl: String): SinglePromiseSignal<ModelData, String> {
-	val loader = SinglePromiseSignal<ModelData, String>()
+fun createModelLoader(scene: Scene, fileUrl: String): EitherFuture<ModelData, String> {
+	val loader = EitherSignal<ModelData, String>()
 	SceneLoader.LoadAssetContainer(fileUrl, "", scene, {
 		val modelData = ModelFactory.createModelData(scene, fileUrl, it)
 		loader.accept(modelData)

@@ -4,10 +4,11 @@ import BABYLON.AssetsManager
 import BABYLON.Scene
 import BABYLON.Texture
 import BABYLON.TextureAssetTask
-import casper.signal.SinglePromiseSignal
+import casper.signal.EitherFuture
+import casper.signal.EitherSignal
 
-fun createTextureLoader(scene: Scene, file: String): SinglePromiseSignal<Texture, String> {
-	val loader = SinglePromiseSignal<Texture, String>()
+fun createTextureLoader(scene: Scene, file: String): EitherFuture<Texture, String> {
+	val loader = EitherSignal<Texture, String>()
 
 	val manager = AssetsManager(scene)
 	manager.addTextureTask(file, file)

@@ -35,7 +35,7 @@ kotlin {
             }
             dependencies {
                 implementation "casper.types:typesKt:1.0.0"
-                implementation "casper.signal:signalKt:1.0.0"
+                implementation "casper.signal:signalKt:1.2.0"
                 implementation "casper:babylonKt:1.1.0"
                 implementation 'org.jetbrains.kotlin:kotlin-stdlib-js'
             }

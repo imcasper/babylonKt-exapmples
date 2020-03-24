@@ -1,6 +1,6 @@
 package casper.util.loader
 
-import casper.signal.EitherFuture
+import casper.signal.concrete.EitherFuture
 import org.w3c.xhr.TEXT
 import org.w3c.xhr.XMLHttpRequestResponseType
 

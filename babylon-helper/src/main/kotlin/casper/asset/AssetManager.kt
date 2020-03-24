@@ -5,7 +5,7 @@ import BABYLON.Texture
 import casper.loader.createTextureLoader
 import casper.loader.createModelLoader
 import casper.model.ModelData
-import casper.signal.EitherFuture
+import casper.signal.concrete.EitherFuture
 import casper.util.atlas.Atlas
 import casper.util.loader.createAtlasLoader
 

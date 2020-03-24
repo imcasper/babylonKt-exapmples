@@ -3,7 +3,7 @@ import os
 targetDir = "../example-experiment/src/main/kotlin/casper/asset"
 sourceDir = "../example-experiment/src/main/resources/"
 templateFile = "Assets.kt"
-templateForLine = "			manager.models.loader(\"FILE_NAME\")"
+templateForLine = "			collection.add(manager.models.loader(\"FILE_NAME\"))"
 templateForAsset = "		val ASSET_NAME = manager.getModel(\"FILE_NAME\")!!"
 extension = ".babylon"
 
@@ -31,7 +31,7 @@ for file in files:
     assetsList.append( templateForAsset.replace("FILE_NAME", file).replace("ASSET_NAME", asset))
 
 outputData = templateData
-outputData = outputData.replace("LOADERS_LIST", ",\n".join(loadersList))
+outputData = outputData.replace("LOADERS_LIST", "\n".join(loadersList))
 outputData = outputData.replace("ASSETS_LIST", "\n".join(assetsList))
 
 

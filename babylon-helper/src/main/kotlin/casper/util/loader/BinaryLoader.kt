@@ -1,6 +1,6 @@
 package casper.util.loader
 
-import casper.signal.EitherFuture
+import casper.signal.concrete.EitherFuture
 import org.khronos.webgl.ArrayBuffer
 import org.w3c.xhr.ARRAYBUFFER
 import org.w3c.xhr.XMLHttpRequestResponseType

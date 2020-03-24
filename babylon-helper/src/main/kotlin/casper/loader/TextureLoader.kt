@@ -4,8 +4,8 @@ import BABYLON.AssetsManager
 import BABYLON.Scene
 import BABYLON.Texture
 import BABYLON.TextureAssetTask
-import casper.signal.EitherFuture
-import casper.signal.EitherSignal
+import casper.signal.concrete.EitherFuture
+import casper.signal.concrete.EitherSignal
 
 fun createTextureLoader(scene: Scene, file: String): EitherFuture<Texture, String> {
 	val loader = EitherSignal<Texture, String>()

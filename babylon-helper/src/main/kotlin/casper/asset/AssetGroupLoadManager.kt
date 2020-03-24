@@ -7,7 +7,7 @@ class AssetGroupLoadManager<Data>(val createAssetLoader: (fileName: String) -> A
 
 	fun isLoading(): Boolean {
 		map.values.forEach {
-			if (!it.isCompleted()) return true
+			if (!it.complete) return true
 		}
 		return false
 	}

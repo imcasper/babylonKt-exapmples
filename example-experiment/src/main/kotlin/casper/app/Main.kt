@@ -16,9 +16,20 @@ import casper.util.*
 
 fun main() {
 	val scene = createScene("renderCanvas", true)
-//	scene.useRightHandedSystem = true
-	scene.createDefaultCamera(true, true, true)
-	scene.activeCamera?.position = Vector3(5.0, 5.0, 5.0)
+	scene.useRightHandedSystem = true
+
+	while (scene.cameras.isNotEmpty()) {
+		scene.removeCamera(scene.cameras.first())
+	}
+	val camera = ArcRotateCamera("camera", 0.5, 0.5, 10.0, Vector3.Zero(), scene)
+	camera.upVector = Vector3(0.0, 0.0, 1.0)
+	scene.addCamera(camera)
+
+	val canvas = scene.getEngine().getRenderingCanvas() ?: throw Error("Invalid canvas")
+	camera.attachControl(canvas, true)
+
+	//	scene.createDefaultCamera(true, true, true)
+//	scene.activeCamera?.position = Vector3(5.0, 5.0, 5.0)
 	SceneLoader.ShowLoadingScreen = false
 
 

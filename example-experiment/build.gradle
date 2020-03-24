@@ -24,7 +24,7 @@ version "1.0-SNAPSHOT"
 
 dependencies {
     compile "casper.types:typesKt:1.0.0"
-    compile "casper.signal:signalKt:1.0.0"
+    compile "casper.signal:signalKt:1.2.0"
     compile "casper:babylon-helper:1.0.0"
     compile "casper:babylonKt:1.1.0"
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"

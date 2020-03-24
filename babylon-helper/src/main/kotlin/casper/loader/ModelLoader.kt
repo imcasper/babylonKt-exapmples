@@ -4,8 +4,8 @@ import BABYLON.Scene
 import BABYLON.SceneLoader
 import casper.model.ModelData
 import casper.model.ModelFactory
-import casper.signal.EitherFuture
-import casper.signal.EitherSignal
+import casper.signal.concrete.EitherFuture
+import casper.signal.concrete.EitherSignal
 
 fun createModelLoader(scene: Scene, fileUrl: String): EitherFuture<ModelData, String> {
 	val loader = EitherSignal<ModelData, String>()

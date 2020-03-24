@@ -2,9 +2,9 @@ package casper.util.loader
 
 import BABYLON.Scene
 import BABYLON.Texture
-import casper.signal.EitherFuture
-import casper.signal.EitherPromise
-import casper.signal.EitherSignal
+import casper.signal.concrete.EitherFuture
+import casper.signal.concrete.EitherPromise
+import casper.signal.concrete.EitherSignal
 import casper.util.atlas.Atlas
 import casper.util.atlas.AtlasInfo
 import casper.util.atlas.AtlasPage

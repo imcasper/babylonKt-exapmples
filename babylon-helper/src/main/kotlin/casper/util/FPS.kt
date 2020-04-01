@@ -3,33 +3,14 @@ package casper.util
 import BABYLON.EngineInstrumentation
 import BABYLON.EventState
 import BABYLON.GUI.Container
-import BABYLON.GUI.Control
-import BABYLON.GUI.TextBlock
-import BABYLON.Number
 import BABYLON.Scene
 import casper.format.toPrecision
 
 class FPS(val scene: Scene, customRoot: Container? = null) {
 	val instrumentation = EngineInstrumentation(scene.getEngine())
-	val output = TextBlock()
+	private var textBlock = TextArea(scene, customRoot)
 
 	init {
-		output.text = "";
-		output.color = "white";
-		output.fontSize = 16;
-		output.height = "180px";
-		output.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT as Number
-		output.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM  as Number
-
-		// GUI
-		if (customRoot == null) {
-			val advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-			advancedTexture.addControl(output);
-		} else {
-			customRoot.addControl(output)
-		}
-
-
 		// Instrumentation
 		instrumentation.captureGPUFrameTime = true;
 		instrumentation.captureShaderCompilationTime = true;
@@ -38,8 +19,8 @@ class FPS(val scene: Scene, customRoot: Container? = null) {
 
 		scene.onAfterRenderObservable.add({ _: Scene, _: EventState ->
 			accumulateTime += scene.getEngine().getDeltaTime()
-			if (accumulateTime > 1.25) {
-				accumulateTime -= 1.25
+			if (accumulateTime > 100.0) {
+				accumulateTime -= 100.0
 				update()
 			}
 		})
@@ -50,14 +31,15 @@ class FPS(val scene: Scene, customRoot: Container? = null) {
 		scene.meshes.forEach {
 			indices += it.getTotalIndices().toInt()
 		}
+		var value = "FPS: " + scene.getEngine().getFps().toPrecision(1) + ""
+		value += "\n" + "triangles: " + (indices / 3)
+		value += "\n" + "meshes: " + scene.meshes.size
+		value += "\n" + "current frame time (GPU): " + (instrumentation.gpuFrameTimeCounter.current * 0.000001).toPrecision(2) + "ms"
+		value += "\n" + "average frame time (GPU): " + (instrumentation.gpuFrameTimeCounter.average * 0.000001).toPrecision(2) + "ms"
+		value += "\n" + "total shader compilation time: " + (instrumentation.shaderCompilationTimeCounter.total).toPrecision(2) + "ms"
+		value += "\n" + "average shader compilation time: " + (instrumentation.shaderCompilationTimeCounter.average).toPrecision(2) + "ms"
+		value += "\n" + "compiler shaders count: " + instrumentation.shaderCompilationTimeCounter.count
 
-		output.text = "FPS: " + scene.getEngine().getFps().toPrecision(1) + ""
-		output.text += "\n" + "triangles: " + (indices / 3)
-		output.text += "\n" + "meshes: " + scene.meshes.size
-		output.text += "\n" + "current frame time (GPU): " + (instrumentation.gpuFrameTimeCounter.current * 0.000001).toPrecision(2) + "ms"
-		output.text += "\n" + "average frame time (GPU): " + (instrumentation.gpuFrameTimeCounter.average * 0.000001).toPrecision(2) + "ms"
-		output.text += "\n" + "total shader compilation time: " + (instrumentation.shaderCompilationTimeCounter.total).toPrecision(2) + "ms"
-		output.text += "\n" + "average shader compilation time: " + (instrumentation.shaderCompilationTimeCounter.average).toPrecision(2) + "ms"
-		output.text += "\n" + "compiler shaders count: " + instrumentation.shaderCompilationTimeCounter.count
+		textBlock.setText(value)
 	}
 }

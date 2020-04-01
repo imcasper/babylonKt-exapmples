@@ -4,12 +4,14 @@ import BABYLON.*
 import BABYLON.Debug.AxesViewer
 import casper.geometry.Transform
 import casper.geometry.Vector3d
+import casper.geometry.polygon.Line3d
 import casper.gui.UIScene
-import casper.scene.camera.PlainCameraInput
+import casper.scene.camera.PlainCamera
 import casper.scene.camera.PlainCameraInputSettings
-import casper.scene.camera.createPlainCamera
 import casper.types.GRAY
 import casper.types.PURPLE
+import casper.util.TextArea
+import casper.util.toRay
 import casper.util.toVector3
 import casper.util.toVector3d
 import kotlin.math.PI
@@ -17,11 +19,12 @@ import kotlin.random.Random
 
 class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 	val mainCamera: Camera
-	val camera: FreeCamera
-	val cameraInput: PlainCameraInput
+	val plainCamera: PlainCamera
 
 	val cameraCenterHelper = createHelper(Color3.White())
 	val cameraPivotHelper = createHelper(Color3.Yellow())
+
+	val textArea = TextArea(scene, null)
 
 	init {
 		cameraCenterHelper.rotateAround(Vector3.Zero(), Vector3(1.0, 0.0, 0.0), -PI / 2.0)
@@ -32,10 +35,8 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		mainCamera.upVector = Vector3(0.0, 0.0, 1.0)
 		mainCamera.attachControl(scene.getEngine().getRenderingCanvas()!!)
 
-		camera = FreeCamera("test", Vector3(0.0, 0.0, 0.0), scene)
-		cameraInput = createPlainCamera(scene, uiScene.sceneDispatcher, camera, PlainCameraInputSettings(), ::onTranslationPivot, ::onRotationPivot, ::getCollision)
-
-		cameraInput.camera.transform = Transform.fromYAxis(Vector3d(32.0), Vector3d(1.0, 1.0, -1.0), Vector3d.Z)
+		plainCamera = PlainCamera(scene, uiScene.sceneDispatcher, PlainCameraInputSettings(), ::onTranslationPivot, ::getCollision)
+		plainCamera.camera.transform = Transform.fromYAxis(Vector3d(32.0), Vector3d(1.0, 1.0, -1.0), Vector3d.Z)
 
 		scene.activeCamera = mainCamera
 		switchCamera()
@@ -72,7 +73,19 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 
 		scene.onBeforeRenderObservable.add({ _: Scene, _: EventState ->
 			updateHelper()
+			updateInfo()
 		})
+	}
+
+	private fun updateInfo() {
+		val camera = plainCamera.camera
+
+		var value = ""
+		value += "position: " + camera.transform.position.toPrecision(1) + "\n"
+		value += "forward: " + Transform.getLocalY(camera.transform.orientation).toPrecision(1) + "\n"
+		value += "up: " + Transform.getLocalZ(camera.transform.orientation).toPrecision(1) + "\n"
+
+		textArea.setText(value)
 	}
 
 
@@ -85,23 +98,18 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 
 
 	private fun updateHelper() {
-		val info = cameraInput.getRotationPivot() ?: cameraInput.getTranslationPivot()
-		if (info == null) {
-			cameraPivotHelper.position = Vector3(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)
-		} else {
-			cameraPivotHelper.position = info.toVector3()
-		}
+		cameraPivotHelper.position = plainCamera.plainController.pivot.toVector3()
 
 		if (scene.activeCamera == mainCamera) {
-			cameraCenterHelper.parent = camera
-		} else if (scene.activeCamera == camera) {
+			cameraCenterHelper.parent = plainCamera.source
+		} else if (scene.activeCamera == plainCamera.source) {
 			cameraCenterHelper.parent = mainCamera
 		}
 	}
 
 	private fun switchCamera() {
 		if (scene.activeCamera == mainCamera) {
-			scene.activeCamera = camera
+			scene.activeCamera = plainCamera.source
 			scene.clearColor = Color4.FromColor3(PURPLE, 1.0)
 			println("now test camera")
 		} else {
@@ -111,7 +119,8 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		}
 	}
 
-	private fun onTranslationPivot(ray: Ray): Vector3d? {
+	private fun onTranslationPivot(line: Line3d): Vector3d? {
+		val ray = line.toRay()
 		val info = scene.pickWithRay(ray)
 		val picked = info?.pickedPoint?.toVector3d()
 		if (picked != null || info?.pickedMesh?.name == "BOX") {
@@ -122,15 +131,6 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 			if (intersect != null) {
 				return ray.origin.toVector3d() + ray.direction.toVector3d() * intersect
 			}
-		}
-		return null
-	}
-
-	private fun onRotationPivot(ray: Ray): Vector3d? {
-		val info = scene.pickWithRay(ray)
-		val picked = info?.pickedPoint?.toVector3d()
-		if (picked != null || info?.pickedMesh?.name == "BOX") {
-			return picked
 		}
 		return null
 	}

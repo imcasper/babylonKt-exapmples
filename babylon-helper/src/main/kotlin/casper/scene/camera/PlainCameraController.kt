@@ -9,23 +9,20 @@ import casper.scene.core.TransformHolder
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 
-class PlainCameraController(val scene: Scene, val camera: TransformHolder, val plainNormal: Vector3d) {
-	fun translate(translationPivot: Vector3d, xFactor: Double, yFactor: Double) {
-		camera.transform = translate(scene, camera.transform, translationPivot, xFactor, yFactor, plainNormal)
+class PlainCameraController(val scene: Scene, val camera: TransformHolder, var plainNormal: Vector3d) {
+	var pivot = Vector3d.ZERO
+
+	fun translate(xFactor: Double, yFactor: Double) {
+		camera.transform = translate(scene, camera.transform, pivot, xFactor, yFactor, plainNormal)
 	}
 
-	fun rotate(rotationPivot: Vector3d, yaw: Double, pitch: Double) {
-		camera.transform = rotateByAngle(camera.transform, rotationPivot, yaw, plainNormal)
-		camera.transform = rotateByAngle(camera.transform, rotationPivot, pitch, camera.transform.getLocalX())
+	fun rotate(yaw: Double, pitch: Double) {
+		camera.transform = rotateByAngle(camera.transform, pivot, yaw, plainNormal)
+		camera.transform = rotateByAngle(camera.transform, pivot, pitch, camera.transform.getLocalX())
 	}
 
-	fun zoom(zoomPivot: Vector3d?, zFactor: Double) {
-		if (zoomPivot == null) {
-			camera.transform = (distance(camera.transform, zFactor * 10.0))
-			return
-		}
-
-		val zoomSpeedFactor = sqrt((camera.transform.position.z - zoomPivot.z).absoluteValue).clamp(0.1, 10.0)
+	fun zoom(zFactor: Double) {
+		val zoomSpeedFactor = sqrt((camera.transform.position.z - pivot.z).absoluteValue).clamp(0.1, 10.0)
 		camera.transform = distance(camera.transform, zFactor * zoomSpeedFactor)
 	}
 

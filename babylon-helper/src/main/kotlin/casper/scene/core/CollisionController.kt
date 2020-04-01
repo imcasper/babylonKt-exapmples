@@ -11,7 +11,6 @@ class CollisionController(val camera: TransformHolder, val getCollision: (Vector
 			val next = target
 			val lastCollision = getCollision(last.position) != null
 			val nextCollision = getCollision(next.position) != null
-			println("CollisionController: $lastCollision => $nextCollision ${last.position.toPrecision(1)} => ${next.position.toPrecision(1)}")
 			if (lastCollision || !nextCollision) {
 				camera.transform = next
 			}

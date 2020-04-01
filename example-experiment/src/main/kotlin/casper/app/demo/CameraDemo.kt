@@ -8,10 +8,10 @@ import casper.gui.UIScene
 import casper.scene.camera.PlainCameraInput
 import casper.scene.camera.PlainCameraInputSettings
 import casper.scene.camera.createPlainCamera
-import casper.scene.core.toVector3
-import casper.scene.core.toVector3d
 import casper.types.GRAY
 import casper.types.PURPLE
+import casper.util.toVector3
+import casper.util.toVector3d
 import kotlin.math.PI
 import kotlin.random.Random
 

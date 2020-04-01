@@ -8,40 +8,35 @@ package casper.app
 import BABYLON.*
 import BABYLON.extension.createScene
 import BABYLON.extension.runRenderLoop
+import babylon.BabylonUIScene
+import casper.app.demo.CameraDemo
 import casper.asset.AssetManager
 import casper.asset.Assets
-import casper.asset.createAssetsArrayLoader
-import casper.model.Model
-import casper.util.*
+import casper.gui.UIScene
+import casper.util.Inspector
 
 fun main() {
-	val scene = createScene("renderCanvas", true)
+	val scene = createScene("renderCanvas")
 	scene.useRightHandedSystem = true
 
-	while (scene.cameras.isNotEmpty()) {
-		scene.removeCamera(scene.cameras.first())
-	}
-	val camera = ArcRotateCamera("camera", 0.5, 0.5, 10.0, Vector3.Zero(), scene)
-	camera.upVector = Vector3(0.0, 0.0, 1.0)
-	scene.addCamera(camera)
+	val uiScene:UIScene = BabylonUIScene(scene)
+	CameraDemo(scene, uiScene)
 
-	val canvas = scene.getEngine().getRenderingCanvas() ?: throw Error("Invalid canvas")
-	camera.attachControl(canvas, true)
-
-	//	scene.createDefaultCamera(true, true, true)
-//	scene.activeCamera?.position = Vector3(5.0, 5.0, 5.0)
 	SceneLoader.ShowLoadingScreen = false
+		val environmentTexture = CubeTexture("skybox.dds", scene, prefiltered = false, createPolynomials = false)
+		scene.environmentTexture = environmentTexture
+		scene.createDefaultSkybox(environmentTexture)
 
-
-	val manager = AssetManager(scene)
-	manager.atlases.loader("atlas.atlas").thenAccept {
-		createAssetsArrayLoader(manager).then({
-			Demo(scene, manager, it)
-		}, {
-			scene.clearColor = Color4(1.0, 0.0, 0.0)
-			println(it)
-		})
-	}
+//
+//	val manager = AssetManager(scene)
+//	manager.atlases.loader("atlas.atlas").thenAccept {
+//		createAssetsArrayLoader(manager).then({
+//			Demo(scene, manager, it)
+//		}, {
+//			scene.clearColor = Color4(1.0, 0.0, 0.0)
+//			println(it)
+//		})
+//	}
 	scene.runRenderLoop()
 }
 

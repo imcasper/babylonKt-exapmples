@@ -17,7 +17,7 @@ import casper.signal.util.then
 /**
  * 	Действия пользователя преобразует в команды камере
  */
-class PlainCameraInput(val scene: Scene, val inputDispatcher:InputDispatcher, val controller: PlainCameraController, val settings: PlainCameraInputSettings, val getPivot: (Ray) -> Vector3d?) : Disposable {
+class PlainCameraInput(val scene: Scene, val inputDispatcher:InputDispatcher, val controller: PlainCameraController, val settings: PlainCameraInputSettings, val onTranslationPivot: (Ray) -> Vector3d?, val onRotationPivot: (Ray) -> Vector3d?) : Disposable {
 	val camera = controller.camera
 
 	class PointerInfo(val position: Vector2d, val offset: Vector2d)
@@ -47,7 +47,7 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher:InputDispatcher, va
 	}
 
 	private fun onMouseWheel(it: MouseWheel) {
-		controller.zoom(createPivot(it.position), it.wheel.clamp(-1.0, 1.0) * settings.zoomSpeed)
+		controller.zoom(createTranslationPivot(it.position), it.wheel.clamp(-1.0, 1.0) * settings.zoomSpeed)
 	}
 
 	private fun onMouseDown(it: MouseDown) {
@@ -56,12 +56,12 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher:InputDispatcher, va
 		if (rotationPivot != null || translationPivot != null) return
 
 		if (it.button == settings.rotateButton) {
-			rotationPivot = createPivot(it.position)
+			rotationPivot = createRotationPivot(it.position)
 			if (rotationPivot != null) {
 				lockCursor()
 			}
 		} else if (it.button == settings.translateButton) {
-			translationPivot = createPivot(it.position)
+			translationPivot = createTranslationPivot(it.position)
 		} else {
 			return
 		}
@@ -114,9 +114,14 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher:InputDispatcher, va
 		return PointerInfo(nextPointerPosition, offset)
 	}
 
-	private fun createPivot(pointerPosition: Vector2d): Vector3d? {
+	private fun createRotationPivot(pointerPosition: Vector2d): Vector3d? {
 		val ray = scene.createPickingRay(pointerPosition.x, pointerPosition.y, Matrix.Identity(), scene.activeCamera)
-		return getPivot(ray) ?: return null
+		return onRotationPivot(ray) ?: return null
+	}
+
+	private fun createTranslationPivot(pointerPosition: Vector2d): Vector3d? {
+		val ray = scene.createPickingRay(pointerPosition.x, pointerPosition.y, Matrix.Identity(), scene.activeCamera)
+		return onTranslationPivot(ray) ?: return null
 	}
 
 

@@ -33,15 +33,7 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		mainCamera.attachControl(scene.getEngine().getRenderingCanvas()!!)
 
 		camera = FreeCamera("test", Vector3(0.0, 0.0, 0.0), scene)
-		cameraInput = createPlainCamera(scene, uiScene.sceneDispatcher, camera, PlainCameraInputSettings(), {
-			val info = scene.pickWithRay(it)
-			val picked = info?.pickedPoint?.toVector3d()
-			if (picked != null || info?.pickedMesh?.name == "BOX") {
-				picked
-			} else {
-				null
-			}
-		},				::getCameraCollision)
+		cameraInput = createPlainCamera(scene, uiScene.sceneDispatcher, camera, PlainCameraInputSettings(), ::onTranslationPivot, ::onRotationPivot, ::getCollision)
 
 		cameraInput.camera.transform = Transform.fromYAxis(Vector3d(32.0), Vector3d(1.0, 1.0, -1.0), Vector3d.Z)
 
@@ -84,22 +76,13 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 	}
 
 
-	private fun getCameraCollision(pos: Vector3d): Vector3d? {
-		if (pos.z < 1.0 || pos.z > 200.0) {
+	private fun getCollision(pos: Vector3d): Vector3d? {
+		if (pos.z < 10.0 || pos.z > 300.0) {
 			return Vector3d.Z
-		}
-		val range = 1.0
-		val sphere = BoundingSphere(Vector3d(-range).toVector3(), Vector3d(range).toVector3(), Matrix.Translation(pos.x, pos.y, pos.z))
-		scene.meshes.forEach {
-			if (it.name == "BOX") {
-				val hasIntersection = it.getBoundingInfo().boundingBox.intersectsSphere(sphere)
-				if (hasIntersection) {
-					return Vector3d.Z
-				}
-			}
 		}
 		return null
 	}
+
 
 	private fun updateHelper() {
 		val info = cameraInput.getRotationPivot() ?: cameraInput.getTranslationPivot()
@@ -126,6 +109,30 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 			scene.clearColor = Color4.FromColor3(GRAY, 1.0)
 			println("now def camera")
 		}
+	}
+
+	private fun onTranslationPivot(ray: Ray): Vector3d? {
+		val info = scene.pickWithRay(ray)
+		val picked = info?.pickedPoint?.toVector3d()
+		if (picked != null || info?.pickedMesh?.name == "BOX") {
+			return picked
+		} else {
+			val plane = Plane(0.0, 0.0, 1.0, 0.0)
+			val intersect = ray.intersectsPlane(plane)
+			if (intersect != null) {
+				return ray.origin.toVector3d() + ray.direction.toVector3d() * intersect
+			}
+		}
+		return null
+	}
+
+	private fun onRotationPivot(ray: Ray): Vector3d? {
+		val info = scene.pickWithRay(ray)
+		val picked = info?.pickedPoint?.toVector3d()
+		if (picked != null || info?.pickedMesh?.name == "BOX") {
+			return picked
+		}
+		return null
 	}
 
 	private fun createHelper(color: Color3): Mesh {

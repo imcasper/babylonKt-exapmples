@@ -1,18 +1,24 @@
 package casper.scene.core
 
 import casper.geometry.Transform
-import casper.geometry.Vector3d
+import casper.geometry.interpolateTransform
+import casper.geometry.polygon.Line3d
+import casper.math.EPSILON
+import casper.math.clamp
 
-class CollisionController(val camera: TransformHolder, val getCollision: (Vector3d) -> Vector3d?) : TransformHolder {
+class CollisionController(val nextHolder: TransformHolder, val getPenetrationDepth: (Line3d) -> Double?) : TransformHolder {
 	override var transform: Transform
-		get() = camera.transform
+		get() = nextHolder.transform
 		set(target) {
-			val last = camera.transform
+			val last = transform
 			val next = target
-			val lastCollision = getCollision(last.position) != null
-			val nextCollision = getCollision(next.position) != null
-			if (lastCollision || !nextCollision) {
-				camera.transform = next
+			val depth = getPenetrationDepth(Line3d(last.position, next.position))
+
+			if (depth == null) {
+				nextHolder.transform = next
+			} else {
+				val factor = depth.clamp(0.0, 1.0) + EPSILON
+				nextHolder.transform = interpolateTransform(next, last, factor)
 			}
 		}
 }

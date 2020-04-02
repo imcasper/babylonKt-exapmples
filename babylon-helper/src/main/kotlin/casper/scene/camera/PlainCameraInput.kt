@@ -13,14 +13,13 @@ import casper.platform.lockCursor
 import casper.platform.unlockCursor
 import casper.signal.util.then
 import casper.util.toLine
+import kotlin.browser.document
 
 
 /**
  * 	Действия пользователя преобразует в команды камере
  */
 class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, val controller: PlainCameraController, val settings: PlainCameraInputSettings, val onPivot: (Line3d) -> Vector3d?) : Disposable {
-	val camera = controller.camera
-
 	private val holder = DisposableHolder()
 	private val actionHolder = DisposableHolder()
 	private var rotation = false
@@ -29,6 +28,10 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, v
 	init {
 		inputDispatcher.onMouseWheel.then(holder, ::onMouseWheel)
 		inputDispatcher.onMouseDown.then(holder, ::onMouseDown)
+
+		document.addEventListener("mouseout", {
+			dropMouse()
+		})
 	}
 
 	override fun dispose() {
@@ -41,23 +44,32 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, v
 		controller.zoom(it.wheel.clamp(-1.0, 1.0) * settings.zoomSpeed)
 	}
 
-	private fun onMouseDown(it: MouseDown) {
-		if (rotation || translation) return
+	private fun dropMouse() {
+		unlockCursor()
+		rotation = false
+		translation = false
+		refreshActionListeners()
+	}
 
+	private fun onMouseDown(it: MouseDown) {
 		if (it.button == settings.rotateButton) {
 			updatePivot(it.position)
 			lockCursor()
 			rotation = true
+			refreshActionListeners()
 		} else if (it.button == settings.translateButton) {
 			updatePivot(it.position)
 			translation = true
-		} else {
-			return
+			refreshActionListeners()
 		}
+	}
 
+	private fun refreshActionListeners() {
 		actionHolder.removeAllDisposable()
-		inputDispatcher.onMouseMove.then(actionHolder, ::onMouseMove)
-		inputDispatcher.onMouseUp.then(actionHolder, ::onMouseUp)
+		if (rotation || translation) {
+			inputDispatcher.onMouseMove.then(actionHolder, ::onMouseMove)
+			inputDispatcher.onMouseUp.then(actionHolder, ::onMouseUp)
+		}
 	}
 
 	private fun onMouseMove(it: MouseMove) {
@@ -90,7 +102,8 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, v
 		if (it.button == settings.translateButton) {
 			translation = false
 		}
-		actionHolder.removeAllDisposable()
+
+		refreshActionListeners()
 	}
 
 

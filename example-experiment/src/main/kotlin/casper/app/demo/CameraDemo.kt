@@ -14,6 +14,7 @@ import casper.util.TextArea
 import casper.util.toRay
 import casper.util.toVector3
 import casper.util.toVector3d
+import kotlin.Error
 import kotlin.math.PI
 import kotlin.random.Random
 
@@ -35,7 +36,7 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		mainCamera.upVector = Vector3(0.0, 0.0, 1.0)
 		mainCamera.attachControl(scene.getEngine().getRenderingCanvas()!!)
 
-		plainCamera = PlainCamera(scene, uiScene.sceneDispatcher, PlainCameraInputSettings(), ::onTranslationPivot, ::getCollision)
+		plainCamera = PlainCamera(scene, uiScene.sceneDispatcher, PlainCameraInputSettings(), ::onTranslationPivot, ::getPenetrationDepth)
 		plainCamera.camera.transform = Transform.fromYAxis(Vector3d(32.0), Vector3d(1.0, 1.0, -1.0), Vector3d.Z)
 
 		scene.activeCamera = mainCamera
@@ -81,17 +82,39 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		val camera = plainCamera.camera
 
 		var value = ""
-		value += "position: " + camera.transform.position.toPrecision(1) + "\n"
-		value += "forward: " + Transform.getLocalY(camera.transform.orientation).toPrecision(1) + "\n"
-		value += "up: " + Transform.getLocalZ(camera.transform.orientation).toPrecision(1) + "\n"
+		value += "position: " + camera.transform.position.toPrecision(4) + "\n"
+		value += "forward: " + Transform.getLocalY(camera.transform.orientation).toPrecision(4) + "\n"
+		value += "up: " + Transform.getLocalZ(camera.transform.orientation).toPrecision(4) + "\n"
 
 		textArea.setText(value)
 	}
 
 
-	private fun getCollision(pos: Vector3d): Vector3d? {
-		if (pos.z < 10.0 || pos.z > 300.0) {
-			return Vector3d.Z
+	private fun getPenetrationDepth(line: Line3d): Double? {
+		val p1 = getPenetrationWithFloor(line, 10.0)
+		if (p1 != null) return p1
+
+		val p2 = getPenetrationWithFloor(Line3d(Vector3d(line.v0.x, line.v0.y, -line.v0.z), Vector3d(line.v1.x, line.v1.y, -line.v1.z)), -300.0)
+		if (p2 != null) return p2
+		return null
+	}
+
+	private fun getPenetrationWithFloor(line: Line3d, floor:Double): Double? {
+		val z0 = line.v0.z - floor
+		val z1 = line.v1.z - floor
+
+		if (z0 < 0.0 || z1 < 0.0) {
+			if (z0 < 0.0) {
+				//	Начало погружено
+				return 1.0
+			} else {
+				//	Конец погружен
+				val f = z1 / (z1 - z0)
+				if(f < 0.0 || f > 1.0) {
+					throw Error("Invalid depth: $f")
+				}
+				return f
+			}
 		}
 		return null
 	}
@@ -101,15 +124,15 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		cameraPivotHelper.position = plainCamera.plainController.pivot.toVector3()
 
 		if (scene.activeCamera == mainCamera) {
-			cameraCenterHelper.parent = plainCamera.source
-		} else if (scene.activeCamera == plainCamera.source) {
+			cameraCenterHelper.parent = plainCamera.nativeCamera
+		} else if (scene.activeCamera == plainCamera.nativeCamera) {
 			cameraCenterHelper.parent = mainCamera
 		}
 	}
 
 	private fun switchCamera() {
 		if (scene.activeCamera == mainCamera) {
-			scene.activeCamera = plainCamera.source
+			scene.activeCamera = plainCamera.nativeCamera
 			scene.clearColor = Color4.FromColor3(PURPLE, 1.0)
 			println("now test camera")
 		} else {

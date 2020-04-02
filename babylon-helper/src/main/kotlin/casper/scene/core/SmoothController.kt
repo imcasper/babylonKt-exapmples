@@ -3,36 +3,30 @@ package casper.scene.core
 import BABYLON.EventState
 import BABYLON.Scene
 import casper.geometry.Transform
-import casper.geometry.interpolateQuaternion
+import casper.geometry.interpolateTransform
 import casper.math.clamp
-import kotlin.math.absoluteValue
-import kotlin.math.sqrt
+import kotlin.math.PI
+import kotlin.math.cos
 
-class SmoothController(val camera: TransformHolder, val scene: Scene, val speed: Double = 50.0) : TransformHolder {
-	private var start: Transform = camera.transform
+class SmoothController(val nextHolder: TransformHolder, val scene: Scene, val baseDuration: Double = 0.5) : TransformHolder {
+	private var start: Transform = nextHolder.transform
 	private var finish: Transform = start
-	private var timeFactor = 0.0
+	private var timeFactor = Double.NaN
 	private var duration = 0.0
 
 	override var transform: Transform
 		get() = finish
 		set(target) {
+			val last = nextHolder.transform
+			start = if (last.isValid()) last else target
+			finish = target
 
-			val cos = finish.orientation.dot(start.orientation)
-			if (cos > 0.999) {
-				start = camera.transform
-				finish = target
+			if (!timeFactor.isFinite()) {
+				duration = baseDuration
 				timeFactor = 0.0
-				duration = 1.0
 			} else {
-				start = target
-				finish = target
-				duration = 1.0
-				timeFactor = 1.0
-			}
-
-			if (!start.isValid()) {
-				start = finish
+				duration =baseDuration - timeFactor * baseDuration
+				timeFactor = 0.0
 			}
 		}
 
@@ -43,14 +37,13 @@ class SmoothController(val camera: TransformHolder, val scene: Scene, val speed:
 	}
 
 	private fun update(deltaTime: Double) {
-		timeFactor = (timeFactor + deltaTime / duration).clamp(0.0, 1.0)
-//		val scaleFactor = (1.0 - cos(timeFactor * PI)) / 2.0
-		camera.transform = interpolateTransform(start, finish, timeFactor)
-	}
+		if (!timeFactor.isFinite()) return
 
-	private fun interpolateTransform(A: Transform, B: Transform, factor: Double): Transform {
-		val pos = A.position * (1.0 - factor) + B.position * factor
-		val Q = interpolateQuaternion(A.orientation, B.orientation, factor)
-		return Transform(pos, Q)
+		timeFactor = (timeFactor + deltaTime / duration).clamp(0.0, 1.0)
+		val scaleFactor = (1.0 - cos(timeFactor * PI)) / 2.0
+
+		nextHolder.transform = interpolateTransform(start, finish, scaleFactor)
+
+		if (timeFactor >= 1.0) timeFactor = Double.NaN
 	}
 }

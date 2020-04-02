@@ -4,6 +4,7 @@ import BABYLON.Color3
 import BABYLON.Color4
 import BABYLON.Ray
 import BABYLON.Vector3
+import casper.geometry.Quaternion
 import casper.geometry.Vector3d
 import casper.geometry.polygon.Line3d
 import casper.math.clamp
@@ -37,4 +38,12 @@ fun Ray.toLine(maxLength: Double): Line3d {
 fun Line3d.toRay(): Ray {
 	val size = v1.length()
 	return Ray(v0.toVector3(), (v1 / size).toVector3(), size)
+}
+
+fun Quaternion.toQuaternion(): BABYLON.Quaternion {
+	return BABYLON.Quaternion(x, y, z, w)
+}
+
+fun BABYLON.Quaternion.toQuaternion(): Quaternion {
+	return Quaternion(x, y, z, w)
 }

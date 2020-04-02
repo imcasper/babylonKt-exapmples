@@ -4,11 +4,12 @@ import BABYLON.*
 import BABYLON.Debug.AxesViewer
 import casper.geometry.Transform
 import casper.geometry.Vector3d
+import casper.geometry.aabb.AABBox3d
 import casper.geometry.polygon.Line3d
+import casper.geometry.polygon.Sphere3d
 import casper.geometry.polygon.direction
-import casper.geometry.polygon.length
+import casper.geometry.polygon.intersectionAABBoxWithSphere
 import casper.gui.UIScene
-import casper.math.EPSILON
 import casper.scene.camera.PlainCamera
 import casper.scene.camera.PlainCameraInputSettings
 import casper.types.GRAY
@@ -40,9 +41,10 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		mainCamera.upVector = Vector3(0.0, 0.0, 1.0)
 		mainCamera.attachControl(scene.getEngine().getRenderingCanvas()!!)
 
-		plainCamera = PlainCamera(scene, uiScene.sceneDispatcher, PlainCameraInputSettings(), ::onTranslationPivot, ::getPenetrationDepth)
+		plainCamera = PlainCamera(scene, uiScene.sceneDispatcher, PlainCameraInputSettings(), ::onTranslationPivot, ::getPenetrationResolver)
 		plainCamera.camera.transform = Transform.fromYAxis(Vector3d(32.0), Vector3d(1.0, 1.0, -1.0), Vector3d.Z)
-
+		plainCamera.nativeCamera.minZ = 0.5
+		plainCamera.nativeCamera.maxZ = 1500.0
 		scene.activeCamera = mainCamera
 		switchCamera()
 
@@ -53,7 +55,7 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		}
 
 		val land = MeshBuilder.CreateBox("BOX", BoxOptions(width = 128.0, height = 128.0, depth = 1.0), scene)
-		land.position = Vector3(64.0, 64.0, 0.5)
+		land.position = Vector3(64.0, 64.0, 0.0)
 
 		val randomSource = Random(0)
 		val linRandom = {
@@ -66,7 +68,7 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		for (i in 1..50) {
 			val w = (sqrRandom() * 16.0 + 4.0).roundToInt().toDouble()
 			val h = (sqrRandom() * 16.0 + 4.0).roundToInt().toDouble()
-			val d = (sqrRandom() * 16.0 + 4.0).roundToInt().toDouble()
+			val d = (sqrRandom() * 8.0 + 4.0).roundToInt().toDouble()
 
 			val x = (linRandom() * 128.0).roundToInt().toDouble()
 			val y = (linRandom() * 128.0).roundToInt().toDouble()
@@ -75,7 +77,7 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 			val g = linRandom() * 0.7 + 0.3
 			val b = linRandom() * 0.7 + 0.3
 
-			val box = MeshBuilder.CreateBox("BOX", BoxOptions(width = w, height = h, depth = d), scene)
+			val box = MeshBuilder.CreateBox("BOX$i", BoxOptions(width = w, height = h, depth = d), scene)
 			box.position = Vector3(x, y, d * 0.5)
 
 			val material = StandardMaterial("", scene)
@@ -100,32 +102,36 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		textArea.setText(value)
 	}
 
+	private fun getPenetrationResolver(position: Vector3d): Vector3d? {
+		val cameraSphere = Sphere3d(position, 1.0)
 
-	private fun getPenetrationDepth(line: Line3d): Vector3d? {
-		val info = scene.pickWithRay(line.toRay(), {
-			it.name == "BOX"
-		})
-		val point = info?.pickedPoint
-		if (point != null && point.length().isFinite()) {
-			val destToPoint = (line.v1 - point.toVector3d()).length()
-			val length =   line.length()
-			if (destToPoint <= length) {
-				val pp = point.toVector3d() - line.direction() * 0.01
-				println(pp.toPrecision(2))
-				return pp
+		scene.meshes.forEach {
+			if (it.name.contains("BOX")) {
+				val box = it.getBoundingInfo().boundingBox
+				val min = box.minimumWorld.toVector3d()
+				val max = box.maximumWorld.toVector3d()
+
+				val info = intersectionAABBoxWithSphere(AABBox3d(min, max), cameraSphere)
+				if (info != null) {
+					println("Collision with ${it.name}: ${info.direction()}")
+					return info.direction()
+				}
 			}
 		}
-		val p1 = getPenetrationWithFloor(line, 10.0)
-		if (p1 != null) {
-			println(p1.toPrecision(2))
-			return p1 + Vector3d.Z *  0.01
+
+
+		if (position.z < 0.5 + cameraSphere.range) {
+			val res = Vector3d(0.0, 0.0, (0.5 + cameraSphere.range) - position.z)
+			println("Collision with floor: ${res.toPrecision(2)}")
+			return res
 		}
 
-		val p2 = getPenetrationWithFloor(Line3d(Vector3d(line.v0.x, line.v0.y, -line.v0.z), Vector3d(line.v1.x, line.v1.y, -line.v1.z)), -300.0)
-		if (p2 != null) {
-			println(p2.toPrecision(2))
-			return Vector3d(p2.x, p2.y, -p2.z) - Vector3d.Z *  0.01
+		if (position.z > 300.0 - cameraSphere.range) {
+			val res = Vector3d(0.0, 0.0, (300.0 - cameraSphere.range) - position.z)
+			println("Collision with roof: ${res.toPrecision(2)}")
+			return res
 		}
+
 		return null
 	}
 

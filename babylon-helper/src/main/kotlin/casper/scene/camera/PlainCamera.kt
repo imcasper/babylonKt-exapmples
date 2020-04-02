@@ -11,18 +11,18 @@ import casper.scene.core.CollisionController
 import casper.scene.core.UpController
 
 /**
- * 	@param getPivotPoint		поиск опорной для камеры точки (дается луч исходящий из камеры)
- * 	@param getPenetrationDepth - нормированная глубина проникновения отрезка в тело. Глубина считается от конца отрезка. Максимум -- 1.0 (на всю длину)
+ * 	@param getPivotPoint		поиск опорной точки для камеры  (дается луч исходящий из камеры)
+ * 	@param getPenetrationResolver - Вектор проникновения отрезка в тело (куда двигать камеру, чтобы избежать проникновения)
  */
-class PlainCamera(scene: Scene, inputDispatcher: InputDispatcher, settings: PlainCameraInputSettings, getPivotPoint: (Line3d) -> Vector3d?, getPenetrationDepth: (Line3d) -> Vector3d?) : Disposable {
+class PlainCamera(scene: Scene, inputDispatcher: InputDispatcher, settings: PlainCameraInputSettings, getPivotPoint: (Line3d) -> Vector3d?, getPenetrationResolver: (Vector3d) -> Vector3d?) : Disposable {
 	val nativeCamera = createIdentityCamera(scene, "plain-camera")
 	val camera = BabylonCamera(nativeCamera)
 
 //	val smoothController =SmoothController(camera, scene)
 //	val upController = TargetController(camera)
-	val upController = UpController(camera)
-	val collisionController = CollisionController(upController, getPenetrationDepth)
-	val plainController = PlainCameraController(scene, collisionController, Vector3d.Z)
+	val collisionController = CollisionController(camera, getPenetrationResolver)
+	val upController = UpController(collisionController)
+	val plainController = PlainCameraController(scene, upController, Vector3d.Z)
 	val input = PlainCameraInput(scene, inputDispatcher, plainController, settings, getPivotPoint)
 
 

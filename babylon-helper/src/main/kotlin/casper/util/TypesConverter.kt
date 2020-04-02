@@ -7,8 +7,6 @@ import BABYLON.Vector3
 import casper.geometry.Quaternion
 import casper.geometry.Vector3d
 import casper.geometry.polygon.Line3d
-import casper.geometry.polygon.direction
-import casper.geometry.polygon.length
 import casper.math.clamp
 import casper.types.Color3d
 import casper.types.Color4d

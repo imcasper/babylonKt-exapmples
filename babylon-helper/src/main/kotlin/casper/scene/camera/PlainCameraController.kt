@@ -19,11 +19,25 @@ class PlainCameraController(val scene: Scene, val camera: TransformHolder, var p
 	fun rotate(yaw: Double, pitch: Double) {
 		camera.transform = rotateByAngle(camera.transform, pivot, yaw, plainNormal)
 		camera.transform = rotateByAngle(camera.transform, pivot, pitch, camera.transform.getLocalX())
+//		camera.transform = pitchTransform(camera.transform, pitch)
 	}
 
+	private fun pitchTransform(transform: Transform, pitch: Double): Transform {
+		val lastPosition = camera.transform.position
+		val lastForward = pivot - lastPosition
+
+		val nextPosition = lastPosition + plainNormal * pitch * translateSpeedFactor
+		val nextForward = pivot - nextPosition
+
+		val rotation = Quaternion.getRotation(lastForward, nextForward).normalize()
+
+		return Transform(nextPosition, rotation * transform.orientation)
+	}
+
+	val translateSpeedFactor: Double get() = sqrt((camera.transform.position.z - pivot.z).absoluteValue).clamp(0.1, 10.0)
+
 	fun zoom(zFactor: Double) {
-		val zoomSpeedFactor = sqrt((camera.transform.position.z - pivot.z).absoluteValue).clamp(0.1, 10.0)
-		camera.transform = distance(camera.transform, zFactor * zoomSpeedFactor)
+		camera.transform = distance(camera.transform, zFactor * translateSpeedFactor)
 	}
 
 	companion object {

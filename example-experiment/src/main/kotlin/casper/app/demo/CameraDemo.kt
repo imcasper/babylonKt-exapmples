@@ -5,7 +5,9 @@ import BABYLON.Debug.AxesViewer
 import casper.geometry.Transform
 import casper.geometry.Vector3d
 import casper.geometry.polygon.Line3d
+import casper.geometry.polygon.length
 import casper.gui.UIScene
+import casper.math.EPSILON
 import casper.scene.camera.PlainCamera
 import casper.scene.camera.PlainCameraInputSettings
 import casper.types.GRAY
@@ -16,6 +18,7 @@ import casper.util.toVector3
 import casper.util.toVector3d
 import kotlin.Error
 import kotlin.math.PI
+import kotlin.math.pow
 import kotlin.random.Random
 
 class CameraDemo(val scene: Scene, val uiScene: UIScene) {
@@ -51,18 +54,25 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		val land = MeshBuilder.CreateBox("BOX", BoxOptions(width = 128.0, height = 128.0, depth = 1.0), scene)
 		land.position = Vector3(64.0, 64.0, 0.5)
 
-		val random = Random(0)
-		for (i in 1..100) {
-			val w = random.nextDouble() * 3.0 + 3.0
-			val h = random.nextDouble() * 3.0 + 3.0
-			val d = random.nextDouble() * 6.0 + 1.0
+		val randomSource = Random(0)
+		val linRandom = {
+			randomSource.nextDouble()
+		}
+		val sqrRandom = {
+			randomSource.nextDouble().pow(2)
+		}
 
-			val x = random.nextDouble() * 128.0
-			val y = random.nextDouble() * 128.0
+		for (i in 1..50) {
+			val w = sqrRandom() * 16.0 + 4.0
+			val h = sqrRandom() * 16.0 + 4.0
+			val d = sqrRandom() * 16.0 + 4.0
 
-			val r = random.nextDouble() * 0.7 + 0.3
-			val g = random.nextDouble() * 0.7 + 0.3
-			val b = random.nextDouble() * 0.7 + 0.3
+			val x = linRandom() * 128.0
+			val y = linRandom() * 128.0
+
+			val r = linRandom() * 0.7 + 0.3
+			val g = linRandom() * 0.7 + 0.3
+			val b = linRandom() * 0.7 + 0.3
 
 			val box = MeshBuilder.CreateBox("BOX", BoxOptions(width = w, height = h, depth = d), scene)
 			box.position = Vector3(x, y, d * 0.5)
@@ -91,6 +101,17 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 
 
 	private fun getPenetrationDepth(line: Line3d): Double? {
+		val info = scene.pickWithRay(line.toRay(), {
+			it.name == "BOX"
+		})
+		val point = info?.pickedPoint
+		if (point != null && point.length().isFinite()) {
+			val destToPoint = (line.v1 - point.toVector3d()).length()
+			val length =   line.length()
+			if (destToPoint <= length) {
+				return destToPoint / length
+			}
+		}
 		val p1 = getPenetrationWithFloor(line, 10.0)
 		if (p1 != null) return p1
 

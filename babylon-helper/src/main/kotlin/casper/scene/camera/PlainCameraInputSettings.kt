@@ -9,5 +9,5 @@ class PlainCameraInputSettings(
 
 		val yawSpeed: Double = 10.0,
 		val pitchSpeed: Double = 5.0,
-		val zoomSpeed: Double = 5.0
+		val zoomSpeed: Double = 2.0
 )

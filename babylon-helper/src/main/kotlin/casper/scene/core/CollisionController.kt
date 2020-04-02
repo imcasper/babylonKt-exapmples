@@ -14,10 +14,10 @@ class CollisionController(val nextHolder: TransformHolder, val getPenetrationDep
 			val next = target
 			val depth = getPenetrationDepth(Line3d(last.position, next.position))
 
-			if (depth == null) {
+			if (depth == null || depth >= 1.0) {
 				nextHolder.transform = next
 			} else {
-				val factor = depth.clamp(0.0, 1.0) + EPSILON
+				val factor = (depth + EPSILON).clamp(0.0, 1.0)
 				nextHolder.transform = interpolateTransform(next, last, factor)
 			}
 		}

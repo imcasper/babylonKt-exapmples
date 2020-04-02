@@ -14,7 +14,7 @@ import casper.scene.core.UpController
  * 	@param getPivotPoint		поиск опорной для камеры точки (дается луч исходящий из камеры)
  * 	@param getPenetrationDepth - нормированная глубина проникновения отрезка в тело. Глубина считается от конца отрезка. Максимум -- 1.0 (на всю длину)
  */
-class PlainCamera(scene: Scene, inputDispatcher: InputDispatcher, settings: PlainCameraInputSettings, getPivotPoint: (Line3d) -> Vector3d?, getPenetrationDepth: (Line3d) -> Double?) : Disposable {
+class PlainCamera(scene: Scene, inputDispatcher: InputDispatcher, settings: PlainCameraInputSettings, getPivotPoint: (Line3d) -> Vector3d?, getPenetrationDepth: (Line3d) -> Vector3d?) : Disposable {
 	val nativeCamera = createIdentityCamera(scene, "plain-camera")
 	val camera = BabylonCamera(nativeCamera)
 

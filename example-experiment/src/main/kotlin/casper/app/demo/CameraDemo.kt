@@ -5,6 +5,7 @@ import BABYLON.Debug.AxesViewer
 import casper.geometry.Transform
 import casper.geometry.Vector3d
 import casper.geometry.polygon.Line3d
+import casper.geometry.polygon.direction
 import casper.geometry.polygon.length
 import casper.gui.UIScene
 import casper.math.EPSILON
@@ -16,9 +17,9 @@ import casper.util.TextArea
 import casper.util.toRay
 import casper.util.toVector3
 import casper.util.toVector3d
-import kotlin.Error
 import kotlin.math.PI
 import kotlin.math.pow
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class CameraDemo(val scene: Scene, val uiScene: UIScene) {
@@ -63,12 +64,12 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		}
 
 		for (i in 1..50) {
-			val w = sqrRandom() * 16.0 + 4.0
-			val h = sqrRandom() * 16.0 + 4.0
-			val d = sqrRandom() * 16.0 + 4.0
+			val w = (sqrRandom() * 16.0 + 4.0).roundToInt().toDouble()
+			val h = (sqrRandom() * 16.0 + 4.0).roundToInt().toDouble()
+			val d = (sqrRandom() * 16.0 + 4.0).roundToInt().toDouble()
 
-			val x = linRandom() * 128.0
-			val y = linRandom() * 128.0
+			val x = (linRandom() * 128.0).roundToInt().toDouble()
+			val y = (linRandom() * 128.0).roundToInt().toDouble()
 
 			val r = linRandom() * 0.7 + 0.3
 			val g = linRandom() * 0.7 + 0.3
@@ -100,7 +101,7 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 	}
 
 
-	private fun getPenetrationDepth(line: Line3d): Double? {
+	private fun getPenetrationDepth(line: Line3d): Vector3d? {
 		val info = scene.pickWithRay(line.toRay(), {
 			it.name == "BOX"
 		})
@@ -109,32 +110,40 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 			val destToPoint = (line.v1 - point.toVector3d()).length()
 			val length =   line.length()
 			if (destToPoint <= length) {
-				return destToPoint / length
+				val pp = point.toVector3d() - line.direction() * 0.01
+				println(pp.toPrecision(2))
+				return pp
 			}
 		}
 		val p1 = getPenetrationWithFloor(line, 10.0)
-		if (p1 != null) return p1
+		if (p1 != null) {
+			println(p1.toPrecision(2))
+			return p1 + Vector3d.Z *  0.01
+		}
 
 		val p2 = getPenetrationWithFloor(Line3d(Vector3d(line.v0.x, line.v0.y, -line.v0.z), Vector3d(line.v1.x, line.v1.y, -line.v1.z)), -300.0)
-		if (p2 != null) return p2
+		if (p2 != null) {
+			println(p2.toPrecision(2))
+			return Vector3d(p2.x, p2.y, -p2.z) - Vector3d.Z *  0.01
+		}
 		return null
 	}
 
-	private fun getPenetrationWithFloor(line: Line3d, floor:Double): Double? {
+	private fun getPenetrationWithFloor(line: Line3d, floor: Double): Vector3d? {
 		val z0 = line.v0.z - floor
 		val z1 = line.v1.z - floor
 
 		if (z0 < 0.0 || z1 < 0.0) {
 			if (z0 < 0.0) {
 				//	Начало погружено
-				return 1.0
+				return line.v0
 			} else {
 				//	Конец погружен
 				val f = z1 / (z1 - z0)
-				if(f < 0.0 || f > 1.0) {
+				if (f < 0.0 || f > 1.0) {
 					throw Error("Invalid depth: $f")
 				}
-				return f
+				return line.v0 * f + line.v1 * (1.0 - f)
 			}
 		}
 		return null

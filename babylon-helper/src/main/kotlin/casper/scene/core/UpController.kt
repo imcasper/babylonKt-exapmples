@@ -9,7 +9,7 @@ import casper.math.EPSILON
 import casper.math.clamp
 import kotlin.math.PI
 
-class UpController(val nextHolder: TransformHolder, val minAngle: Double = PI * 0.05, val maxAngle: Double = PI * 0.55, val preferredUp: Vector3d = Vector3d.Z) : TransformHolder {
+class UpController(val nextHolder: TransformHolder, val minAngle: Double = -PI * 0.55, val maxAngle: Double = PI * 0.55, val preferredUp: Vector3d = Vector3d.Z) : TransformHolder {
 	init {
 		if (minAngle >= maxAngle) {
 			throw Error("minangle=${minAngle.toPrecision(2)} must be smaller than maxangle=${maxAngle.toPrecision(2)}")

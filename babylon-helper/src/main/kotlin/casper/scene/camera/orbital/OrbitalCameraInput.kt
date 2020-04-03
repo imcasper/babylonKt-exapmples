@@ -1,29 +1,28 @@
-package casper.scene.camera
+package casper.scene.camera.orbital
 
-import BABYLON.Matrix
+import BABYLON.EventState
 import BABYLON.Scene
 import casper.core.Disposable
 import casper.core.DisposableHolder
 import casper.geometry.Vector2d
-import casper.geometry.Vector3d
-import casper.geometry.polygon.Line3d
 import casper.input.*
 import casper.math.clamp
 import casper.platform.lockCursor
 import casper.platform.unlockCursor
 import casper.signal.util.then
-import casper.util.toLine
 import kotlin.browser.document
 
 
 /**
  * 	Действия пользователя преобразует в команды камере
  */
-class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, val controller: PlainCameraController, val settings: PlainCameraInputSettings, val onPivot: (Line3d) -> Vector3d?) : Disposable {
+class OrbitalCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, val camera:OrbitalCameraController, val settings:OrbitalCameraInputSettings) : Disposable {
 	private val holder = DisposableHolder()
 	private val actionHolder = DisposableHolder()
 	private var rotation = false
 	private var translation = false
+
+	private var zoomAccumulated = 0.0
 
 	init {
 		inputDispatcher.onMouseWheel.then(holder, ::onMouseWheel)
@@ -31,6 +30,19 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, v
 
 		document.addEventListener("mouseout", {
 			dropMouse()
+		})
+
+		scene.onBeforeRenderObservable.add({_:Scene, _:EventState->
+			val fractional = 0.2
+
+			if (zoomAccumulated >= fractional) {
+				zoomAccumulated -= fractional
+				camera.zoom(settings.zoomSpeed * fractional)
+			} else 			if (zoomAccumulated <=-fractional) {
+				zoomAccumulated += fractional
+				camera.zoom(-settings.zoomSpeed * fractional)
+			}
+
 		})
 	}
 
@@ -40,8 +52,7 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, v
 	}
 
 	private fun onMouseWheel(it: MouseWheel) {
-		updatePivot(it.position)
-		controller.zoom(it.wheel.clamp(-1.0, 1.0) * settings.zoomSpeed)
+		zoomAccumulated += it.wheel.clamp(-1.0, 1.0)
 	}
 
 	private fun dropMouse() {
@@ -53,12 +64,10 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, v
 
 	private fun onMouseDown(it: MouseDown) {
 		if (it.button == settings.rotateButton) {
-			updatePivot(it.position)
 			lockCursor()
 			rotation = true
 			refreshActionListeners()
 		} else if (it.button == settings.translateButton) {
-			updatePivot(it.position)
 			translation = true
 			refreshActionListeners()
 		}
@@ -82,13 +91,13 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, v
 		if (rotation) {
 			val yaw = -movementNormalized.x * settings.yawSpeed
 			val pitch = -movementNormalized.y * settings.pitchSpeed
-			controller.rotate(yaw, pitch)
+			camera.rotate(yaw, pitch)
 		}
 
 		if (translation) {
-			val forward = -movementNormalized.y
-			val right = movementNormalized.x
-			controller.translate(right, forward)
+			val forward = -movementNormalized.y * settings.translateSpeed
+			val right = movementNormalized.x * settings.translateSpeed
+			camera.translate(right, forward)
 		}
 	}
 
@@ -111,15 +120,5 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, v
 		val canvas = scene.getEngine().getRenderingCanvas()!!
 		val viewportSize = Vector2d(canvas.width.toDouble(), canvas.height.toDouble())
 		return movement / viewportSize
-	}
-
-	private fun updatePivot(pointerPosition: Vector2d) {
-		val camera = scene.activeCamera
-		val length = camera?.maxZ ?: 1e9
-		val ray = scene.createPickingRay(pointerPosition.x, pointerPosition.y, Matrix.Identity(), scene.activeCamera)
-		val pivot = onPivot(ray.toLine(length))
-		if (pivot != null) {
-			controller.pivot = pivot
-		}
 	}
 }

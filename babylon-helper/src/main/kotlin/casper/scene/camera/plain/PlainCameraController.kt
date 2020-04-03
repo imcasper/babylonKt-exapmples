@@ -1,4 +1,4 @@
-package casper.scene.camera
+package casper.scene.camera.plain
 
 import BABYLON.Scene
 import casper.geometry.Quaternion
@@ -83,6 +83,5 @@ class PlainCameraController(val scene: Scene, val camera: TransformHolder, var p
 
 			return Transform(state.position + offset, state.orientation)
 		}
-
 	}
 }

@@ -1,4 +1,4 @@
-package casper.scene.camera
+package casper.scene.camera.plain
 
 import BABYLON.Scene
 import BABYLON.TargetCamera
@@ -7,6 +7,7 @@ import casper.core.Disposable
 import casper.geometry.Vector3d
 import casper.geometry.polygon.Line3d
 import casper.input.InputDispatcher
+import casper.scene.camera.BabylonCamera
 import casper.scene.core.CollisionController
 import casper.scene.core.ContinuousPenetrationDetector
 import casper.scene.core.UpController

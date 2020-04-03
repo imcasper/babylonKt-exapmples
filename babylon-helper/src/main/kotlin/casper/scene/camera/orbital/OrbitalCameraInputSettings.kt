@@ -1,13 +1,15 @@
-package casper.scene.camera
+package casper.scene.camera.orbital
 
 import casper.input.MouseButton
 
 
-class PlainCameraInputSettings(
+class OrbitalCameraInputSettings(
+		val cameraSettings: OrbitalCameraSettings = OrbitalCameraSettings(),
 		val rotateButton: MouseButton = MouseButton.MIDDLE,
 		val translateButton: MouseButton = MouseButton.RIGHT,
 
 		val yawSpeed: Double = 10.0,
 		val pitchSpeed: Double = 5.0,
-		val zoomSpeed: Double = 2.0
+		val zoomSpeed: Double = 20.0,
+		val translateSpeed: Double = 5.0
 )

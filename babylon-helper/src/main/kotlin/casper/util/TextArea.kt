@@ -10,7 +10,7 @@ class TextArea(val scene: Scene, customRoot: Container? = null) {
 
 	init {
 		output.text = "";
-		output.color = "black";
+		output.color = "red";
 		output.fontSize = 16;
 		output.height = "180px";
 		output.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT

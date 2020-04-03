@@ -10,6 +10,7 @@ import BABYLON.extension.createScene
 import BABYLON.extension.runRenderLoop
 import babylon.BabylonUIScene
 import casper.app.demo.CameraDemo
+import casper.app.demo.PenetrationDemo
 import casper.asset.AssetManager
 import casper.asset.Assets
 import casper.gui.UIScene
@@ -21,7 +22,7 @@ fun main() {
 
 	val uiScene:UIScene = BabylonUIScene(scene)
 	CameraDemo(scene, uiScene)
-
+//	PenetrationDemo(scene, uiScene)
 	SceneLoader.ShowLoadingScreen = false
 		val environmentTexture = CubeTexture("skybox.dds", scene, prefiltered = false, createPolynomials = false)
 		scene.environmentTexture = environmentTexture

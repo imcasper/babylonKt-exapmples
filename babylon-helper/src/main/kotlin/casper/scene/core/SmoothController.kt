@@ -18,7 +18,7 @@ class SmoothController(val nextHolder: TransformHolder, val scene: Scene, val ba
 		get() = finish
 		set(target) {
 			val last = nextHolder.transform
-			start = if (last.isValid()) last else target
+			start = if (last.isFinite()) last else target
 			finish = target
 
 			if (!timeFactor.isFinite()) {

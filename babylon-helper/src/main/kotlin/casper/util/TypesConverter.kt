@@ -1,11 +1,9 @@
 package casper.util
 
-import BABYLON.Color3
-import BABYLON.Color4
-import BABYLON.Ray
-import BABYLON.Vector3
+import BABYLON.*
 import casper.geometry.Quaternion
 import casper.geometry.Vector3d
+import casper.geometry.aabb.AABBox3d
 import casper.geometry.polygon.Line3d
 import casper.math.clamp
 import casper.types.Color3d
@@ -48,4 +46,14 @@ fun Quaternion.toQuaternion(): BABYLON.Quaternion {
 
 fun BABYLON.Quaternion.toQuaternion(): Quaternion {
 	return Quaternion(x, y, z, w)
+}
+
+fun AbstractMesh.getBoundingBox(): AABBox3d {
+	return convertToBox(this.getBoundingInfo().boundingBox)
+}
+
+fun convertToBox(boundingBox: BoundingBox): AABBox3d {
+	val minCorner = boundingBox.minimumWorld.toVector3d()
+	val maxCorner = boundingBox.maximumWorld.toVector3d()
+	return AABBox3d(minCorner, maxCorner)
 }

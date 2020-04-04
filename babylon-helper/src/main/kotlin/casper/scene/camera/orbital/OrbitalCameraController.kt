@@ -41,10 +41,11 @@ class OrbitalCameraController(val camera: Camera, var settings:OrbitalCameraSett
 	}
 
 	fun translate(right: Double, forward: Double) {
-		val forwardProjection = getProjectionOnPlaneX(Vector3d.X, Vector3d.Y, camera.transform.getLocalY())
-		val rightProjection = getProjectionOnPlaneX(Vector3d.X, Vector3d.Y, camera.transform.getLocalX())
+		val rangeFactor = 1.0 + position.range
+		val forwardProjection = getProjectionOnPlaneX(Vector3d.X, Vector3d.Y, camera.transform.getLocalY()).normalize()
+		val rightProjection = getProjectionOnPlaneX(Vector3d.X, Vector3d.Y, camera.transform.getLocalX()).normalize()
 
-		setPivot(pivot - (forwardProjection * forward + rightProjection * right) * 100.0)
+		setPivot(pivot - (forwardProjection * forward + rightProjection * right) * rangeFactor * 0.25)
 	}
 
 	fun rotate(yaw: Double, pitch: Double) {

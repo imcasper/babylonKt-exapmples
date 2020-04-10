@@ -45,6 +45,7 @@ fun Node.stopAnimation() {
  */
 fun Node.pauseAnimation() {
 	forEachAnimatable {
+
 		it.pause()
 	}
 }
@@ -60,13 +61,22 @@ fun Node.resumeAnimation() {
 /**
  *	Выбираем нужный кадр в анимации (рекурсивно)
  */
-fun Node.setAnimationFrame(frame: Double) {
-	createAnimation(this, true, 1.0)
+fun Node.setAnimationFrame(frame: Double, speedRatio: Double = 1.0) {
+	createAnimation(this, true, speedRatio)
 	forChildren {
-		createAnimation(it, true, 1.0)
+		createAnimation(it, true, speedRatio)
 	}
 	forEachAnimatable {
 		it.goToFrame(frame)
 		it.pause()
+	}
+}
+
+/**
+ *	Задаем скорость анимации
+ */
+fun Node.setAnimationSpeed(speedRatio: Double = 1.0) {
+	forEachAnimatable {
+		it.speedRatio = speedRatio
 	}
 }

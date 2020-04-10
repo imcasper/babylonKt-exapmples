@@ -4,6 +4,8 @@ import BABYLON.Matrix
 import BABYLON.Scene
 import casper.core.Disposable
 import casper.core.DisposableHolder
+import casper.core.disposeAll
+import casper.core.mutableDisposableListOf
 import casper.geometry.Vector2d
 import casper.geometry.Vector3d
 import casper.geometry.polygon.Line3d
@@ -19,15 +21,14 @@ import kotlin.browser.document
 /**
  * 	Действия пользователя преобразует в команды камере
  */
-class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, val controller: PlainCameraController, val settings: PlainCameraInputSettings, val onPivot: (Line3d) -> Vector3d?) : Disposable {
-	private val holder = DisposableHolder()
-	private val actionHolder = DisposableHolder()
+class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, val controller: PlainCameraController, val settings: PlainCameraInputSettings, val onPivot: (Line3d) -> Vector3d?) : DisposableHolder() {
+	private val actionHolder = mutableDisposableListOf()
 	private var rotation = false
 	private var translation = false
 
 	init {
-		inputDispatcher.onMouseWheel.then(holder, ::onMouseWheel)
-		inputDispatcher.onMouseDown.then(holder, ::onMouseDown)
+		inputDispatcher.onMouseWheel.then(components, ::onMouseWheel)
+		inputDispatcher.onMouseDown.then(components, ::onMouseDown)
 
 		document.addEventListener("mouseout", {
 			dropMouse()
@@ -35,8 +36,8 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, v
 	}
 
 	override fun dispose() {
-		holder.dispose()
-		actionHolder.dispose()
+		super.dispose()
+		actionHolder.disposeAll()
 	}
 
 	private fun onMouseWheel(it: MouseWheel) {
@@ -65,7 +66,7 @@ class PlainCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, v
 	}
 
 	private fun refreshActionListeners() {
-		actionHolder.removeAllDisposable()
+		actionHolder.disposeAll()
 		if (rotation || translation) {
 			inputDispatcher.onMouseMove.then(actionHolder, ::onMouseMove)
 			inputDispatcher.onMouseUp.then(actionHolder, ::onMouseUp)

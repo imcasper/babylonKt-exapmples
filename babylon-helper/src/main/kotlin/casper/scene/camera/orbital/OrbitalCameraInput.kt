@@ -2,8 +2,9 @@ package casper.scene.camera.orbital
 
 import BABYLON.EventState
 import BABYLON.Scene
-import casper.core.Disposable
 import casper.core.DisposableHolder
+import casper.core.disposeAll
+import casper.core.mutableDisposableListOf
 import casper.geometry.Vector2d
 import casper.input.*
 import casper.math.clamp
@@ -11,48 +12,47 @@ import casper.platform.lockCursor
 import casper.platform.unlockCursor
 import casper.signal.util.then
 import kotlin.browser.document
+import kotlin.math.absoluteValue
+import kotlin.math.max
+import kotlin.math.min
 
 
 /**
  * 	Действия пользователя преобразует в команды камере
  */
-class OrbitalCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, val camera:OrbitalCameraController, val settings:OrbitalCameraInputSettings) : Disposable {
-	private val holder = DisposableHolder()
-	private val actionHolder = DisposableHolder()
+class OrbitalCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, val camera: OrbitalCameraController, val settings: OrbitalCameraInputSettings) : DisposableHolder() {
+	private val actionComponents = mutableDisposableListOf()
 	private var rotation = false
 	private var translation = false
 
 	private var zoomAccumulated = 0.0
+	private var zoomCurrent = 0.0
 
 	init {
-		inputDispatcher.onMouseWheel.then(holder, ::onMouseWheel)
-		inputDispatcher.onMouseDown.then(holder, ::onMouseDown)
+		inputDispatcher.onMouseWheel.then(components, ::onMouseWheel)
+		inputDispatcher.onMouseDown.then(components, ::onMouseDown)
 
 		document.addEventListener("mouseout", {
 			dropMouse()
 		})
 
-		scene.onBeforeRenderObservable.add({_:Scene, _:EventState->
-			val fractional = 0.2
-
-			if (zoomAccumulated >= fractional) {
-				zoomAccumulated -= fractional
-				camera.zoom(settings.zoomSpeed * fractional)
-			} else 			if (zoomAccumulated <=-fractional) {
-				zoomAccumulated += fractional
-				camera.zoom(-settings.zoomSpeed * fractional)
+		scene.onBeforeRenderObservable.add({ _: Scene, _: EventState ->
+			val currentChange = zoomAccumulated * settings.zoomSpeedFactor
+			if (currentChange.absoluteValue > 0.001) {
+				zoomAccumulated -= currentChange
+				camera.zoom(currentChange)
 			}
 
 		})
 	}
 
 	override fun dispose() {
-		holder.dispose()
-		actionHolder.dispose()
+		super.dispose()
+		actionComponents.disposeAll()
 	}
 
 	private fun onMouseWheel(it: MouseWheel) {
-		zoomAccumulated += it.wheel.clamp(-1.0, 1.0)
+		zoomAccumulated += it.wheel.clamp(-1.0, 1.0) * settings.zoomSpeed
 	}
 
 	private fun dropMouse() {
@@ -74,10 +74,10 @@ class OrbitalCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher,
 	}
 
 	private fun refreshActionListeners() {
-		actionHolder.removeAllDisposable()
+		actionComponents.disposeAll()
 		if (rotation || translation) {
-			inputDispatcher.onMouseMove.then(actionHolder, ::onMouseMove)
-			inputDispatcher.onMouseUp.then(actionHolder, ::onMouseUp)
+			inputDispatcher.onMouseMove.then(actionComponents, ::onMouseMove)
+			inputDispatcher.onMouseUp.then(actionComponents, ::onMouseUp)
 		}
 	}
 

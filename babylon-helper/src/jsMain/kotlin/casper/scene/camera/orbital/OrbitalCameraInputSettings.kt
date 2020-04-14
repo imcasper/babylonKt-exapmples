@@ -12,5 +12,5 @@ class OrbitalCameraInputSettings(
 		val pitchSpeed: Double = 5.0,
 		val zoomSpeed: Double = 20.0,
 		val zoomSpeedFactor : Double = 0.25,
-		val translateSpeed: Double = 5.0
+		val translateSpeed: Double = 1.0
 )

@@ -25,8 +25,6 @@ class OrbitalCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher,
 	private var rotation = false
 	private var translation = false
 
-	private var zoomAccumulated = 0.0
-	private var zoomCurrent = 0.0
 
 	init {
 		inputDispatcher.onMouseWheel.then(components, ::onMouseWheel)
@@ -34,15 +32,6 @@ class OrbitalCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher,
 
 		document.addEventListener("mouseout", {
 			dropMouse()
-		})
-
-		scene.onBeforeRenderObservable.add({ _: Scene, _: EventState ->
-			val currentChange = zoomAccumulated * settings.zoomSpeedFactor
-			if (currentChange.absoluteValue > 0.001) {
-				zoomAccumulated -= currentChange
-				camera.zoom(currentChange)
-			}
-
 		})
 	}
 
@@ -52,7 +41,8 @@ class OrbitalCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher,
 	}
 
 	private fun onMouseWheel(it: MouseWheel) {
-		zoomAccumulated += it.wheel.clamp(-1.0, 1.0) * settings.zoomSpeed
+		val currentChange = it.wheel.clamp(-1.0, 1.0) * settings.zoomSpeed
+		camera.zoom(currentChange)
 	}
 
 	private fun dropMouse() {

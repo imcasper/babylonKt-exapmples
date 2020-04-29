@@ -17,7 +17,8 @@ class OrbitalCameraController(var settings: OrbitalCameraSettings, val onState: 
 	private var pivot = Vector3d.ZERO
 
 	init {
-		dispatchState()
+		setPivot(pivot)
+		setPosition(position)
 	}
 
 	fun getPosition():SphericalCoordinate {

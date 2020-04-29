@@ -19,6 +19,22 @@ fun Material.forEachTexture(operation: (BaseTexture) -> Unit) {
 		reflectionTexture?.let { operation(it) }
 	}
 }
+
+fun Material.forEachTextureChange(operation: (BaseTexture) -> BaseTexture) {
+	if (this is PBRMaterial) {
+		albedoTexture?.let { albedoTexture = operation(it) }
+		ambientTexture?.let { ambientTexture = operation(it) }
+		bumpTexture?.let { bumpTexture = operation(it) }
+		emissiveTexture?.let { emissiveTexture = operation(it) }
+		lightmapTexture?.let { lightmapTexture = operation(it) }
+		metallicTexture?.let { metallicTexture = operation(it) }
+		microSurfaceTexture?.let { microSurfaceTexture = operation(it) }
+		opacityTexture?.let { opacityTexture = operation(it) }
+		reflectivityTexture?.let { reflectivityTexture = operation(it) }
+		reflectionTexture?.let { reflectionTexture = operation(it) }
+	}
+}
+
 fun Material.forEachColor(operation: (Color3) -> Unit) {
 	if (this is PBRMaterial) {
 		operation(albedoColor)

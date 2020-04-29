@@ -1,8 +1,8 @@
 package casper.util.atlas
 
-import BABYLON.Texture
+import org.w3c.dom.Image
 
-class AtlasPage(val texture: Texture, val info: AtlasPageInfo)
+class AtlasPage(val image: Image, val info: AtlasPageInfo)
 
 class Atlas(val pages: Map<String, AtlasPage>) {
 	fun getRegion(name: String): Pair<AtlasPage, AtlasRegion>? {

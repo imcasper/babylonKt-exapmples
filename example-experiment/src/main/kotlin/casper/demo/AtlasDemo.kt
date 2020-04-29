@@ -1,4 +1,4 @@
-package casper.render
+package casper.demo
 
 import BABYLON.Scene
 import BABYLON.extension.createScene

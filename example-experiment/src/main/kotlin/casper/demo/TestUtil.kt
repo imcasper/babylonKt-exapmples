@@ -1,4 +1,4 @@
-package casper.render
+package casper.demo
 
 import casper.format.toHexString
 import casper.types.Color4d

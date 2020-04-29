@@ -11,7 +11,7 @@ class TextureReplacer {
 
 		fun replace(data: ModelData, sourceTextureName: String?, targetTextureUrl: String): Map<Material, List<BaseTexture>> {
 			val map = mutableMapOf<Material, List<BaseTexture>>()
-			data.assetContainer.materials.forEach { material ->
+			data.materials.forEach { material ->
 				val textures = mutableListOf<BaseTexture>()
 				material.forEachTexture { texture ->
 					if (replaceTexture(texture, sourceTextureName, targetTextureUrl)) {

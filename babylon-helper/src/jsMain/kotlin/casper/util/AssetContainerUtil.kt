@@ -2,23 +2,31 @@ package casper.util
 
 import BABYLON.*
 
-fun AssetContainer.clone(): AssetContainer {
+class CloneSettings(
+		val cloneTexture:Boolean = true,
+		val cloneMaterial:Boolean = true,
+		val cloneGeometry:Boolean = true,
+		val cloneMesh:Boolean = true
+)
+
+fun AssetContainer.clone(settings: CloneSettings = CloneSettings()): AssetContainer {
 	val textureMap = linkedMapOf<BaseTexture, BaseTexture>()
 	val materialMap = linkedMapOf<Material, Material>()
 	val meshMap = linkedMapOf<AbstractMesh, AbstractMesh>()
 	val geometryMap = linkedMapOf<Geometry, Geometry>()
 
 	this.textures.forEach {
-		val copy = it.clone()
+		val copy = if (settings.cloneTexture) it.clone() else it
 		if (copy == null) {
 			textureMap.set(it, it)
 		} else {
+			copy.name = it.name
 			textureMap.set(it, copy)
 		}
 	}
 
 	this.materials.forEach {
-		val copy = it.clone(it.name)
+		val copy =if (settings.cloneMaterial) it.clone(it.name) else it
 		if (copy == null) {
 			materialMap.set(it, it)
 		} else {
@@ -60,13 +68,13 @@ fun AssetContainer.clone(): AssetContainer {
 	}
 
 	this.geometries.forEach {
-		val copy = it.copy(it.id)
+		val copy =if (settings.cloneGeometry)  it.copy(it.id) else it
 		geometryMap.set(it, copy)
 	}
 
 	this.meshes.forEach {
-		val copy = it.clone(it.name, it.parent)
-		if (copy is Mesh) {
+		val copy =if (settings.cloneMesh)   it.clone(it.name, it.parent) else it
+		if (settings.cloneMesh && copy is Mesh) {
 			scene.removeMesh(copy)
 		}
 

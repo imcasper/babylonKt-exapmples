@@ -102,7 +102,7 @@ class Model(data: ModelData, parent:TransformNode?=null, options: ModelCreateOpt
 		parts.addAll(instances)
 
 		if (!options.ignoresLights) {
-			data.assetContainer.lights.forEach {
+			data.lights.forEach {
 				//	light automatically added in clone
 				val light = it.clone(it.name)
 				if (light != null) {
@@ -111,7 +111,7 @@ class Model(data: ModelData, parent:TransformNode?=null, options: ModelCreateOpt
 			}
 		}
 		if (!options.ignoreCameras) {
-			data.assetContainer.cameras.forEach {
+			data.cameras.forEach {
 				//	todo: camera automatically added in clone?
 				val camera = it.clone(it.name)
 				parts.add(camera)

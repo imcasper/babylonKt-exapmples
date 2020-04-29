@@ -1,9 +1,9 @@
 package casper.voxel.app
 
+import casper.demo.CanvasDrawer
+import casper.demo.LineSupplier
 import casper.geometry.Vector2d
 import casper.geometry.polygon.setZ
-import casper.render.CanvasDrawer
-import casper.render.LineSupplier
 import casper.types.*
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement

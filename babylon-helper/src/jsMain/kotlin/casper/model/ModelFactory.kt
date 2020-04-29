@@ -2,28 +2,53 @@ package casper.model
 
 import BABYLON.*
 import casper.util.copyMeshState
-import kotlin.Error
+import casper.util.forEachTextureChange
 
 class ModelFactory {
 
 	companion object {
 
 		fun createModelData(scene: Scene, name: String, container: AssetContainer): ModelData {
-			val instances = mutableListOf<InstancedMesh>()
-			for (originalMesh in container.meshes) {
-				if (originalMesh is Mesh) {
-					instances += createInstancesFromMesh(originalMesh)
+			val textureMap = mutableMapOf<String, BaseTexture>()
+			val materialMap = mutableMapOf<String, Material>()
+			val meshList = mutableSetOf<Mesh>()
+			val geometryList = mutableSetOf<Geometry>()
 
-					originalMesh.geometry?.let { geometry ->
-						if (!container.geometries.contains(geometry)) {
-							container.geometries += geometry
-						}
-					}
-				} else {
-					throw Error("Unsupported mesh type: $originalMesh")
-				}
+			container.textures.forEach {
+				textureMap.getOrPut(it.name, { it })
 			}
-			return ModelData(name, scene, container, instances)
+
+			container.materials.forEach { material ->
+				materialMap.getOrPut(material.name, {
+
+					material.forEachTextureChange {
+						textureMap[it.name]
+								?: throw Error("Not found material by name: ${it.name}")
+					}
+
+					material
+				})
+			}
+
+			container.meshes.forEach { mesh ->
+				if (mesh !is Mesh)
+					throw Error("Must be simple mesh")
+
+				mesh.material?.let {
+					mesh.material = materialMap[it.name]
+							?: throw Error("Not found material by name: ${it.name}")
+				}
+
+				meshList.add(mesh)
+			}
+
+			val instances = mutableListOf<InstancedMesh>()
+			for (mesh in meshList) {
+				instances += createInstancesFromMesh(mesh)
+				mesh.geometry?.let { geometryList.add(it) }
+			}
+
+			return ModelData(name, scene, meshList.toList(), textureMap.values.toList(), materialMap.values.toList(), geometryList.toList(), container.lights.toList(), container.cameras.toList(), instances)
 		}
 
 		private fun createInstancesFromMesh(originalMesh: Mesh): List<InstancedMesh> {
@@ -31,7 +56,7 @@ class ModelFactory {
 			originalMesh.isVisible = false
 
 			val instances = originalMesh.instances.toMutableList()
-			instances.add( originalMesh.createInstance(originalMesh.name))
+			instances.add(originalMesh.createInstance(originalMesh.name))
 
 			instances.forEach {
 				scene.removeMesh(it)
@@ -53,7 +78,7 @@ class ModelFactory {
 				instances.add(instance)
 			}
 			//	need for change instance amount ^_^
-			data.assetContainer.meshes.forEach {
+			data.meshes.forEach {
 				it._resyncLightSources()
 			}
 			return instances
@@ -66,5 +91,29 @@ class ModelFactory {
 			scene.removeMesh(target)
 			return target
 		}
+
+		fun createInstanceList(scene: Scene, lastInstances: List<InstancedMesh>, lastMeshes: List<Mesh>, nextMeshes: List<Mesh>): List<InstancedMesh> {
+			val nextInstances = mutableListOf<InstancedMesh>()
+
+			lastInstances.forEach { lastMesh ->
+				val lastIndex = lastMeshes.indexOf(lastMesh.sourceMesh)
+				val sourceMeshInLast = lastMeshes.getOrNull(lastIndex)
+				val sourceMesh = nextMeshes.getOrNull(lastIndex)
+						?: throw Error("Not found source mesh")
+				sourceMesh as? Mesh
+						?: throw Error("Invalid mesh format")
+
+				if (sourceMeshInLast == sourceMesh) {
+					nextInstances.add(lastMesh)
+				} else {
+					val nextMesh = sourceMesh.createInstance(sourceMesh.name)
+					scene.removeMesh(nextMesh)
+					nextInstances.add(nextMesh)
+					copyMeshState(lastMesh, nextMesh)
+				}
+			}
+			return nextInstances
+		}
+
 	}
 }

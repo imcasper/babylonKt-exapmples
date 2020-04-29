@@ -1,7 +1,6 @@
 package casper.model
 
 import BABYLON.Geometry
-import BABYLON.Mesh
 import casper.util.atlas.Atlas
 
 class AtlasHelper {
@@ -21,17 +20,14 @@ class AtlasHelper {
 		fun replace(data: ModelData, sourceTextureName: String?, atlas: Atlas, imageName: String): Boolean {
 			val (page, converter) = UVReplacer.create(atlas, imageName)
 
-
 			val mapOfChanges = TextureReplacer.replace(data, sourceTextureName, page.info.name)
 			val geometries = mutableSetOf<Geometry>()
-			data.assetContainer.meshes.forEach { mesh ->
+			data.meshes.forEach { mesh ->
 				mesh.material?.let { material ->
 					mapOfChanges.get(material)?.forEach { texture ->
-						if (mesh is Mesh) {
-							mesh.geometry?.let { geometry ->
-								if (geometries.add(geometry)) {
-									UVReplacer.convertUV(geometry, texture.coordinatesIndex, converter)
-								}
+						mesh.geometry?.let { geometry ->
+							if (geometries.add(geometry)) {
+								UVReplacer.convertUV(geometry, texture.coordinatesIndex, converter)
 							}
 						}
 					}

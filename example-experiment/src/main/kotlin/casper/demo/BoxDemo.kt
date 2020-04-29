@@ -1,4 +1,4 @@
-package casper.render
+package casper.demo
 
 import casper.geometry.Vector2d
 import casper.geometry.Vector3d

@@ -1,19 +1,21 @@
 package casper.util.loader
 
 import BABYLON.Scene
-import BABYLON.Texture
+import casper.loader.createImageLoader
 import casper.signal.concrete.EitherFuture
 import casper.signal.concrete.EitherPromise
 import casper.signal.concrete.EitherSignal
 import casper.util.atlas.Atlas
 import casper.util.atlas.AtlasInfo
 import casper.util.atlas.AtlasPage
+import org.w3c.dom.Image
 
 fun createAtlas(scene: Scene, info: AtlasInfo): Atlas {
 	val pages = mutableMapOf<String, AtlasPage>()
 	info.pages.forEach { pageInfo ->
-		val texture = Texture(pageInfo.name, scene, false, true, Texture.TRILINEAR_SAMPLINGMODE)
-		pages.set(pageInfo.name, AtlasPage(texture, pageInfo))
+		val image = Image()
+		image.src = pageInfo.name
+		pages.set(pageInfo.name, AtlasPage(image, pageInfo))
 	}
 	return Atlas(pages)
 }
@@ -39,10 +41,18 @@ private fun checkImageAndCreateAtlas(future: EitherPromise<Atlas, String>, scene
 	var waiting = atlasInfo.pages.size
 
 	atlasInfo.pages.forEach { page ->
-		loadImage(page.name).then({
+		createImageLoader(page.name).then({
 			if (--waiting <= 0) {
 				val atlas = createAtlas(scene, atlasInfo)
-				future.accept(atlas)
+				var images = atlas.pages.size
+
+				atlas.pages.values.forEach {
+					if (!it.image.complete)
+						throw Error("Invalid image: $it")
+					if (--images <= 0) {
+						future.accept(atlas)
+					}
+				}
 			}
 		}, {
 			future.reject("Image ${page.name} loading for atlas failed: $it")

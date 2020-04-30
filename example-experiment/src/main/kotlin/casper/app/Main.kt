@@ -15,7 +15,7 @@ fun main() {
 
 	val node = Node()
 	node.vertices = listOf(Vertex(Vector3d(0.0), RED), Vertex(Vector3d(0.0, 1.0, 0.0), GREEN), Vertex(Vector3d(0.0, 0.0, 1.0), BLUE))
-	node.material = Material(roughness = ComponentConstant(0.1), metallic = ComponentConstant(0.2))
+	node.material = Material(roughness = ConstantFloatInput(0.1), metallic = ConstantFloatInput(0.2))
 
 	engine.root.children += node
 

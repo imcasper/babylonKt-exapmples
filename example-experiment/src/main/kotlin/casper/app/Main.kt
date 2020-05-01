@@ -12,7 +12,7 @@ fun main() {
 	val assets = AssetManager(engine.nativeScene)
 
 	createDefaultScene(engine.nativeScene)
-	assets.getSceneFuture("robot_builder.babylon").thenAccept { sceneData ->
+	assets.getSceneFuture("drill.babylon").thenAccept { sceneData ->
 		val modelNode1 = Node()
 		modelNode1.children += sceneData.nodeList
 		modelNode1.transform = Transform(Vector3d.ONE)

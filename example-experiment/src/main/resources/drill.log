@@ -1,0 +1,66 @@
+Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		Inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		Keep Z-up r-handed  :  yes
+		Texture directory   :  /home/casper/projects/babylonKt-examples/example-experiment/src/main/resources/
+	Python World class constructor completed
+	processing begun of mesh:  Cylinder
+		processing begun of material:  Iron
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_metall
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0052 secs
+		num positions      :  59
+		num normals        :  59
+		num tangents       :  0
+		num uvs            :  118
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  138
+	processing begun of mesh:  Cylinder.004
+		processing begun of material:  Paint2
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0042 secs
+		num positions      :  50
+		num normals        :  50
+		num tangents       :  0
+		num uvs            :  100
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  132
+	processing begun of mesh:  Plane
+		animation processing begun
+			processing action PlaneAction:  in[1 - 180], out[0 - 180]
+		processing begun of material:  Iron
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_metall
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0044 secs
+		num positions      :  262
+		num normals        :  262
+		num tangents       :  0
+		num uvs            :  524
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  774
+	processing begun of camera (UniversalCamera):  Camera
+	processing begun of light (POINT):  Lamp
+========= Writing of JSON file started =========
+	writing mesh:  Cylinder
+	writing mesh:  Cylinder.004
+	writing mesh:  Plane
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 0.0693 secs

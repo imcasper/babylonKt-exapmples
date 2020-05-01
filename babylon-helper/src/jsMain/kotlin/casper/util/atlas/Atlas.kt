@@ -1,8 +1,8 @@
 package casper.util.atlas
 
-import org.w3c.dom.Image
+import casper.types.Bitmap
 
-class AtlasPage(val image: Image, val info: AtlasPageInfo)
+class AtlasPage(val bitmap: Bitmap, val info: AtlasPageInfo)
 
 class Atlas(val pages: Map<String, AtlasPage>) {
 	fun getRegion(name: String): Pair<AtlasPage, AtlasRegion>? {

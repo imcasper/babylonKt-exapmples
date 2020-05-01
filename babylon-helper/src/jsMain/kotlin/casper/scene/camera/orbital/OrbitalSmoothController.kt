@@ -2,10 +2,12 @@ package casper.scene.camera.orbital
 
 import BABYLON.EventState
 import BABYLON.Scene
+import casper.format.toPrecision
 import casper.geometry.Vector3d
 import casper.geometry.asSpherical
 import casper.math.clamp
 import kotlin.math.PI
+import kotlin.math.absoluteValue
 
 class OrbitalSmoothController(val scene: Scene, val onState: (state: OrbitalCameraState) -> Unit) {
 	var frictionFactor = 0.6
@@ -28,7 +30,7 @@ class OrbitalSmoothController(val scene: Scene, val onState: (state: OrbitalCame
 		val finish = finish ?: return
 
 		val d1raw = finish.position.asVector3d() - current.position.asVector3d()
-		val d1 = Vector3d(d1raw.x, prepareForInterpolate(d1raw.y), prepareForInterpolate(d1raw.z))
+		val d1 = Vector3d(d1raw.x, prepareAngleForInterpolate(d1raw.y), prepareAngleForInterpolate(d1raw.z))
 		val d2 = finish.pivot - current.pivot
 
 		val elasticityFactor = elasticityFactor.clamp(0.0, 1.0)
@@ -45,10 +47,8 @@ class OrbitalSmoothController(val scene: Scene, val onState: (state: OrbitalCame
 		onState(next)
 	}
 
-	private fun prepareForInterpolate(factor: Double): Double {
-		val step1 = factor % (2 * PI)
-		val step2 = if (step1 < PI) step1 else (step1 - 2 * PI)
-		return step2
+	private fun prepareAngleForInterpolate(factor: Double): Double {
+		return (factor + 9.0 * PI) % (2.0 * PI) - PI
 	}
 
 	fun setState(state: OrbitalCameraState) {

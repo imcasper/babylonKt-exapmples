@@ -1,63 +1,60 @@
 package casper.util.loader
 
-import BABYLON.Scene
-import casper.loader.createImageLoader
+import casper.collection.mapping
+import casper.loader.createBitmapLoader
 import casper.signal.concrete.EitherFuture
-import casper.signal.concrete.EitherPromise
 import casper.signal.concrete.EitherSignal
+import casper.types.Bitmap
 import casper.util.atlas.Atlas
 import casper.util.atlas.AtlasInfo
 import casper.util.atlas.AtlasPage
-import org.w3c.dom.Image
+import casper.util.atlas.AtlasPageInfo
 
-fun createAtlas(scene: Scene, info: AtlasInfo): Atlas {
-	val pages = mutableMapOf<String, AtlasPage>()
-	info.pages.forEach { pageInfo ->
-		val image = Image()
-		image.src = pageInfo.name
-		pages.set(pageInfo.name, AtlasPage(image, pageInfo))
+fun createAtlas(map:Map<AtlasPageInfo, Bitmap>): Atlas {
+	val pages = map.entries.mapping {
+		val pageInfo = it.key
+		val bitmap = map.get(pageInfo)!!
+		Pair(pageInfo.name, AtlasPage(bitmap, pageInfo))
 	}
 	return Atlas(pages)
 }
 
-fun createAtlasLoader(scene: Scene, atlasUrl: String): EitherFuture<Atlas, String> {
-	val future = EitherSignal<Atlas, String>()
+fun createAtlasLoader(atlasUrl: String): EitherFuture<Atlas, String> {
+	val signal = EitherSignal<Atlas, String>()
 
 	loadTextData(atlasUrl).then({
 		try {
 			val atlasInfo = parseAtlasInfo(it)
-			checkImageAndCreateAtlas(future, scene, atlasInfo)
+			createAtlasLoaderFromInfo(atlasInfo).then({
+				signal.accept(it)
+			}, {
+				signal.reject(it)
+			})
 		} catch (error: Throwable) {
-			future.reject(error.toString())
+			signal.reject(error.toString())
 		}
 	}, {
-		future.reject("File loading $atlasUrl is failed: $it")
+		signal.reject("File loading $atlasUrl is failed: $it")
 	})
 
-	return future
+	return signal
 }
 
-private fun checkImageAndCreateAtlas(future: EitherPromise<Atlas, String>, scene: Scene, atlasInfo: AtlasInfo) {
-	var waiting = atlasInfo.pages.size
+private fun createAtlasLoaderFromInfo(atlasInfo: AtlasInfo): EitherFuture<Atlas, String> {
+	val signal = EitherSignal<Atlas, String>()
+
+	var loading = atlasInfo.pages.size
+	val map = mutableMapOf<AtlasPageInfo, Bitmap>()
 
 	atlasInfo.pages.forEach { page ->
-		createImageLoader(page.name).then({
-			if (--waiting <= 0) {
-				val atlas = createAtlas(scene, atlasInfo)
-				var images = atlas.pages.size
-
-				atlas.pages.values.forEach {
-					if (!it.image.complete)
-						throw Error("Invalid image: $it")
-					if (--images <= 0) {
-						future.accept(atlas)
-					}
-				}
+		createBitmapLoader(page.name).then({
+			map.set(page, it)
+			if (--loading == 0) {
+				signal.accept(createAtlas(map))
 			}
 		}, {
-			future.reject("Image ${page.name} loading for atlas failed: $it")
+			signal.reject("Image ${page.name} loading for atlas failed: $it")
 		})
-
 	}
-
+	return signal
 }

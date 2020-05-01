@@ -8,7 +8,7 @@ class AtlasDemo {
 	private val scene: Scene = createScene("renderCanvas", true)
 
 	init {
-		createAtlasLoader(scene,"atlas.atlas").then({
+		createAtlasLoader("atlas.atlas").then({
 			println(it)
 		}, {
 			println(it)

@@ -17,7 +17,7 @@ class AssetManager(val scene: Scene) {
 	val models = AssetGroupManager(AssetGroupLoadManager { fileName -> createModelLoader(scene, fileName) })
 	val images = AssetGroupManager(AssetGroupLoadManager { fileName -> createImageLoader(fileName) })
 	val textures = AssetGroupManager(AssetGroupLoadManager { fileName -> createTextureLoader(scene, fileName) })
-	val atlases = AssetGroupManager(AssetGroupLoadManager { fileName -> createAtlasLoader(scene, fileName) })
+	val atlases = AssetGroupManager(AssetGroupLoadManager { fileName -> createAtlasLoader(fileName) })
 
 	fun loadModel(fileName: String): AssetFuture<ModelData> {
 		return models.loader(fileName)

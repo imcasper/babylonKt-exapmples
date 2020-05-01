@@ -1,7 +1,11 @@
 package casper.loader
 
+import casper.collection.map.IntMap2d
+import casper.geometry.Vector2i
 import casper.signal.concrete.EitherFuture
 import casper.signal.concrete.EitherSignal
+import casper.types.Bitmap
+import org.khronos.webgl.Int32Array
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import org.w3c.dom.Image
@@ -25,10 +29,14 @@ fun createImageLoader(imageUrl: String): EitherFuture<Image, String> {
 	return loader
 }
 
-fun createImageDataLoader(imageUrl: String): EitherFuture<ImageData, String> {
-	val loader = EitherSignal<ImageData, String>()
-	createImageLoader(imageUrl).then({
-		loader.accept(getImageData(it))
+fun createBitmapLoader(imageUrl: String): EitherFuture<Bitmap, String> {
+	val loader = EitherSignal<IntMap2d, String>()
+	createImageLoader(imageUrl).then({image->
+		val imageData = getImageData(image)
+		val jsIntArray = Int32Array(imageData.data.buffer) as IntArray
+		//		val ints = IntArray(jsIntArray.length) { jsIntArray[it] }
+		val map= Bitmap(Vector2i(image.width, image.height), jsIntArray)
+		loader.accept(map)
 	}, {
 		loader.reject(it)
 	})

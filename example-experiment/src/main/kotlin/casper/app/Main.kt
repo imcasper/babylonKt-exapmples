@@ -13,15 +13,15 @@ fun main() {
 
 	createDefaultScene(engine.nativeScene)
 	assets.getSceneFuture("drill.babylon").thenAccept { sceneData ->
-		val modelNode1 = Node()
-		modelNode1.children += sceneData.nodeList
-		modelNode1.transform = Transform(Vector3d.ONE)
-		engine.root.children += modelNode1
-
-		val modelNode2 = Node()
-		modelNode2.children += sceneData.nodeList
-		modelNode2.transform = Transform(Vector3d.ZERO)
-		engine.root.children += modelNode2
+		for (x in 1..64) {
+			for (y in 1..64) {
+				val node = Node()
+				node.children = sceneData.nodeList.map { it.copy(false, false, false) }
+				node.transform = Transform(Vector3d(x.toDouble(), y.toDouble(), 0.0))
+				node.setSpeed(30.0 / 1000.0 * 0.1 * (x+y).toDouble())
+				engine.root.children += node
+			}
+		}
 	}
 
 	engine.runRenderLoop()

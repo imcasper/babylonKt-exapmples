@@ -1,10 +1,15 @@
 package casper.app
 
 import casper.geometry.Vector3d
+import casper.render.ConstantColorInput
+import casper.render.MaterialReference
+import casper.render.ModelReference
 import casper.render.Transform
 import casper.render.animation.Animations
 import casper.render.babylon.BabylonRenderEngine
+import casper.render.node.Content
 import casper.render.node.Node
+import casper.types.Color4d
 import casper.util.AssetStorage
 
 
@@ -14,13 +19,32 @@ fun main() {
 
 	createDefaultScene(engine.nativeScene)
 	assets.getSceneFuture("drill.babylon").thenAccept { sceneData ->
-		for (x in 0 until 8) {
-			for (y in 0 until 8) {
+
+		val originalContent = sceneData.content
+
+		// change original material
+		val firstModel = originalContent.children.first().content.model!!
+		val firstMaterial = firstModel.data.material
+
+		firstMaterial.data = firstMaterial.data.copy(albedo = ConstantColorInput(Color4d(1.0, 0.0, 0.0, 0.0)))
+
+		//	change copy
+		val material = MaterialReference("new-material", firstMaterial.data.copy(albedo = ConstantColorInput(Color4d(0.0, 0.0, 1.0, 0.0))))
+
+		val contentCopy = Content(sceneData.content.name, null, sceneData.content.children.map { node ->
+			val oldModel = node.content.model!!
+
+			val content = node.content.copy(model = ModelReference(oldModel.name, oldModel.data.copy(material = material)))
+			node.copy(content = content, transform = node.transform.copy(), animations = node.animations?.copy())
+		}.toMutableList())
+
+		for (x in 0 until 64) {
+			for (y in 0 until 64) {
 				engine.addNode(
 						Node(
 								Transform(position = Vector3d(x.toDouble(), y.toDouble(), 0.0)),
-								sceneData.content,
-								Animations(true, (x / 64.0 + y), emptyList())
+								if (y == x) originalContent else contentCopy,
+								Animations(true, (x / 64.0 + 1.0), emptyList())
 						)
 				)
 			}

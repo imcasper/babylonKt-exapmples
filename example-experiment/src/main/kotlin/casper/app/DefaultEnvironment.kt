@@ -18,7 +18,7 @@ fun createDefaultScene(scene: Scene) {
 	scene.useRightHandedSystem = true
 
 	val uiScene = BabylonUIScene(scene)
-	val orbitalCamera = SimpleOrbitalCamera(scene, uiScene.sceneDispatcher, OrbitalCameraInputSettings(OrbitalCameraSettings(minRange = 2.0, maxRange = 15.0), zoomSpeed = 0.5))
+	val orbitalCamera = SimpleOrbitalCamera(scene, uiScene.sceneDispatcher, OrbitalCameraInputSettings(OrbitalCameraSettings(minRange = 2.0, maxRange = 45.0), zoomSpeed = 0.5))
 	orbitalCamera.orbitalController.setPivot(Vector3d(0.0, 0.0, 0.0))
 	scene.activeCamera = orbitalCamera.nativeCamera
 

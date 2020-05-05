@@ -1,6 +1,7 @@
 package casper.app
 
 import BABYLON.*
+import BABYLON.Debug.AxesViewer
 import BABYLON.extension.createScene
 import babylon.BabylonUIScene
 import casper.geometry.Vector3d
@@ -25,10 +26,5 @@ fun createDefaultScene(scene: Scene) {
 	val sunLight = DirectionalLight("sun-light", Vector3(1.5, -0.5, -1.0).normalize(), scene)
 	sunLight.intensity = 4.0
 
-	val reflectionTexture = CubeTexture("environment.dds", scene, prefiltered = false, createPolynomials = false)
-	reflectionTexture.coordinatesMode = Texture.SKYBOX_MODE
-	reflectionTexture.setReflectionTextureMatrix(Matrix.RotationX(-PI * 0.5))
-
-	scene.createDefaultSkybox(reflectionTexture)
-	scene.environmentTexture = reflectionTexture
+	AxesViewer(scene)
 }

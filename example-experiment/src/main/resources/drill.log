@@ -11,27 +11,89 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 		Keep Z-up r-handed  :  yes
 		Texture directory   :  /home/casper/projects/babylonKt-examples/example-experiment/src/main/resources/
 	Python World class constructor completed
-	processing begun of mesh:  Cylinder
-		processing begun of material:  Iron
-			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
-			WARNING: Roughness channel baking required, but not possible, ignored
-			processing texture smooth_metall
-				texture type:  value not meaningful 2, mapped using: "UVMap"
-			bake time:  0 min, 0.0052 secs
-		num positions      :  59
-		num normals        :  59
+	processing begun of mesh:  Cube.006
+		processing begun of material:  BLACK
+		num positions      :  18
+		num normals        :  18
 		num tangents       :  0
-		num uvs            :  118
+		num uvs            :  36
 		num uvs2           :  0
 		num colors         :  0
-		num indices        :  138
+		num indices        :  24
+	processing begun of mesh:  Cube.004
+		processing begun of material:  Iron
+			processing texture metall_special
+				texture type:  metallicTexture, mapped using: "UVMap"
+			processing texture metall_special
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+		num positions      :  24
+		num normals        :  24
+		num tangents       :  0
+		num uvs            :  48
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  36
+	processing begun of mesh:  Cube.003
+		processing begun of material:  Concrete
+			processing texture concrete
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  56
+		num normals        :  56
+		num tangents       :  0
+		num uvs            :  112
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  108
+	processing begun of mesh:  Cube
+		processing begun of material:  Paint1
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0064 secs
+		num positions      :  60
+		num normals        :  60
+		num tangents       :  0
+		num uvs            :  120
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  102
+	processing begun of mesh:  Cube.000
+		processing begun of material:  Paint2
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0048 secs
+		num positions      :  90
+		num normals        :  90
+		num tangents       :  0
+		num uvs            :  180
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  120
+	processing begun of mesh:  Cube.002
+		processing begun of material:  Paint1
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0042 secs
+		num positions      :  108
+		num normals        :  108
+		num tangents       :  0
+		num uvs            :  216
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  180
+		WARNING: # of 0 area faces found:  4
 	processing begun of mesh:  Cylinder.004
 		processing begun of material:  Paint2
 			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
 			WARNING: Roughness channel baking required, but not possible, ignored
 			processing texture smooth_paint
 				texture type:  value not meaningful 2, mapped using: "UVMap"
-			bake time:  0 min, 0.0042 secs
+			bake time:  0 min, 0.0056 secs
 		num positions      :  50
 		num normals        :  50
 		num tangents       :  0
@@ -43,24 +105,55 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 		animation processing begun
 			processing action PlaneAction:  in[1 - 180], out[0 - 180]
 		processing begun of material:  Iron
-			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
-			WARNING: Roughness channel baking required, but not possible, ignored
-			processing texture smooth_metall
-				texture type:  value not meaningful 2, mapped using: "UVMap"
-			bake time:  0 min, 0.0044 secs
-		num positions      :  262
-		num normals        :  262
+		registered as also a user of material:  Iron
+		num positions      :  0
+		num normals        :  0
 		num tangents       :  0
-		num uvs            :  524
+		num uvs            :  0
 		num uvs2           :  0
 		num colors         :  0
-		num indices        :  774
+		num indices        :  0
+	WARNING: mesh, Plane, has 0 vertices; ignored
 	processing begun of camera (UniversalCamera):  Camera
+	processing begun of mesh:  Cube.001
+		mesh is an instance of :  Cube.000.  Processing halted.
+	processing begun of mesh:  Cube.005
+		mesh is an instance of :  Cube.006.  Processing halted.
+	processing begun of mesh:  Plane.001
+		animation processing begun
+			processing action PlaneAction:  in[1 - 180], out[0 - 180]
+		processing begun of material:  Iron
+		registered as also a user of material:  Iron
+		num positions      :  584
+		num normals        :  584
+		num tangents       :  0
+		num uvs            :  1168
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  1728
+	processing begun of mesh:  Plane.002
+		animation processing begun
+			processing action PlaneAction.001:  in[1 - 180], out[0 - 180]
+		processing begun of material:  Iron
+		registered as also a user of material:  Iron
+		num positions      :  94
+		num normals        :  94
+		num tangents       :  0
+		num uvs            :  188
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  174
 	processing begun of light (POINT):  Lamp
 ========= Writing of JSON file started =========
-	writing mesh:  Cylinder
+	writing mesh:  Cube.006
+	writing mesh:  Cube.004
+	writing mesh:  Cube.003
+	writing mesh:  Cube
+	writing mesh:  Cube.000
+	writing mesh:  Cube.002
 	writing mesh:  Cylinder.004
-	writing mesh:  Plane
+	writing mesh:  Plane.001
+	writing mesh:  Plane.002
 ========= Writing of JSON file completed =========
 ========= end of processing =========
-elapsed time:  0 min, 0.0693 secs
+elapsed time:  0 min, 0.1743 secs

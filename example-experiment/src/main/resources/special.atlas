@@ -1,0 +1,153 @@
+
+special.png
+size: 1024,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+diamond_ore-m
+  rotate: false
+  xy: 8, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+rock-m
+  rotate: false
+  xy: 8, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+iron_ore-m
+  rotate: false
+  xy: 88, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+mechanics-m
+  rotate: false
+  xy: 168, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+oil-m
+  rotate: false
+  xy: 248, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sand-m
+  rotate: false
+  xy: 248, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sand-soil-1-m
+  rotate: false
+  xy: 248, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sand-soil-2-m
+  rotate: false
+  xy: 248, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sand-soil-3-m
+  rotate: false
+  xy: 248, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+soil-m
+  rotate: false
+  xy: 248, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+rock-sand-1-m
+  rotate: false
+  xy: 328, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+rock-soil-1-m
+  rotate: false
+  xy: 328, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+rock-sand-2-m
+  rotate: false
+  xy: 408, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+rock-soil-2-m
+  rotate: false
+  xy: 408, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+rock-sand-3-m
+  rotate: false
+  xy: 488, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+rock-soil-3-m
+  rotate: false
+  xy: 488, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sand-water-1-m
+  rotate: false
+  xy: 568, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sand-water-2-m
+  rotate: false
+  xy: 648, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sand-water-3-m
+  rotate: false
+  xy: 728, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+unknown-m
+  rotate: false
+  xy: 808, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+water-m
+  rotate: false
+  xy: 888, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1

@@ -16,6 +16,7 @@ import casper.render.material.TextureReference
 import casper.render.node.Content
 import casper.render.node.Node
 import casper.render.vertex.Vertex
+import casper.render.vertex.Vertices
 import casper.render.vertex.VerticesReference
 import casper.types.Color4d
 import casper.util.AssetStorage
@@ -24,7 +25,7 @@ import casper.util.atlas.Atlas
 import casper.util.createCubeTextureFromPlane
 import kotlin.random.Random
 
-fun createTiles(render: Render, size: Int, pivot: Vector3d, multiMaterial: MaterialReference, regions: List<Box2d>) {
+fun createTiles( size: Int, pivot: Vector3d, regions: List<Box2d>):Vertices {
 
 	val random = Random(pivot.hashCode())
 
@@ -43,7 +44,7 @@ fun createTiles(render: Render, size: Int, pivot: Vector3d, multiMaterial: Mater
 			))
 		}
 	}
-	render.addNode(Node(content = Content(ModelReference(VerticesReference(builder.get()), multiMaterial), name = "tile")))
+	return builder.get()
 }
 
 fun Atlas.getTextureRegion(name: String): Box2d? {
@@ -80,7 +81,7 @@ fun main() {
 								)
 								val page = atlas.pages.values.first()
 
-								val multiMaterial = MaterialReference(name = "atlas", data = Material(albedo = TextureReference(page.bitmap, "atlas"), roughness = FloatConstantReference(0.8), metallic = FloatConstantReference(0.0)))
+								val material = MaterialReference(name = "atlas", data = Material(albedo = TextureReference(page.bitmap, "atlas"), roughness = FloatConstantReference(0.8), metallic = FloatConstantReference(0.0)))
 
 								val regions = listOf(
 										atlas.getTextureRegion("rock")!!,
@@ -89,20 +90,15 @@ fun main() {
 										atlas.getTextureRegion("water")!!
 								)
 
-//								val materials = listOf(
-//										MaterialReference(name = "tile-rock", data = Material(albedo = TextureReference(rockBitmap, "tile-rock"), roughness = FloatConstantReference(0.8), metallic = FloatConstantReference(0.0))),
-//										MaterialReference(name = "tile-sand", data = Material(albedo = TextureReference(sandBitmap, "tile-sand"), roughness = FloatConstantReference(1.0), metallic = FloatConstantReference(0.0))),
-//										MaterialReference(name = "tile-soil", data = Material(albedo = TextureReference(soilBitmap, "tile-soil"), roughness = FloatConstantReference(1.0), metallic = FloatConstantReference(0.0))),
-//										MaterialReference(name = "tile-water", data = Material(albedo = TextureReference(waterBitmap, "tile-water"), roughness = FloatConstantReference(0.0), metallic = FloatConstantReference(0.0))))
-
 								assets.getSceneFuture("drill.babylon").thenAccept { sceneData ->
 									createDrills(render, sceneData, skyboxTexture)
 									createAnimatedCube(render, templateBitmap)
 
-									for (s in 0 until 4) {
-										for (t in 0 until 4) {
-											val size = 4
-											createTiles(render, size, Vector3d((s * size).toDouble(), (t * size).toDouble(), 0.0), multiMaterial, regions)
+									for (s in 0 until 8) {
+										for (t in 0 until 8) {
+											val size = 8
+											val vertices = createTiles( size, Vector3d((s * size).toDouble(), (t * size).toDouble(), 0.0), regions)
+											render.addNode(Node(content = Content(ModelReference(VerticesReference(vertices), material), name = "tile")))
 										}
 									}
 								}

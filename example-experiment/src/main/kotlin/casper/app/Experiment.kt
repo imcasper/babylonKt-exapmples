@@ -77,11 +77,15 @@ fun main() {
 							skyboxTexture,
 							true
 					)
-					val page = albedoAtlas.pages.values.first()
-					val special =  TextureReference(page.bitmap, "atlas-special")
+					val albedoPage = albedoAtlas.pages.values.first()
+					val albedo =  TextureReference(albedoPage.bitmap, "atlas-albedo")
+
+					val specialPage = specialAtlas.pages.values.first()
+					val special =  TextureReference(specialPage.bitmap, "atlas-special")
+
 					val roughness = MapUtil.takeChannel(special.data, 1)
 					val metallic = MapUtil.takeChannel(special.data, 2)
-					val material = MaterialReference(name = "atlas", data = Material(albedo = TextureReference(page.bitmap, "atlas-albedo"), roughness = FloatMapReference(roughness), metallic = FloatMapReference(metallic)))
+					val material = MaterialReference(name = "atlas", data = Material(albedo = albedo, roughness = FloatMapReference(roughness), metallic = FloatMapReference(metallic)))
 
 					val tiles = listOf(
 							TileInfo(albedoAtlas.getTextureRegion("rock")!!,specialAtlas.getTextureRegion("rock-m")!!),

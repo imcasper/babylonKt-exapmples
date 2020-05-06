@@ -27,7 +27,7 @@ dependencies {
     compile "casper.input-api:input-api:1.0.0"
     compile "casper.gui-core:gui-core:1.0.0"
     compile "casper.gui-babylon:gui-babylon:1.0.0"
-    compile "casper.types:typesKt:1.0.0"
+    compile "casper.types:typesKt:1.0.1"
     compile "casper.signal:signalKt:1.2.0"
     compile "casper:babylon-helper:1.0.0"
     compile "casper:babylonKt:1.1.0"

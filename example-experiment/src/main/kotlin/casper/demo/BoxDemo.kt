@@ -2,7 +2,7 @@ package casper.demo
 
 import casper.geometry.Vector2d
 import casper.geometry.Vector3d
-import casper.geometry.aabb.AABBox3d
+import casper.geometry.basis.Box3d
 import casper.geometry.polygon.Line3d
 import casper.geometry.polygon.intersectionLineWithAABBox
 import casper.types.*
@@ -41,7 +41,7 @@ class BoxDemo {
 			val line = supplier.getLine()
 			val start3 = Vector3d(line.v0.x, line.v1.y, 0.0)
 			val finish3 = Vector3d(line.v0.x, line.v1.y, 0.0)
-			val box = AABBox3d.byDimension(Vector3d(2.0, 1.0, -4.0), Vector3d(4.0, 3.0, 5.0))
+			val box = Box3d.byDimension(Vector3d(2.0, 1.0, -4.0), Vector3d(4.0, 3.0, 5.0))
 
 			drawer.drawRect(Vector2d(2.0, 1.0), Vector2d(4.0, 3.0), GRAY.setAlpha(0.5))
 

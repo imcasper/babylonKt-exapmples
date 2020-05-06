@@ -1,7 +1,7 @@
 package casper.util.loader
 
 import casper.geometry.Vector2i
-import casper.geometry.aabb.AABBox2i
+import casper.geometry.basis.Box2i
 import casper.util.atlas.AtlasInfo
 import casper.util.atlas.AtlasPageInfo
 import casper.util.atlas.AtlasRegion
@@ -39,7 +39,7 @@ fun parseAtlasInfo(text: String): AtlasInfo {
 			val size = parseVector(childrenNode, "size")
 					?: throw Error("Invalid size for ${childrenNode.name} in ${mainNode.name}")
 
-			regions.put(childrenNode.name, AtlasRegion(childrenNode.name, AABBox2i(position, size)))
+			regions.put(childrenNode.name, AtlasRegion(childrenNode.name, Box2i.byDimension(position, size)))
 		}
 
 		pages.add(AtlasPageInfo(mainNode.name, pageSize, regions))

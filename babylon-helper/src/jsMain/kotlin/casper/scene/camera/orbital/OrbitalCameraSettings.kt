@@ -1,7 +1,7 @@
 package casper.scene.camera.orbital
 
 import casper.geometry.Vector3d
-import casper.geometry.aabb.AABBox3d
+import casper.geometry.basis.Box3d
 import kotlin.math.PI
 
 class OrbitalCameraSettings(
@@ -9,7 +9,7 @@ class OrbitalCameraSettings(
 		val maxVerticalAngle: Double = 0.95 * PI,
 		val minRange: Double = 1.0,
 		val maxRange: Double = 1000.0,
-		val pivotBox:AABBox3d = AABBox3d(Vector3d(Double.MIN_VALUE), Vector3d(Double.MAX_VALUE)),
+		val pivotBox:Box3d = Box3d(Vector3d(Double.MIN_VALUE), Vector3d(Double.MAX_VALUE)),
 		val plainNormal: Vector3d = Vector3d.Z) {
 	init {
 		if (!(minVerticalAngle < maxVerticalAngle)) {

@@ -17,8 +17,8 @@ class UVReplacer {
 
 			val atlasWidth = pageSize.x.toDouble()
 			val atlasHeight = pageSize.y.toDouble()
-			val regionX = box.position.x.toDouble()
-			val regionY = (pageSize.y - box.dimension.y - box.position.y).toDouble()
+			val regionX = box.min.x.toDouble()
+			val regionY = (pageSize.y - box.max.y).toDouble()
 			val regionWidth = box.dimension.x.toDouble()
 			val regionHeight = box.dimension.y.toDouble()
 

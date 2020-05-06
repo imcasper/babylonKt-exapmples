@@ -3,7 +3,7 @@ package casper.util
 import BABYLON.*
 import casper.geometry.*
 import casper.geometry.Quaternion
-import casper.geometry.aabb.AABBox3d
+import casper.geometry.basis.Box3d
 import casper.geometry.polygon.Line3d
 import casper.math.clamp
 import casper.types.Color3d
@@ -78,12 +78,12 @@ fun BABYLON.Quaternion.toQuaternion(): Quaternion {
 	return Quaternion(x, y, z, w)
 }
 
-fun AbstractMesh.getBoundingBox(): AABBox3d {
+fun AbstractMesh.getBoundingBox(): Box3d {
 	return convertToBox(this.getBoundingInfo().boundingBox)
 }
 
-fun convertToBox(boundingBox: BoundingBox): AABBox3d {
+fun convertToBox(boundingBox: BoundingBox): Box3d {
 	val minCorner = boundingBox.minimumWorld.toVector3d()
 	val maxCorner = boundingBox.maximumWorld.toVector3d()
-	return AABBox3d(minCorner, maxCorner)
+	return Box3d(minCorner, maxCorner)
 }

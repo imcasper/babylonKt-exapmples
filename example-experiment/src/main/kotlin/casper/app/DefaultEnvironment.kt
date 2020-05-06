@@ -1,9 +1,12 @@
 package casper.app
 
-import BABYLON.*
 import BABYLON.Debug.AxesViewer
-import BABYLON.extension.createScene
+import BABYLON.DirectionalLight
+import BABYLON.Scene
+import BABYLON.SceneLoader
+import BABYLON.Vector3
 import babylon.BabylonUIScene
+import casper.geometry.SphericalCoordinate
 import casper.geometry.Vector3d
 import casper.scene.camera.orbital.OrbitalCameraInputSettings
 import casper.scene.camera.orbital.OrbitalCameraSettings
@@ -19,7 +22,8 @@ fun createDefaultScene(scene: Scene) {
 	scene.useRightHandedSystem = true
 
 	val uiScene = BabylonUIScene(scene)
-	val orbitalCamera = SimpleOrbitalCamera(scene, uiScene.sceneDispatcher, OrbitalCameraInputSettings(OrbitalCameraSettings(minRange = 2.0, maxRange = 15.0), zoomSpeed = 0.5))
+	val orbitalCamera = SimpleOrbitalCamera(scene, uiScene.sceneDispatcher, OrbitalCameraInputSettings(OrbitalCameraSettings(minRange = 2.0, maxRange = 1000.0), zoomSpeed = 2.5))
+	orbitalCamera.orbitalController.setPosition(SphericalCoordinate(40.0, PI / 4f, 0.0))
 	orbitalCamera.orbitalController.setPivot(Vector3d(0.0, 0.0, 0.0))
 	scene.activeCamera = orbitalCamera.nativeCamera
 

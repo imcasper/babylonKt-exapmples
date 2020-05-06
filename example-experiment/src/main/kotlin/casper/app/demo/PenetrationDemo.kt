@@ -1,7 +1,7 @@
 package casper.app.demo
 
 import BABYLON.*
-import casper.geometry.aabb.AABBox3d
+import casper.geometry.basis.Box3d
 import casper.geometry.intersection.getPenetrationBoxWithBox
 import casper.gui.UIScene
 import casper.util.TextArea
@@ -36,8 +36,8 @@ class PenetrationDemo(val scene: Scene, val uiScene: UIScene) {
 		boxMesh2.position = Vector3(0.0, 0.0, 4.0)
 
 		scene.onBeforeRenderObservable.add({ _: Scene, _: EventState ->
-			val box1 = AABBox3d(boxMesh1.getBoundingInfo().boundingBox.minimumWorld.toVector3d(), boxMesh1.getBoundingInfo().boundingBox.maximumWorld.toVector3d())
-			val box2 = AABBox3d(boxMesh2.getBoundingInfo().boundingBox.minimumWorld.toVector3d(), boxMesh2.getBoundingInfo().boundingBox.maximumWorld.toVector3d())
+			val box1 = Box3d(boxMesh1.getBoundingInfo().boundingBox.minimumWorld.toVector3d(), boxMesh1.getBoundingInfo().boundingBox.maximumWorld.toVector3d())
+			val box2 = Box3d(boxMesh2.getBoundingInfo().boundingBox.minimumWorld.toVector3d(), boxMesh2.getBoundingInfo().boundingBox.maximumWorld.toVector3d())
 
 			val penetration = getPenetrationBoxWithBox(box1, box2)
 

@@ -2,10 +2,10 @@ package casper.app.demo
 
 import BABYLON.*
 import casper.format.toPrecision
+import casper.geometry.Capsule3d
 import casper.geometry.Transform
 import casper.geometry.Vector3d
-import casper.geometry.aabb.AABBox3d
-import casper.geometry.aabb.ContinuousAABBox3d
+import casper.geometry.basis.Box3d
 import casper.geometry.polygon.Line3d
 import casper.gui.UIScene
 import casper.scene.camera.orbital.OrbitalCameraInputSettings
@@ -35,7 +35,7 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		createHelper(scene, Color3.White())
 
 		orbitalCamera = SimpleOrbitalCamera(scene, uiScene.sceneDispatcher, OrbitalCameraInputSettings(
-				OrbitalCameraSettings(0.05 * PI, 0.45 * PI, 20.0, 300.0, AABBox3d(Vector3d.ZERO, Vector3d(128.0, 128.0, 0.0)))), ::getPenetrationResolver)
+				OrbitalCameraSettings(0.05 * PI, 0.45 * PI, 20.0, 300.0, Box3d(Vector3d.ZERO, Vector3d(128.0, 128.0, 0.0)))), ::getPenetrationResolver)
 		orbitalCamera.orbitalController.setPivot(Vector3d(64.0, 64.0, 0.0))
 		scene.activeCamera = orbitalCamera.nativeCamera
 
@@ -66,7 +66,7 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 
 	private fun getPenetrationResolver(position: Vector3d): Vector3d? {
 		val cameraRange = 1.5
-		val cameraBox = AABBox3d.byRadius(position, Vector3d(cameraRange))
+		val cameraBox = Box3d.byRadius(position, Vector3d(cameraRange))
 
 		val penetrationSummary = mutableListOf<Vector3d>()
 		val penetrationWithMeshes = getPenetrationList(scene, { it.name.contains("BOX") }, cameraBox)
@@ -95,7 +95,7 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 	private fun getContinuousPenetrationResolver(translation: Line3d): Vector3d? {
 		val cameraRange = 1.5
 
-		val continuousBox = ContinuousAABBox3d(translation, cameraRange)
+		val continuousBox = Capsule3d(translation, cameraRange)
 
 		val penetrationSummary = mutableListOf<Vector3d>()
 

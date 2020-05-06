@@ -18,15 +18,15 @@ import casper.util.VerticesBuilder
 fun createAnimatedCube(render: Render, templateBitmap: Bitmap) {
 	val list = VerticesBuilder().add(
 			Octagon(
-					Vertex(uv = Vector2d(0.0, 0.0), position = Vector3d(0.0, 0.0, 0.0)),
-					Vertex(uv = Vector2d(0.0, 1.0), position = Vector3d(0.0, 2.0, 0.0)),
-					Vertex(uv = Vector2d(1.0, 0.0), position = Vector3d(2.0, 0.0, 0.0)),
-					Vertex(uv = Vector2d(1.0, 1.0), position = Vector3d(2.0, 2.0, 0.0)),
+					Vertex(uvAlbedo = Vector2d(0.0, 0.0), position = Vector3d(0.0, 0.0, 0.0)),
+					Vertex(uvAlbedo = Vector2d(0.0, 1.0), position = Vector3d(0.0, 2.0, 0.0)),
+					Vertex(uvAlbedo = Vector2d(1.0, 0.0), position = Vector3d(2.0, 0.0, 0.0)),
+					Vertex(uvAlbedo = Vector2d(1.0, 1.0), position = Vector3d(2.0, 2.0, 0.0)),
 
-					Vertex(uv = Vector2d(1.0, 1.0), position = Vector3d(0.0, 0.0, 1.0)),
-					Vertex(uv = Vector2d(1.0, 0.0), position = Vector3d(0.0, 2.0, 1.0)),
-					Vertex(uv = Vector2d(0.0, 1.0), position = Vector3d(2.0, 0.0, 1.0)),
-					Vertex(uv = Vector2d(0.0, 0.0), position = Vector3d(2.0, 2.0, 1.0))
+					Vertex(uvAlbedo =  Vector2d(1.0, 1.0), position = Vector3d(0.0, 0.0, 1.0)),
+					Vertex(uvAlbedo =  Vector2d(1.0, 0.0), position = Vector3d(0.0, 2.0, 1.0)),
+					Vertex(uvAlbedo =  Vector2d(0.0, 1.0), position = Vector3d(2.0, 0.0, 1.0)),
+					Vertex(uvAlbedo =  Vector2d(0.0, 0.0), position = Vector3d(2.0, 2.0, 1.0))
 			))
 	val transform = Matrix4d.translate(Vector3d(0.5, 0.5, 0.0))
 	val albedoAnimated = TextureReference(templateBitmap, "animated", transform)

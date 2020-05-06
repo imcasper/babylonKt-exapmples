@@ -9,7 +9,10 @@ import casper.geometry.polygon.Quad
 import casper.render.Environment
 import casper.render.ModelReference
 import casper.render.babylon.BabylonRender
-import casper.render.material.*
+import casper.render.material.FloatMapReference
+import casper.render.material.Material
+import casper.render.material.MaterialReference
+import casper.render.material.TextureReference
 import casper.render.node.Content
 import casper.render.node.Node
 import casper.render.vertex.Vertex
@@ -22,7 +25,17 @@ import casper.util.atlas.Atlas
 import casper.util.createCubeTextureFromPlane
 import kotlin.random.Random
 
-data class TileInfo(val albedo:Box2d, val special:Box2d)
+data class TileInfo(val albedo: Box2d, val metallic: Box2d, val roughness: Box2d) {
+	companion object {
+		fun create(albedoAtlas: Atlas, specialAtlas: Atlas, name: String): TileInfo {
+			return TileInfo(
+					albedoAtlas.getTextureRegion(name)!!,
+					specialAtlas.getTextureRegion("$name-m")!!,
+					specialAtlas.getTextureRegion("$name-m")!!
+			)
+		}
+	}
+}
 
 fun createTiles(size: Int, pivot: Vector3d, tiles: List<TileInfo>): Vertices {
 
@@ -36,12 +49,13 @@ fun createTiles(size: Int, pivot: Vector3d, tiles: List<TileInfo>): Vertices {
 
 			val relativePivot = Vector3d(x.toDouble(), y.toDouble(), 0.0)
 			val albedo = tile.albedo
-			val special = tile.special
+			val metallic = tile.metallic
+			val roughness = tile.roughness
 			builder.add(Quad(
-					Vertex(relativePivot + pivot + Vector3d(0.0, 1.0, 0.0), uv = Vector2d(albedo.min.x, albedo.max.y),uv2 = Vector2d(special.min.x, special.max.y)),
-					Vertex(relativePivot + pivot + Vector3d(1.0, 1.0, 0.0), uv = Vector2d(albedo.max.x, albedo.max.y),uv2 = Vector2d(special.max.x, special.max.y)),
-					Vertex(relativePivot + pivot + Vector3d(1.0, 0.0, 0.0), uv = Vector2d(albedo.max.x, albedo.min.y),uv2 = Vector2d(special.max.x, special.min.y)),
-					Vertex(relativePivot + pivot + Vector3d(0.0, 0.0, 0.0), uv = Vector2d(albedo.min.x, albedo.min.y),uv2 = Vector2d(special.min.x, special.min.y))
+					Vertex(relativePivot + pivot + Vector3d(0.0, 1.0, 0.0), uvAlbedo = Vector2d(albedo.min.x, albedo.max.y), uvMetallic = Vector2d(metallic.min.x, metallic.max.y), uvRoughness = Vector2d(roughness.min.x, roughness.max.y)),
+					Vertex(relativePivot + pivot + Vector3d(1.0, 1.0, 0.0), uvAlbedo = Vector2d(albedo.max.x, albedo.max.y), uvMetallic = Vector2d(metallic.max.x, metallic.max.y), uvRoughness = Vector2d(roughness.max.x, roughness.max.y)),
+					Vertex(relativePivot + pivot + Vector3d(1.0, 0.0, 0.0), uvAlbedo = Vector2d(albedo.max.x, albedo.min.y), uvMetallic = Vector2d(metallic.max.x, metallic.min.y), uvRoughness = Vector2d(roughness.max.x, roughness.min.y)),
+					Vertex(relativePivot + pivot + Vector3d(0.0, 0.0, 0.0), uvAlbedo = Vector2d(albedo.min.x, albedo.min.y), uvMetallic = Vector2d(metallic.min.x, metallic.min.y), uvRoughness = Vector2d(roughness.min.x, roughness.min.y))
 			))
 		}
 	}
@@ -78,20 +92,20 @@ fun main() {
 							true
 					)
 					val albedoPage = albedoAtlas.pages.values.first()
-					val albedo =  TextureReference(albedoPage.bitmap, "atlas-albedo")
+					val albedo = TextureReference(albedoPage.bitmap, "atlas-albedo")
 
 					val specialPage = specialAtlas.pages.values.first()
-					val special =  TextureReference(specialPage.bitmap, "atlas-special")
+					val special = TextureReference(specialPage.bitmap, "atlas-special")
 
 					val roughness = MapUtil.takeChannel(special.data, 1)
 					val metallic = MapUtil.takeChannel(special.data, 2)
 					val material = MaterialReference(name = "atlas", data = Material(albedo = albedo, roughness = FloatMapReference(roughness), metallic = FloatMapReference(metallic)))
 
 					val tiles = listOf(
-							TileInfo(albedoAtlas.getTextureRegion("rock")!!,specialAtlas.getTextureRegion("rock-m")!!),
-							TileInfo(albedoAtlas.getTextureRegion("sand")!!,specialAtlas.getTextureRegion("sand-m")!!),
-							TileInfo(albedoAtlas.getTextureRegion("soil")!!,specialAtlas.getTextureRegion("soil-m")!!),
-							TileInfo(albedoAtlas.getTextureRegion("water")!!,specialAtlas.getTextureRegion("water-m")!!)
+							TileInfo.create(albedoAtlas, specialAtlas, "rock"),
+							TileInfo.create(albedoAtlas, specialAtlas, "sand"),
+							TileInfo.create(albedoAtlas, specialAtlas, "soil"),
+							TileInfo.create(albedoAtlas, specialAtlas, "water")
 					)
 
 					assets.getSceneFuture("drill.babylon").thenAccept { sceneData ->

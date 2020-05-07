@@ -4,7 +4,7 @@ import casper.geometry.Vector2d
 import casper.geometry.Vector3d
 import casper.geometry.basis.Box3d
 import casper.geometry.polygon.Line3d
-import casper.geometry.polygon.intersectionLineWithAABBox
+import casper.geometry.polygon.intersectionLineWithBox
 import casper.types.*
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
@@ -50,7 +50,7 @@ class BoxDemo {
 			drawer.drawGrid(BLACK.setAlpha(1.0))
 
 			try {
-				val result = intersectionLineWithAABBox(Line3d(start3, finish3), box)
+				val result = intersectionLineWithBox(Line3d(start3, finish3), box)
 				if (result != null) {
 					val first = Vector2d(result.line.v0.x, result.line.v0.y)
 					val last = Vector2d(result.line.v1.x, result.line.v1.y)

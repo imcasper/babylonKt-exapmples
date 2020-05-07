@@ -5,6 +5,7 @@ import casper.geometry.Vector2d
 import casper.geometry.Vector3d
 import casper.geometry.polygon.Octagon
 import casper.render.Render
+import casper.render.extension.VerticesBuilder
 import casper.render.material.TextureReference
 import casper.render.material.FloatConstantReference
 import casper.render.material.Material
@@ -12,7 +13,6 @@ import casper.render.node.Content
 import casper.render.node.Node
 import casper.render.vertex.Vertex
 import casper.types.Bitmap
-import casper.util.VerticesBuilder
 
 
 fun createAnimatedCube(render: Render, templateBitmap: Bitmap) {

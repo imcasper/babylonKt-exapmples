@@ -3,21 +3,18 @@ package casper.asset
 import BABYLON.Scene
 import BABYLON.Texture
 import casper.loader.createImageLoader
-import casper.loader.createTextureLoader
 import casper.loader.createModelLoader
+import casper.loader.createTextureLoader
 import casper.model.ModelData
-import casper.signal.concrete.EitherFuture
 import casper.util.atlas.Atlas
 import casper.util.loader.createAtlasLoader
 import org.w3c.dom.Image
 
-typealias AssetFuture<Data> = EitherFuture<Data, String>
-
 class AssetManager(val scene: Scene) {
-	val models = AssetGroupManager(AssetGroupLoadManager { fileName -> createModelLoader(scene, fileName) })
-	val images = AssetGroupManager(AssetGroupLoadManager { fileName -> createImageLoader(fileName) })
-	val textures = AssetGroupManager(AssetGroupLoadManager { fileName -> createTextureLoader(scene, fileName) })
-	val atlases = AssetGroupManager(AssetGroupLoadManager { fileName -> createAtlasLoader(fileName) })
+	val models = TypedAssetCollection(TypedAssetLoaderCollection { fileName -> createModelLoader(scene, fileName) })
+	val images = TypedAssetCollection(TypedAssetLoaderCollection { fileName -> createImageLoader(fileName) })
+	val textures = TypedAssetCollection(TypedAssetLoaderCollection { fileName -> createTextureLoader(scene, fileName) })
+	val atlases = TypedAssetCollection(TypedAssetLoaderCollection { fileName -> createAtlasLoader(fileName) })
 
 	fun loadModel(fileName: String): AssetFuture<ModelData> {
 		return models.loader(fileName)

@@ -31,12 +31,8 @@ fun createImageLoader(imageUrl: String): EitherFuture<Image, String> {
 
 fun createBitmapLoader(imageUrl: String): EitherFuture<Bitmap, String> {
 	val loader = EitherSignal<IntMap2d, String>()
-	createImageLoader(imageUrl).then({image->
-		val imageData = getImageData(image)
-		val jsIntArray = Int32Array(imageData.data.buffer) as IntArray
-		//		val ints = IntArray(jsIntArray.length) { jsIntArray[it] }
-		val map= Bitmap(Vector2i(image.width, image.height), jsIntArray)
-		loader.accept(map)
+	createImageLoader(imageUrl).then({ image ->
+		loader.accept(getBitmap(image))
 	}, {
 		loader.reject(it)
 	})
@@ -50,4 +46,11 @@ fun getImageData(image: Image): ImageData {
 	val context = canvas.getContext("2d") as CanvasRenderingContext2D
 	context.drawImage(image, 0.0, 0.0)
 	return context.getImageData(0.0, 0.0, image.width.toDouble(), image.height.toDouble())
+}
+
+fun getBitmap(image: Image): Bitmap {
+	val imageData = getImageData(image)
+	val jsIntArray = Int32Array(imageData.data.buffer) as IntArray
+	//		val ints = IntArray(jsIntArray.length) { jsIntArray[it] }
+	return Bitmap(Vector2i(image.width, image.height), jsIntArray)
 }

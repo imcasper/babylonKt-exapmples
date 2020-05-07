@@ -2,7 +2,7 @@ package casper.asset
 
 import casper.collection.observableMapOf
 
-class AssetGroupLoadManager<Data>(val createAssetLoader: (fileName: String) -> AssetFuture<Data>) {
+class TypedAssetLoaderCollection<Data>(val createAssetLoader: (fileName: String) -> AssetFuture<Data>) {
 	val map = observableMapOf<String, AssetFuture<Data>>()
 
 	fun isLoading(): Boolean {

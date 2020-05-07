@@ -9,6 +9,8 @@ import casper.geometry.polygon.Quad
 import casper.render.Environment
 import casper.render.ModelReference
 import casper.render.babylon.BabylonRender
+import casper.render.extension.VerticesBuilder
+import casper.render.extension.createCubeTextureFromPlane
 import casper.render.material.FloatMapReference
 import casper.render.material.Material
 import casper.render.material.MaterialReference
@@ -20,9 +22,7 @@ import casper.render.vertex.Vertices
 import casper.render.vertex.VerticesReference
 import casper.types.Color4d
 import casper.util.AssetStorage
-import casper.util.VerticesBuilder
 import casper.util.atlas.Atlas
-import casper.util.createCubeTextureFromPlane
 import kotlin.random.Random
 
 data class TileInfo(val albedo: Box2d, val metallic: Box2d, val roughness: Box2d) {

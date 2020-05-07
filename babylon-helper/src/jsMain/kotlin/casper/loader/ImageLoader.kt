@@ -32,7 +32,11 @@ fun createImageLoader(imageUrl: String): EitherFuture<Image, String> {
 fun createBitmapLoader(imageUrl: String): EitherFuture<Bitmap, String> {
 	val loader = EitherSignal<IntMap2d, String>()
 	createImageLoader(imageUrl).then({ image ->
-		loader.accept(getBitmap(image))
+		try {
+			loader.accept(getBitmap(image))
+		} catch (error: Throwable) {
+			loader.reject("Internal error: $error")
+		}
 	}, {
 		loader.reject(it)
 	})
@@ -40,7 +44,8 @@ fun createBitmapLoader(imageUrl: String): EitherFuture<Bitmap, String> {
 }
 
 fun getImageData(image: Image): ImageData {
-	val canvas = document.createElement("canvas") as HTMLCanvasElement
+	val lastCanvas = document.getElementsByName("canvas") as? HTMLCanvasElement
+	val canvas = lastCanvas ?: document.createElement("canvas") as HTMLCanvasElement
 	canvas.width = image.width
 	canvas.height = image.height
 	val context = canvas.getContext("2d") as CanvasRenderingContext2D

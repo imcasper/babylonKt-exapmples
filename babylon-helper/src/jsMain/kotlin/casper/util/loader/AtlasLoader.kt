@@ -31,7 +31,7 @@ fun createAtlasLoader(atlasUrl: String): EitherFuture<Atlas, String> {
 				signal.reject(it)
 			})
 		} catch (error: Throwable) {
-			signal.reject(error.toString())
+			signal.reject("Internal error: $error")
 		}
 	}, {
 		signal.reject("File loading $atlasUrl is failed: $it")

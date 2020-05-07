@@ -3,7 +3,6 @@ package casper.app.demo
 import BABYLON.*
 import casper.format.toPrecision
 import casper.geometry.Capsule3d
-import casper.geometry.Transform
 import casper.geometry.Vector3d
 import casper.geometry.basis.Box3d
 import casper.geometry.polygon.Line3d

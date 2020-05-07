@@ -32,6 +32,7 @@ import casper.scene.camera.orbital.SimpleOrbitalCamera
 import casper.types.Color4d
 import casper.util.AssetsStorage
 import casper.util.atlas.Atlas
+import casper.util.createSceneLoader
 import kotlin.math.PI
 import kotlin.random.Random
 
@@ -84,7 +85,7 @@ fun Atlas.getTextureRegion(name: String): Box2d? {
 }
 
 fun createCamera(render: Render, inputDispatcher: InputDispatcher) {
-	val support = CameraSupport(render.nextFrameFuture, { render.viewport }, inputDispatcher)
+	val support = CameraSupport(render.root.nextFrameFuture, { render.viewport }, inputDispatcher)
 	val orbitalCamera = SimpleOrbitalCamera(support, OrbitalCameraInputSettings(zoomSpeed = 2.5), OrbitalCameraSettings(minRange = 2.0, maxRange = 1000.0)) {
 		render.camera = it
 	}
@@ -130,7 +131,7 @@ fun main() {
 							TileInfo.create(albedoAtlas, specialAtlas, "water")
 					)
 
-					assets.getSceneFuture("drill.babylon").thenAccept { sceneData ->
+					assets.getSceneFuture("unknown.babylon").then( { sceneData ->
 						createDrills(render, sceneData, skyboxTexture)
 						createAnimatedCube(render, templateBitmap)
 
@@ -141,7 +142,9 @@ fun main() {
 								render.addNode(Node(content = Content(ModelReference(VerticesReference(vertices), material), name = "tile")))
 							}
 						}
-					}
+					}, {
+						println("can't load model")
+					})
 
 				}
 			}

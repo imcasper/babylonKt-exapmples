@@ -1,15 +1,14 @@
 package casper.scene.camera.orbital
 
-import BABYLON.EventState
-import BABYLON.Scene
-import casper.format.toPrecision
+import casper.core.DisposableHolder
 import casper.geometry.Vector3d
 import casper.geometry.asSpherical
 import casper.math.clamp
+import casper.signal.concrete.Future
+import casper.signal.util.then
 import kotlin.math.PI
-import kotlin.math.absoluteValue
 
-class OrbitalSmoothController(val scene: Scene, val onState: (state: OrbitalCameraState) -> Unit) {
+class OrbitalSmoothController(nextFrameFuture: Future<Double>, val onState: (state: OrbitalCameraState) -> Unit) : DisposableHolder() {
 	var frictionFactor = 0.6
 	var elasticityFactor = 0.6
 
@@ -20,9 +19,7 @@ class OrbitalSmoothController(val scene: Scene, val onState: (state: OrbitalCame
 	private var speed2 = Vector3d.ZERO
 
 	init {
-		scene.onBeforeRenderObservable.add({ _: Scene, _: EventState ->
-			update()
-		})
+		nextFrameFuture.then(components) { update() }
 	}
 
 	private fun update() {

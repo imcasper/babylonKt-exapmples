@@ -31,7 +31,7 @@ class PlainCameraController(val scene: Scene, val camera: TransformHolder, var p
 
 		val rotation = Quaternion.getRotation(lastForward, nextForward).normalize()
 
-		return Transform(nextPosition, rotation * transform.orientation)
+		return Transform(nextPosition, Vector3d.ONE, rotation * transform.rotation)
 	}
 
 	val translateSpeedFactor: Double get() = sqrt((camera.transform.position.z - pivot.z).absoluteValue).clamp(0.1, 10.0)
@@ -46,11 +46,11 @@ class PlainCameraController(val scene: Scene, val camera: TransformHolder, var p
 			val rotation = Quaternion.fromAxisAnge(axis, angle)
 			val nextLook = rotation.transform(lastLook)
 
-			return Transform(state.position - (nextLook - lastLook), (Quaternion.fromAxisAnge(axis, angle) * state.orientation).normalize())
+			return Transform(state.position - (nextLook - lastLook), Vector3d.ONE, (Quaternion.fromAxisAnge(axis, angle) * state.rotation).normalize())
 		}
 
 		private fun distance(state: Transform, delta: Double): Transform {
-			return Transform(state.position - state.getLocalY() * delta, state.orientation)
+			return Transform(state.position - state.getLocalY() * delta, Vector3d.ONE, state.rotation)
 		}
 //
 //		private fun translate(state: Transform, pivot: Vector3d, moveX: Double, moveY: Double, fov: Double, aspect: Double): Transform {
@@ -81,7 +81,7 @@ class PlainCameraController(val scene: Scene, val camera: TransformHolder, var p
 
 			val offset = -(right + forward)
 
-			return Transform(state.position + offset, state.orientation)
+			return Transform(state.position + offset,Vector3d.ONE,  state.rotation)
 		}
 	}
 }

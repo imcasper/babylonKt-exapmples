@@ -15,8 +15,8 @@ class BabylonCamera(val camera: TargetCamera) : Camera {
 			field = value
 
 			camera.position = value.position.toVector3()
-			camera.setTarget((value.position + value.orientation.transform(Vector3d.Y)).toVector3())
-			camera.upVector = value.orientation.transform(Vector3d.Z).toVector3()
+			camera.setTarget((value.position + value.rotation.transform(Vector3d.Y)).toVector3())
+			camera.upVector = value.rotation.transform(Vector3d.Z).toVector3()
 		}
 
 	init {

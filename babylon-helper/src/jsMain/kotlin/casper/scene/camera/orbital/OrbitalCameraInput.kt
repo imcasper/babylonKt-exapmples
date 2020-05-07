@@ -1,34 +1,32 @@
 package casper.scene.camera.orbital
 
-import BABYLON.EventState
-import BABYLON.Scene
 import casper.core.DisposableHolder
 import casper.core.disposeAll
 import casper.core.mutableDisposableListOf
 import casper.geometry.Vector2d
-import casper.input.*
+import casper.input.MouseDown
+import casper.input.MouseMove
+import casper.input.MouseUp
+import casper.input.MouseWheel
 import casper.math.clamp
 import casper.platform.lockCursor
 import casper.platform.unlockCursor
 import casper.signal.util.then
 import kotlin.browser.document
-import kotlin.math.absoluteValue
-import kotlin.math.max
-import kotlin.math.min
 
 
 /**
  * 	Действия пользователя преобразует в команды камере
  */
-class OrbitalCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher, val camera: OrbitalCameraController, val settings: OrbitalCameraInputSettings) : DisposableHolder() {
+class OrbitalCameraInput(val support: CameraSupport, val camera: OrbitalCameraController, val settings: OrbitalCameraInputSettings) : DisposableHolder() {
 	private val actionComponents = mutableDisposableListOf()
 	private var rotation = false
 	private var translation = false
 
 
 	init {
-		inputDispatcher.onMouseWheel.then(components, ::onMouseWheel)
-		inputDispatcher.onMouseDown.then(components, ::onMouseDown)
+		support.inputDispatcher.onMouseWheel.then(components, ::onMouseWheel)
+		support.inputDispatcher.onMouseDown.then(components, ::onMouseDown)
 
 		document.addEventListener("mouseout", {
 			dropMouse()
@@ -66,8 +64,8 @@ class OrbitalCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher,
 	private fun refreshActionListeners() {
 		actionComponents.disposeAll()
 		if (rotation || translation) {
-			inputDispatcher.onMouseMove.then(actionComponents, ::onMouseMove)
-			inputDispatcher.onMouseUp.then(actionComponents, ::onMouseUp)
+			support.inputDispatcher.onMouseMove.then(actionComponents, ::onMouseMove)
+			support.inputDispatcher.onMouseUp.then(actionComponents, ::onMouseUp)
 		}
 	}
 
@@ -107,8 +105,6 @@ class OrbitalCameraInput(val scene: Scene, val inputDispatcher: InputDispatcher,
 
 
 	private fun normalizePointerMovement(movement: Vector2d): Vector2d {
-		val canvas = scene.getEngine().getRenderingCanvas()!!
-		val viewportSize = Vector2d(canvas.width.toDouble(), canvas.height.toDouble())
-		return movement / viewportSize
+		return movement / support.onViewportSize().toVector2d()
 	}
 }

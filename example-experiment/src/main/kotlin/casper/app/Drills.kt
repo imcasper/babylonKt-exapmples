@@ -1,9 +1,10 @@
 package casper.app
 
+import casper.geometry.Quaternion
+import casper.geometry.Transform
 import casper.geometry.Vector3d
 import casper.render.Render
 import casper.render.SceneData
-import casper.render.Transform
 import casper.render.animation.Animations
 import casper.render.extension.MaterialReplacer
 import casper.render.material.ColorConstantReference
@@ -30,7 +31,7 @@ fun createDrills(render: Render, sceneData: SceneData, skyboxTexture: CubeTextur
 	for (x in 0 until 2) {
 		for (y in 0 until 2) {
 			render.addNode(Node(
-					Transform(position = Vector3d(x.toDouble() * 4.0, y.toDouble() * 4.0, 0.5)),
+					Transform(position = Vector3d(x.toDouble() * 4.0, y.toDouble() * 4.0, 0.5), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
 					if (y == x) blueModel else redModel,
 					Animations(true, (x / 8.0 + 1.0), emptyList())
 			))

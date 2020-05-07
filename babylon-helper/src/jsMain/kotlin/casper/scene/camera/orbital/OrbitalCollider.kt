@@ -1,6 +1,5 @@
 package casper.scene.camera.orbital
 
-import BABYLON.Scene
 import casper.geometry.Vector3d
 import casper.geometry.toSpherical
 import casper.math.EPSILON

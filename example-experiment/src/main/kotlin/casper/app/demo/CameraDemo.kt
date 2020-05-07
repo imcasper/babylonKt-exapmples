@@ -8,8 +8,6 @@ import casper.geometry.Vector3d
 import casper.geometry.basis.Box3d
 import casper.geometry.polygon.Line3d
 import casper.gui.UIScene
-import casper.scene.camera.orbital.OrbitalCameraInputSettings
-import casper.scene.camera.orbital.OrbitalCameraSettings
 import casper.scene.camera.orbital.SimpleOrbitalCamera
 import casper.util.TextArea
 import casper.util.getPenetrationList
@@ -21,7 +19,8 @@ import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class CameraDemo(val scene: Scene, val uiScene: UIScene) {
-	val orbitalCamera: SimpleOrbitalCamera
+	val orbitalCamera: SimpleOrbitalCamera = TODO()
+
 
 	val cameraCenterHelper = createHelper(scene, Color3.White())
 	val cameraPivotHelper = createHelper(scene, Color3.Yellow())
@@ -34,10 +33,10 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		cameraCenterHelper.rotateAround(Vector3.Zero(), Vector3(1.0, 0.0, 0.0), -PI / 2.0)
 		createHelper(scene, Color3.White())
 
-		orbitalCamera = SimpleOrbitalCamera(scene, uiScene.sceneDispatcher, OrbitalCameraInputSettings(
-				OrbitalCameraSettings(0.05 * PI, 0.45 * PI, 20.0, 300.0, Box3d(Vector3d.ZERO, Vector3d(128.0, 128.0, 0.0)))), ::getPenetrationResolver)
-		orbitalCamera.orbitalController.setPivot(Vector3d(64.0, 64.0, 0.0))
-		scene.activeCamera = orbitalCamera.nativeCamera
+//		val support = CameraSupport()
+//		orbitalCamera = SimpleOrbitalCamera(support, OrbitalCameraInputSettings(), OrbitalCameraSettings(0.05 * PI, 0.45 * PI, 20.0, 300.0, Box3d(Vector3d.ZERO, Vector3d(128.0, 128.0, 0.0))), ::getPenetrationResolver)
+//		orbitalCamera.orbitalController.setPivot(Vector3d(64.0, 64.0, 0.0))
+//		scene.activeCamera = orbitalCamera.nativeCamera
 
 		generateLand()
 
@@ -48,7 +47,7 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 
 	private fun updateInfo() {
 		val orbitalController = orbitalCamera.orbitalController
-		val camera = orbitalCamera.camera
+		val camera = orbitalCamera
 
 		var value = ""
 		value += "orbital:\n"
@@ -57,9 +56,9 @@ class CameraDemo(val scene: Scene, val uiScene: UIScene) {
 		value += "horizontal-angle: " + orbitalController.getPosition().horizontalAngle.toPrecision(2) + "\n"
 		value += "pivot: " + orbitalController.getPivot().toPrecision(3) + "\n"
 		value += "\n"
-		value += "position: " + camera.transform.position.toPrecision(3) + "\n"
-		value += "forward: " + Transform.getLocalY(camera.transform.orientation).toPrecision(3) + "\n"
-		value += "up: " + Transform.getLocalZ(camera.transform.orientation).toPrecision(3) + "\n"
+//		value += "position: " + camera.transform.position.toPrecision(3) + "\n"
+//		value += "forward: " + Transform.getLocalY(camera.transform.orientation).toPrecision(3) + "\n"
+//		value += "up: " + Transform.getLocalZ(camera.transform.orientation).toPrecision(3) + "\n"
 
 		textArea.setText(value)
 	}

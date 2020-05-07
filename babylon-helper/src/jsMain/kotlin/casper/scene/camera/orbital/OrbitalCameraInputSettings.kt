@@ -4,7 +4,6 @@ import casper.input.MouseButton
 
 
 class OrbitalCameraInputSettings(
-		val cameraSettings: OrbitalCameraSettings = OrbitalCameraSettings(),
 		val rotateButton: MouseButton = MouseButton.MIDDLE,
 		val translateButton: MouseButton = MouseButton.RIGHT,
 

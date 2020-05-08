@@ -11,7 +11,6 @@ import casper.geometry.polygon.Quad
 import casper.input.InputDispatcher
 import casper.render.Environment
 import casper.render.Light
-import casper.render.ModelReference
 import casper.render.Render
 import casper.render.babylon.BabylonRender
 import casper.render.extension.TextureUtil
@@ -20,8 +19,8 @@ import casper.render.material.FloatMapReference
 import casper.render.material.Material
 import casper.render.material.MaterialReference
 import casper.render.material.TextureReference
-import casper.render.node.Content
-import casper.render.node.Node
+import casper.render.node.Model
+import casper.render.node.ModelTransform
 import casper.render.vertex.Vertex
 import casper.render.vertex.Vertices
 import casper.render.vertex.VerticesReference
@@ -85,7 +84,7 @@ fun Atlas.getTextureRegion(name: String): Box2d? {
 }
 
 fun createCamera(render: Render, inputDispatcher: InputDispatcher) {
-	val support = CameraSupport(render.root.nextFrameFuture, { render.viewport }, inputDispatcher)
+	val support = CameraSupport(render.nextFrameFuture, { render.viewport }, inputDispatcher)
 	val orbitalCamera = SimpleOrbitalCamera(support, OrbitalCameraInputSettings(zoomSpeed = 2.5), OrbitalCameraSettings(minRange = 2.0, maxRange = 1000.0)) {
 		render.camera = it
 	}
@@ -139,7 +138,7 @@ fun main() {
 							for (t in 0 until 8) {
 								val size = 8
 								val vertices = createTiles(size, Vector3d((s * size).toDouble(), (t * size).toDouble(), 0.0), tiles)
-								render.addNode(Node(content = Content(ModelReference(VerticesReference(vertices), material), name = "tile")))
+								render.addChild(ModelTransform(model = Model(VerticesReference(vertices), material, name = "tile")))
 							}
 						}
 					}, {

@@ -16,8 +16,12 @@ import casper.types.Color4d
 
 fun createDrills(render: Render, sceneData: SceneData, skyboxTexture: CubeTextureReference) {
 	val blueModel = MaterialReplacer.execute(sceneData.content, "Blue-drill") {
-		if (it.name == "Paint2") {
-			MaterialReference(it.data.copy(reflection = skyboxTexture, albedo = ColorConstantReference(Color4d(0.0, 0.0, 1.0, 0.0))), "Blue-Paint")
+		if (it.name == "Paint3") {
+			MaterialReference(it.data.copy(reflection = skyboxTexture, albedo = ColorConstantReference(Color4d(1.0, 0.0, 1.0, 0.0))), "Paint3-M")
+		} else		if (it.name == "Paint2") {
+			MaterialReference(it.data.copy(reflection = skyboxTexture, albedo = ColorConstantReference(Color4d(0.0, 1.0, 1.0, 0.0))), "Paint2-M")
+		} else		if (it.name == "Paint1") {
+			MaterialReference(it.data.copy(reflection = skyboxTexture, albedo = ColorConstantReference(Color4d(0.0, 0.0, 1.0, 0.0))), "Paint1-M")
 		} else null
 	}
 
@@ -28,8 +32,8 @@ fun createDrills(render: Render, sceneData: SceneData, skyboxTexture: CubeTextur
 	}
 
 
-	for (x in 0 until 2) {
-		for (y in 0 until 2) {
+	for (x in 0 until 3) {
+		for (y in 0 until 3) {
 			render.addNode(Node(
 					Transform(position = Vector3d(x.toDouble() * 4.0, y.toDouble() * 4.0, 0.5), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
 					if (y == x) blueModel else redModel,

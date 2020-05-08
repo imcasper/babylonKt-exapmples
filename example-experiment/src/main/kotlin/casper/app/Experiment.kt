@@ -131,7 +131,7 @@ fun main() {
 							TileInfo.create(albedoAtlas, specialAtlas, "water")
 					)
 
-					assets.getSceneFuture("unknown.babylon").then( { sceneData ->
+					assets.getSceneFuture("drill.babylon").then( { sceneData ->
 						createDrills(render, sceneData, skyboxTexture)
 						createAnimatedCube(render, templateBitmap)
 

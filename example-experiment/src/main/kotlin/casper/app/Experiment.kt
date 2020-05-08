@@ -84,7 +84,7 @@ fun Atlas.getTextureRegion(name: String): Box2d? {
 }
 
 fun createCamera(render: Render, inputDispatcher: InputDispatcher) {
-	val support = CameraSupport(render.nextFrameFuture, { render.viewport }, inputDispatcher)
+	val support = CameraSupport(render.nextTimeFuture, { render.viewport }, inputDispatcher)
 	val orbitalCamera = SimpleOrbitalCamera(support, OrbitalCameraInputSettings(zoomSpeed = 2.5), OrbitalCameraSettings(minRange = 2.0, maxRange = 1000.0)) {
 		render.camera = it
 	}

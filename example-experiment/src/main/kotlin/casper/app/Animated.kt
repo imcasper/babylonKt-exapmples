@@ -35,7 +35,7 @@ fun createAnimatedCube(render: Render, templateBitmap: Bitmap) {
 
 
 	var time = 0.0
-	render.nextFrameFuture.then {
+	render.nextTimeFuture.then {
 		time += it
 		albedoAnimated.transform = Matrix4d.translate(Vector3d(time * 0.01, 0.0, 0.0))
 	}

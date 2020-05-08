@@ -9,8 +9,8 @@ import casper.render.extension.VerticesBuilder
 import casper.render.material.FloatConstantReference
 import casper.render.material.Material
 import casper.render.material.TextureReference
-import casper.render.node.Model
-import casper.render.node.ModelTransform
+import casper.render.model.Model
+import casper.render.model.ModelTransform
 import casper.render.vertex.Vertex
 import casper.types.Bitmap
 

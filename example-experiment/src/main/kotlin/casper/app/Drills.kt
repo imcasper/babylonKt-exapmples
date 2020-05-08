@@ -5,12 +5,12 @@ import casper.geometry.Transform
 import casper.geometry.Vector3d
 import casper.render.Render
 import casper.render.SceneData
-import casper.render.animation.Animations
 import casper.render.extension.MaterialReplacer
 import casper.render.material.ColorConstantReference
 import casper.render.material.CubeTextureReference
 import casper.render.material.MaterialReference
-import casper.render.node.ModelTransform
+import casper.render.model.ModelTransform
+import casper.render.model.TimeLine
 import casper.types.Color4d
 
 
@@ -32,12 +32,12 @@ fun createDrills(render: Render, sceneData: SceneData, skyboxTexture: CubeTextur
 	}
 
 
-	for (x in 0 until 3) {
-		for (y in 0 until 3) {
+	for (x in 0 until 8) {
+		for (y in 0 until 8) {
 			render.addChild(ModelTransform(
 					Transform(position = Vector3d(x.toDouble() * 4.0, y.toDouble() * 4.0, 0.5), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
 					if (y == x) blueModel else redModel,
-					Animations(true, (x / 8.0 + 1.0), emptyList())
+					TimeLine(speed = y * (x / 8.0 + 1.0))
 			))
 		}
 	}

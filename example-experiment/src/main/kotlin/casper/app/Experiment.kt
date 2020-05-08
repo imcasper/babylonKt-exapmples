@@ -19,8 +19,8 @@ import casper.render.material.FloatMapReference
 import casper.render.material.Material
 import casper.render.material.MaterialReference
 import casper.render.material.TextureReference
-import casper.render.node.Model
-import casper.render.node.ModelTransform
+import casper.render.model.Model
+import casper.render.model.ModelTransform
 import casper.render.vertex.Vertex
 import casper.render.vertex.Vertices
 import casper.render.vertex.VerticesReference

@@ -11,10 +11,11 @@ import casper.render.vertex.Vertex
 import casper.render.vertex.VerticesReference
 
 data class MergeKey(val material: Material, val timeLine: TimeLine) {
-	var materialName:String? = null
-	var verticesName:String? = null
+	var materialName: String? = null
+	var verticesName: String? = null
 }
-data class MergeInfo(val key: MergeKey, val mesh: Mesh, val transform: Transform, val name:String?)
+
+data class MergeInfo(val key: MergeKey, val mesh: Mesh, val transform: Transform, val name: String?)
 
 object ModelSimplifier {
 	fun execute(model: Model): Model {
@@ -28,7 +29,7 @@ object ModelSimplifier {
 			val subMesh = it.model.mesh
 			if (subMesh != null) {
 				val key = MergeKey(subMesh.material.data, it.timeLine)
-				key.materialName= subMesh.material.name
+				key.materialName = subMesh.material.name
 				key.verticesName = subMesh.vertices.name
 
 				val subMeshList = materialMap.getOrPut(key) {
@@ -55,7 +56,12 @@ object ModelSimplifier {
 			val transform = it.transform
 			val mesh = it.mesh
 			mesh.vertices.data.forEach {
-				vertices.add(it.copy(position = transform.transform(it.position)))
+				val normal = it.normal
+
+				vertices.add(it.copy(
+						position = transform.transform(it.position),
+						normal = if (normal != null) transform.rotation(normal) else null
+				))
 			}
 		}
 

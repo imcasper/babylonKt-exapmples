@@ -50,7 +50,7 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 			WARNING: Roughness channel baking required, but not possible, ignored
 			processing texture smooth_paint
 				texture type:  value not meaningful 2, mapped using: "UVMap"
-			bake time:  0 min, 0.0064 secs
+			bake time:  0 min, 0.0048 secs
 		num positions      :  60
 		num normals        :  60
 		num tangents       :  0
@@ -64,7 +64,7 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 			WARNING: Roughness channel baking required, but not possible, ignored
 			processing texture smooth_paint
 				texture type:  value not meaningful 2, mapped using: "UVMap"
-			bake time:  0 min, 0.0048 secs
+			bake time:  0 min, 0.0066 secs
 		num positions      :  90
 		num normals        :  90
 		num tangents       :  0
@@ -78,7 +78,7 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 			WARNING: Roughness channel baking required, but not possible, ignored
 			processing texture smooth_paint
 				texture type:  value not meaningful 2, mapped using: "UVMap"
-			bake time:  0 min, 0.0042 secs
+			bake time:  0 min, 0.005 secs
 		num positions      :  108
 		num normals        :  108
 		num tangents       :  0
@@ -93,7 +93,7 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 			WARNING: Roughness channel baking required, but not possible, ignored
 			processing texture smooth_paint
 				texture type:  value not meaningful 2, mapped using: "UVMap"
-			bake time:  0 min, 0.0056 secs
+			bake time:  0 min, 0.0057 secs
 		num positions      :  50
 		num normals        :  50
 		num tangents       :  0
@@ -156,4 +156,4 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 	writing mesh:  Plane.002
 ========= Writing of JSON file completed =========
 ========= end of processing =========
-elapsed time:  0 min, 0.1743 secs
+elapsed time:  0 min, 0.18 secs

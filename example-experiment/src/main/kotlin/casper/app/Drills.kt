@@ -16,30 +16,29 @@ import casper.types.Color4d
 
 fun createDrills(render: Render, sceneData: SceneData, skyboxTexture: CubeTextureReference) {
 	val original = sceneData.model
-	val simplify = ModelSimplifier.execute(original)
 
-	val blueModel = MaterialReplacer.execute(simplify, "Blue-drill") {
+	val blueModel = ModelSimplifier.execute(MaterialReplacer.execute(original, "Blue-drill") {
 		if (it.name == "Paint3") {
-			MaterialReference(it.data.copy(reflection = skyboxTexture, albedo = ColorConstantReference(Color4d(1.0, 0.0, 1.0, 0.0))), "Paint3-M")
+			MaterialReference(it.data.copy(albedo = ColorConstantReference(Color4d(1.0, 0.0, 1.0, 0.0))), "Paint3-M")
 		} else if (it.name == "Paint2") {
-			MaterialReference(it.data.copy(reflection = skyboxTexture, albedo = ColorConstantReference(Color4d(0.0, 1.0, 1.0, 0.0))), "Paint2-M")
+			MaterialReference(it.data.copy(albedo = ColorConstantReference(Color4d(0.0, 1.0, 1.0, 0.0))), "Paint2-M")
 		} else if (it.name == "Paint1") {
-			MaterialReference(it.data.copy(reflection = skyboxTexture, albedo = ColorConstantReference(Color4d(0.0, 0.0, 1.0, 0.0))), "Paint1-M")
+			MaterialReference(it.data.copy(albedo = ColorConstantReference(Color4d(0.0, 0.0, 1.0, 0.0))), "Paint1-M")
 		} else null
-	}
+	})
 
-	val redModel = MaterialReplacer.execute(simplify, "Red-drill") {
+	val redModel = ModelSimplifier.execute(MaterialReplacer.execute(original, "Red-drill") {
 		if (it.name == "Paint2") {
-			MaterialReference(it.data.copy(reflection = skyboxTexture, albedo = ColorConstantReference(Color4d(1.0, 0.0, 0.0, 0.0))), "Red-Paint")
+			MaterialReference(it.data.copy(albedo = ColorConstantReference(Color4d(1.0, 0.0, 0.0, 0.0))), "Red-Paint")
 		} else null
-	}
+	})
 
-	val wireFrameModel = MaterialReplacer.execute(simplify, "WireFrame-drill") {
+	val wireFrameModel = ModelSimplifier.execute(MaterialReplacer.execute(original, "WireFrame-drill") {
 		MaterialReference(Material(wireFrame = true))
-	}
+	})
 
 
-	val size = 16
+	val size = 32
 	for (x in 0 until size) {
 		for (y in 0 until size) {
 			val wireframe = x == size - y

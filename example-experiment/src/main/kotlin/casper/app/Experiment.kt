@@ -134,9 +134,9 @@ fun main() {
 						createDrills(render, sceneData, skyboxTexture)
 						createAnimatedCube(render, templateBitmap)
 
-						for (s in 0 until 8) {
-							for (t in 0 until 8) {
-								val size = 8
+						val size = 16
+						for (s in 0 until size) {
+							for (t in 0 until size) {
 								val vertices = createTiles(size, Vector3d((s * size).toDouble(), (t * size).toDouble(), 0.0), tiles)
 								render.addChild(ModelTransform(model = Model(VerticesReference(vertices), material, name = "tile")))
 							}

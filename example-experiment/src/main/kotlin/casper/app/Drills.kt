@@ -14,9 +14,11 @@ import casper.render.model.ModelTransform
 import casper.render.model.TimeLine
 import casper.types.Color4d
 
-
 fun createDrills(render: Render, sceneData: SceneData, skyboxTexture: CubeTextureReference) {
-	val blueModel = MaterialReplacer.execute(sceneData.model, "Blue-drill") {
+	val original = sceneData.model
+	val simplify = ModelSimplifier.execute(original)
+
+	val blueModel = MaterialReplacer.execute(simplify, "Blue-drill") {
 		if (it.name == "Paint3") {
 			MaterialReference(it.data.copy(reflection = skyboxTexture, albedo = ColorConstantReference(Color4d(1.0, 0.0, 1.0, 0.0))), "Paint3-M")
 		} else if (it.name == "Paint2") {
@@ -26,22 +28,22 @@ fun createDrills(render: Render, sceneData: SceneData, skyboxTexture: CubeTextur
 		} else null
 	}
 
-	val redModel = MaterialReplacer.execute(sceneData.model, "Red-drill") {
+	val redModel = MaterialReplacer.execute(simplify, "Red-drill") {
 		if (it.name == "Paint2") {
 			MaterialReference(it.data.copy(reflection = skyboxTexture, albedo = ColorConstantReference(Color4d(1.0, 0.0, 0.0, 0.0))), "Red-Paint")
 		} else null
 	}
 
-	val wireFrameModel = MaterialReplacer.execute(sceneData.model, "WireFrame-drill") {
+	val wireFrameModel = MaterialReplacer.execute(simplify, "WireFrame-drill") {
 		MaterialReference(Material(wireFrame = true))
 	}
 
 
-	val size = 32
+	val size = 16
 	for (x in 0 until size) {
 		for (y in 0 until size) {
 			val wireframe = x == size - y
-			val speed = if (x == y) 0.0 else if (x == size - y) -1.0 else (x + 1) / size.toDouble() + (y +1)  / size.toDouble() / size.toDouble()
+			val speed = if (x == y) 0.0 else if (x == size - y) -1.0 else (x + 1) / size.toDouble() + (y + 1) / size.toDouble() / size.toDouble()
 
 			val model = if (wireframe) wireFrameModel.copy() else if (y == x) blueModel.copy() else redModel.copy()
 			render.addChild(ModelTransform(

@@ -1,0 +1,31 @@
+{"producer":{"name":"Blender","version":"2.82 (sub 7)","exporter_version":"6.3.0","file":"cargo.babylon"},
+"autoClear":true,"clearColor":[0.0509,0.0509,0.0509],"gravity":[0,0,-9.81],
+"materials":[{"name":"Cargo","id":"Cargo","customType":"BABYLON.PBRMaterial","backFaceCulling":true,"checkReadyOnlyOnce":false,"maxSimultaneousLights":4,"environmentIntensity":1,"albedo":[0.2883,0.2752,0.2589],"reflectivity":[0.5,0.5,0.5],"roughness":1,"alpha":1,"transparencyMode":0,"alphaCutOff":0.4,"metallic":0.5, 
+"metallicTexture":{"name":"smooth_paint.png","level":1,"hasAlpha":true,"coordinatesMode":0,"uOffset":0,"vOffset":0,"uScale":1,"vScale":1,"uAng":0,"vAng":0,"wAng":0,"wrapU":1,"wrapV":1,"coordinatesIndex":0},"useMetallnessFromMetallicTextureBlue":false,"useRoughnessFromMetallicTextureGreen":true,"useAmbientOcclusionFromMetallicTextureRed":false,"useRoughnessFromMetallicTextureAlpha":false}],
+"multiMaterials":[],
+"skeletons":[],
+"meshes":[{"name":"Cargo","id":"Cargo","materialId":"Cargo","billboardMode":0,"position":[-0.1,0,-0.2502],"rotation":[0,0,0],"scaling":[0.3502,0.45,0.1063],"isVisible":true,"freezeWorldMatrix":false,"isEnabled":true,"checkCollisions":false,"receiveShadows":false,"pickable":true,"tags":""
+,"positions":[-0.7145,-1,1.1422,-0.7145,1,-0.0006,-0.7145,-1,-0.0006,-0.7145,1,1.1422,1,1,-0.0006,-0.7145,1,-0.0006,1,1,1.1422,1,-1,-0.0006,1,1,-0.0006,1,-1,1.1422,-0.7145,-1,-0.0006,1,-1,-0.0006,1,1,-0.0006,-0.7145,-1,-0.0006,-0.7145,1,-0.0006,-0.7145,1,1.1422,1,-1,1.1422
+,1,1,1.1422,-0.7145,1,1.1422,1,1,1.1422,1,-1,1.1422,-0.7145,-1,1.1422,1,-1,-0.0006,-0.7145,-1,1.1422]
+,"normals":[-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,0,-1,0,0,-1,0,0,-1,0,0,0,-1,0,0,-1,0,0,-1,0,0,1,0,0,1
+,0,0,1,-1,0,0,0,1,0,1,0,0,0,-1,0,0,0,-1,0,0,1]
+,"uvs":[0,0.125,0.125,0,0,0,0.012,0.125,0.113,0,0.012,0,0.125,0.125,0,0,0.125,0,0.113,0.125,0.012,0,0.113,0,0.113,0.125,0.012,0,0.012,0.125,0.012,0.125,0.113,0,0.113,0.125,0.125,0.125,0.113,0.125,0,0.125,0.012,0.125,0.113,0,0.012,0]
+,"indices":[2,1,0,5,4,3,8,7,6,11,10,9,14,13,12,17,16,15,1,18,0,4,19,3,7,20,6,10,21,9,13,22,12,16,23,15]
+,"subMeshes":[{"materialIndex":0,"verticesStart":0,"verticesCount":24,"indexStart":0,"indexCount":36}]
+,"animations":[{"dataType":1,"framePerSecond":24,"keys":[
+{"frame":0,"values":[0,0,0]},
+{"frame":10,"values":[0,0,0]},
+{"frame":100,"values":[0,0,0]}],"loopBehavior":1,"name":"rotation animation","property":"rotation"},{"dataType":1,"framePerSecond":24,"keys":[
+{"frame":0,"values":[-0.1,0,-0.2502]},
+{"frame":10,"values":[-0.1,0,-0.2502]},
+{"frame":100,"values":[-0.1,0,-0.2502]}],"loopBehavior":1,"name":"position animation","property":"position"},{"dataType":1,"framePerSecond":24,"keys":[
+{"frame":0,"values":[0,0,0]},
+{"frame":10,"values":[0.3502,0.45,0.035]},
+{"frame":100,"values":[0.3502,0.45,0.35]}],"loopBehavior":1,"name":"scaling animation","property":"scaling"}],"ranges":[{"name":"CargoAction","from":0,"to":100}]
+,"instances":[]}
+],
+"morphTargetManagers":[],
+"cameras":[{"name":"Camera","id":"Camera","position":[-2.5942,0.882,-0.1821],"rotation":[-0.0865,-0.0418,1.9421],"fov":0.8576,"minZ":0.1,"maxZ":100,"speed":1,"inertia":0.9,"checkCollisions":false,"applyGravity":false,"ellipsoid":[0.2,0.9,0.2],"cameraRigMode":0,"interaxial_distance":0.0637,"type":"UniversalCamera"}],"activeCameraID":"Camera",
+"lights":[{"name":"Point","id":"Point","type":0,"position":[-1.1466,1.6439,0.6768],"range":40,"intensityMode":0,"intensity":1,"diffuse":[1,1,1],"specular":[1,1,1],"radius":0.1}],
+"shadowGenerators":[]
+}

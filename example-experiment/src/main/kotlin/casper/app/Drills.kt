@@ -6,6 +6,7 @@ import casper.geometry.Vector3d
 import casper.render.Render
 import casper.render.SceneData
 import casper.render.extension.MaterialReplacer
+import casper.render.extension.ModelSimplifier
 import casper.render.material.ColorConstantReference
 import casper.render.material.CubeTextureReference
 import casper.render.material.Material
@@ -14,7 +15,7 @@ import casper.render.model.ModelTransform
 import casper.render.model.TimeLine
 import casper.types.Color4d
 
-fun createDrills(render: Render, sceneData: SceneData, skyboxTexture: CubeTextureReference) {
+fun createDrills(render: Render, sceneData: SceneData) {
 	val original = sceneData.model
 
 	val blueModel = ModelSimplifier.execute(MaterialReplacer.execute(original, "Blue-drill") {
@@ -38,18 +39,22 @@ fun createDrills(render: Render, sceneData: SceneData, skyboxTexture: CubeTextur
 	})
 
 
-	val size = 32
+	val size = 4
 	for (x in 0 until size) {
 		for (y in 0 until size) {
 			val wireframe = x == size - y
-			val speed = if (x == y) 0.0 else if (x == size - y) -1.0 else (x + 1) / size.toDouble() + (y + 1) / size.toDouble() / size.toDouble()
 
-			val model = if (wireframe) wireFrameModel.copy() else if (y == x) blueModel.copy() else redModel.copy()
-			render.addChild(ModelTransform(
+			val model = if (wireframe) wireFrameModel else if (y == x) blueModel else redModel
+			val transform = ModelTransform(
 					Transform(position = Vector3d(x.toDouble() * 2.0, y.toDouble() * 2.0, 0.5), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
 					model,
-					TimeLine(speed = speed)
-			))
+					TimeLine()
+			)
+
+			val speed = if (x == y) 0.0 else if (x == size - y) -1.0 else (x + 1) / size.toDouble() + (y + 1) / size.toDouble() / size.toDouble()
+			transform.timeLine.timeScale = speed
+
+			render.addChild(transform)
 		}
 	}
 }

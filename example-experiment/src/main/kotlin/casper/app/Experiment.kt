@@ -130,21 +130,21 @@ fun main() {
 							TileInfo.create(albedoAtlas, specialAtlas, "water")
 					)
 
-					assets.getSceneFuture("drill.babylon").then( { sceneData ->
-						createDrills(render, sceneData, skyboxTexture)
-						createAnimatedCube(render, templateBitmap)
+					assets.getSceneFuture("cargo.babylon").thenAccept { cargoData ->
+						assets.getSceneFuture("drill.babylon").thenAccept { drillData ->
+							createWarehouses(render, cargoData)
+							createDrills(render, drillData)
+							createAnimatedCube(render, templateBitmap)
 
-						val size = 16
-						for (s in 0 until size) {
-							for (t in 0 until size) {
-								val vertices = createTiles(size, Vector3d((s * size).toDouble(), (t * size).toDouble(), 0.0), tiles)
-								render.addChild(ModelTransform(model = Model(VerticesReference(vertices), material, name = "tile")))
+							val size = 16
+							for (s in 0 until size) {
+								for (t in 0 until size) {
+									val vertices = createTiles(size, Vector3d((s * size).toDouble(), (t * size).toDouble(), 0.0), tiles)
+									render.addChild(ModelTransform(model = Model(VerticesReference(vertices), material, name = "tile")))
+								}
 							}
 						}
-					}, {
-						println("can't load model")
-					})
-
+					}
 				}
 			}
 		}

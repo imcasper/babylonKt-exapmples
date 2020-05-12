@@ -45,7 +45,7 @@ fun createDrills(render: Render, sceneData: SceneData) {
 
 			val model = if (wireframe) wireFrameModel else if (y == x) blueModel else redModel
 			val node = SceneNode(
-					Transform(position = Vector3d(x.toDouble() * 2.0, y.toDouble() * 2.0, 0.5), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
+					Transform(position = Vector3d(2.0 + x.toDouble() * 2.0, 2.0 + y.toDouble() * 2.0, 0.5), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
 					model,
 					TimeLine()
 			)

@@ -23,7 +23,7 @@ class AnimationOffsetDemo(uiScene: UIScene, val render: Render, sceneData: Scene
 
 	val textNode = UIText.create(uiScene, "")
 	val transform = SceneNode(
-			Transform(position = Vector3d(5.0, 5.0, 5.0), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
+			Transform(position = Vector3d(9.0, 9.0, 2.0), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
 			sceneData.model,
 			TimeLine()
 	)

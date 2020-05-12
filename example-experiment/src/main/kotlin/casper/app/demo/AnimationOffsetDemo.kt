@@ -6,6 +6,7 @@ import casper.geometry.Transform
 import casper.geometry.Vector3d
 import casper.gui.UIScene
 import casper.gui.component.UIComponent
+import casper.gui.component.button.UIButton
 import casper.gui.component.scroll.UIScroll
 import casper.gui.component.text.UIText
 import casper.gui.layout.Layout
@@ -13,6 +14,7 @@ import casper.render.Render
 import casper.render.SceneData
 import casper.render.model.SceneNode
 import casper.render.model.TimeLine
+import casper.render.model.TimeMode
 import kotlin.math.roundToInt
 
 class AnimationOffsetDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : UIComponent(uiScene.createNode()) {
@@ -26,24 +28,37 @@ class AnimationOffsetDemo(uiScene: UIScene, val render: Render, sceneData: Scene
 			TimeLine()
 	)
 
+	val timeLine = sceneData.model.children.firstOrNull()?.timeLine!!
+	val animation = sceneData.model.children.firstOrNull()?.timeLine?.animations?.firstOrNull()
+	val start = if (animation == null) 0.0 else animation.startTime
+	val duration = if (animation == null) 0.0 else animation.duration
+
 	init {
 		node.layout = Layout.VERTICAL
 		node += textNode.node.setSize(400, 60)
 		node += timeScroll.node.setSize(400, 20)
 		node += speedScroll.node.setSize(400, 20)
 
+		node += 		UIButton.createWithText(uiScene, "clamp") {
+			timeLine.timeMode = TimeMode.CLAMP
+		}.node.setSize(80, 30)
+		node += 		UIButton.createWithText(uiScene, "wrap") {
+			timeLine.timeMode = TimeMode.WRAP
+		}.node.setSize(80, 30)
+		node += 		UIButton.createWithText(uiScene, "mirror") {
+			timeLine.timeMode = TimeMode.MIRROR
+		}.node.setSize(80, 30)
+
 		transform.timeLine.timeScale = 0.0
 		transform.timeLine.timeOffset = 0.0
 
-		val animation = sceneData.model.children.firstOrNull()?.timeLine?.animations?.firstOrNull()
-		val start = if (animation == null) 0.0 else animation.startTime
-		val duration = if (animation == null) 0.0 else animation.duration
 
-		timeScroll.logic.setMin(start)
-		timeScroll.logic.setMax(start + duration)
+		timeScroll.logic.setMin(-2.0)
+		timeScroll.logic.setMax(2.0)
 		timeScroll.logic.setValue(0.0)
 		timeScroll.logic.onValue.then {
-			transform.timeLine.timeOffset = it
+			val rounded = (it * 20.0).roundToInt() * 0.05
+			transform.timeLine.timeOffset = rounded * duration
 			updateInfo()
 		}
 
@@ -51,7 +66,7 @@ class AnimationOffsetDemo(uiScene: UIScene, val render: Render, sceneData: Scene
 		speedScroll.logic.setMax(2.0)
 		speedScroll.logic.setValue(1.0)
 		speedScroll.logic.onValue.then {
-			val rounded = (it * 10.0).roundToInt() * 0.1
+			val rounded = (it * 20.0).roundToInt() * 0.05
 			transform.timeLine.timeScale = rounded
 			updateInfo()
 		}
@@ -61,7 +76,7 @@ class AnimationOffsetDemo(uiScene: UIScene, val render: Render, sceneData: Scene
 	}
 
 	private fun updateInfo() {
-		textNode.text = "offset: ${transform.timeLine.timeOffset.toPrecision(2)}\nspeed: ${transform.timeLine.timeScale.toPrecision(2)}"
+		textNode.text = "offset: ${(transform.timeLine.timeOffset/duration).toPrecision(2)}\nspeed: ${transform.timeLine.timeScale.toPrecision(2)}"
 	}
 
 	override fun dispose() {

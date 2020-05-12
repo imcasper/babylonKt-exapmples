@@ -1,7 +1,7 @@
 package casper.app
 
 import babylon.BabylonUIScene
-import casper.app.demo.AnimationOffsetDemo
+import casper.app.demo.TransformAnimationDemo
 import casper.collection.map.MapUtil
 import casper.collection.nextItem
 import casper.geometry.SphericalCoordinate
@@ -136,10 +136,10 @@ fun main() {
 							TileInfo.create(albedoAtlas, specialAtlas, "water")
 					)
 
-					assets.getSceneFuture("cargo.babylon").thenAccept { cargoData ->
+					assets.getSceneFuture("animation.babylon").thenAccept { animationData ->
 						assets.getSceneFuture("drill.babylon").thenAccept { drillData ->
 
-							uiScene.root += AnimationOffsetDemo(uiScene, render, cargoData).node
+							uiScene.root += TransformAnimationDemo(uiScene, render, animationData).node
 
 							createDrills(render, drillData)
 							createAnimatedCube(render, templateBitmap)

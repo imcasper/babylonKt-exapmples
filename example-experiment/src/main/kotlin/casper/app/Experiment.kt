@@ -101,11 +101,7 @@ fun main() {
 	val assets = AssetsStorage(render.nativeScene)
 
 	createStyle(uiScene)
-
 	createCamera(render, uiScene.dispatcher)
-
-
-	val scroll = UIScroll.create(uiScene, false)
 
 	assets.getAtlasFuture("albedo.atlas").thenAccept { albedoAtlas ->
 		assets.getAtlasFuture("special.atlas").thenAccept { specialAtlas ->

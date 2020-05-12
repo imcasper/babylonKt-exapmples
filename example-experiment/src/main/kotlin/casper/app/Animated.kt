@@ -5,6 +5,7 @@ import casper.geometry.Vector2d
 import casper.geometry.Vector3d
 import casper.geometry.polygon.Octagon
 import casper.render.Render
+import casper.render.extension.TextureUVAnimator
 import casper.render.extension.VerticesBuilder
 import casper.render.material.FloatConstantReference
 import casper.render.material.Material
@@ -29,14 +30,12 @@ fun createAnimatedCube(render: Render, templateBitmap: Bitmap) {
 					Vertex(uvAlbedo = Vector2d(0.0, 0.0), position = Vector3d(2.0, 2.0, 1.0))
 			))
 	val transform = Matrix4d.translate(Vector3d(0.5, 0.5, 0.0))
+
 	val albedoAnimated = TextureReference(templateBitmap, "animated", transform)
 	val material = Material(albedo = albedoAnimated, roughness = FloatConstantReference(0.95), metallic = FloatConstantReference(0.0))
 	render.addChild(SceneNode(model = SceneModel(list, material)))
 
+	TextureUVAnimator(render, albedoAnimated, Vector3d(1.0, 0.0, 0.0))
 
-	var time = 0.0
-	render.nextTimeFuture.then {
-		time += it
-		albedoAnimated.transform = Matrix4d.translate(Vector3d(time * 0.01, 0.0, 0.0))
-	}
+
 }

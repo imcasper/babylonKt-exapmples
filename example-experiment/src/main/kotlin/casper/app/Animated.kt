@@ -9,8 +9,8 @@ import casper.render.extension.VerticesBuilder
 import casper.render.material.FloatConstantReference
 import casper.render.material.Material
 import casper.render.material.TextureReference
-import casper.render.model.Model
-import casper.render.model.ModelTransform
+import casper.render.model.SceneModel
+import casper.render.model.SceneNode
 import casper.render.vertex.Vertex
 import casper.types.Bitmap
 
@@ -31,7 +31,7 @@ fun createAnimatedCube(render: Render, templateBitmap: Bitmap) {
 	val transform = Matrix4d.translate(Vector3d(0.5, 0.5, 0.0))
 	val albedoAnimated = TextureReference(templateBitmap, "animated", transform)
 	val material = Material(albedo = albedoAnimated, roughness = FloatConstantReference(0.95), metallic = FloatConstantReference(0.0))
-	render.addChild(ModelTransform(model = Model(list, material)))
+	render.addChild(SceneNode(model = SceneModel(list, material)))
 
 
 	var time = 0.0

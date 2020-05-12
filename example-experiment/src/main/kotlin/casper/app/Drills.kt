@@ -8,10 +8,9 @@ import casper.render.SceneData
 import casper.render.extension.MaterialReplacer
 import casper.render.extension.ModelSimplifier
 import casper.render.material.ColorConstantReference
-import casper.render.material.CubeTextureReference
 import casper.render.material.Material
 import casper.render.material.MaterialReference
-import casper.render.model.ModelTransform
+import casper.render.model.SceneNode
 import casper.render.model.TimeLine
 import casper.types.Color4d
 
@@ -45,16 +44,16 @@ fun createDrills(render: Render, sceneData: SceneData) {
 			val wireframe = x == size - y
 
 			val model = if (wireframe) wireFrameModel else if (y == x) blueModel else redModel
-			val transform = ModelTransform(
+			val node = SceneNode(
 					Transform(position = Vector3d(x.toDouble() * 2.0, y.toDouble() * 2.0, 0.5), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
 					model,
 					TimeLine()
 			)
 
 			val speed = if (x == y) 0.0 else if (x == size - y) -1.0 else (x + 1) / size.toDouble() + (y + 1) / size.toDouble() / size.toDouble()
-			transform.timeLine.timeScale = speed
+			node.timeLine.timeScale = speed
 
-			render.addChild(transform)
+			render.addChild(node)
 		}
 	}
 }

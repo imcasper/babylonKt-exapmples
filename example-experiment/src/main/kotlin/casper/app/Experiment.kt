@@ -1,6 +1,7 @@
 package casper.app
 
 import babylon.BabylonUIScene
+import casper.app.demo.AnimationOffsetDemo
 import casper.collection.map.MapUtil
 import casper.collection.nextItem
 import casper.geometry.SphericalCoordinate
@@ -8,6 +9,7 @@ import casper.geometry.Vector2d
 import casper.geometry.Vector3d
 import casper.geometry.basis.Box2d
 import casper.geometry.polygon.Quad
+import casper.gui.component.scroll.UIScroll
 import casper.input.InputDispatcher
 import casper.render.Environment
 import casper.render.Light
@@ -19,8 +21,8 @@ import casper.render.material.FloatMapReference
 import casper.render.material.Material
 import casper.render.material.MaterialReference
 import casper.render.material.TextureReference
-import casper.render.model.Model
-import casper.render.model.ModelTransform
+import casper.render.model.SceneModel
+import casper.render.model.SceneNode
 import casper.render.vertex.Vertex
 import casper.render.vertex.Vertices
 import casper.render.vertex.VerticesReference
@@ -31,7 +33,6 @@ import casper.scene.camera.orbital.SimpleOrbitalCamera
 import casper.types.Color4d
 import casper.util.AssetsStorage
 import casper.util.atlas.Atlas
-import casper.util.createSceneLoader
 import kotlin.math.PI
 import kotlin.random.Random
 
@@ -93,13 +94,18 @@ fun createCamera(render: Render, inputDispatcher: InputDispatcher) {
 
 }
 
+
 fun main() {
 	val render = BabylonRender.create("renderCanvas")
 	val uiScene = BabylonUIScene(render.nativeScene)
-
 	val assets = AssetsStorage(render.nativeScene)
 
+	createStyle(uiScene)
+
 	createCamera(render, uiScene.dispatcher)
+
+
+	val scroll = UIScroll.create(uiScene, false)
 
 	assets.getAtlasFuture("albedo.atlas").thenAccept { albedoAtlas ->
 		assets.getAtlasFuture("special.atlas").thenAccept { specialAtlas ->
@@ -132,7 +138,9 @@ fun main() {
 
 					assets.getSceneFuture("cargo.babylon").thenAccept { cargoData ->
 						assets.getSceneFuture("drill.babylon").thenAccept { drillData ->
-							createWarehouses(render, cargoData)
+
+							uiScene.root += AnimationOffsetDemo(uiScene, render, cargoData).node
+
 							createDrills(render, drillData)
 							createAnimatedCube(render, templateBitmap)
 
@@ -140,7 +148,7 @@ fun main() {
 							for (s in 0 until size) {
 								for (t in 0 until size) {
 									val vertices = createTiles(size, Vector3d((s * size).toDouble(), (t * size).toDouble(), 0.0), tiles)
-									render.addChild(ModelTransform(model = Model(VerticesReference(vertices), material, name = "tile")))
+									render.addChild(SceneNode(model = SceneModel(VerticesReference(vertices), material, name = "tile")))
 								}
 							}
 						}

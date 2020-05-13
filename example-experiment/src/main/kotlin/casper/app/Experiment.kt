@@ -2,6 +2,8 @@ package casper.app
 
 import babylon.BabylonUIScene
 import casper.app.demo.TransformAnimationDemo
+import casper.app.demo.createDrills
+import casper.app.demo.createTileDemo
 import casper.collection.map.MapUtil
 import casper.collection.nextItem
 import casper.geometry.SphericalCoordinate
@@ -35,43 +37,6 @@ import casper.util.AssetsStorage
 import casper.util.atlas.Atlas
 import kotlin.math.PI
 import kotlin.random.Random
-
-data class TileInfo(val albedo: Box2d, val metallic: Box2d, val roughness: Box2d) {
-	companion object {
-		fun create(albedoAtlas: Atlas, specialAtlas: Atlas, name: String): TileInfo {
-			return TileInfo(
-					albedoAtlas.getTextureRegion(name)!!,
-					specialAtlas.getTextureRegion("$name-m")!!,
-					specialAtlas.getTextureRegion("$name-m")!!
-			)
-		}
-	}
-}
-
-fun createTiles(size: Int, pivot: Vector3d, tiles: List<TileInfo>): Vertices {
-
-	val random = Random(pivot.hashCode())
-
-	val builder = VerticesBuilder()
-
-	for (x in 0 until size) {
-		for (y in 0 until size) {
-			val tile = random.nextItem(tiles) ?: continue
-
-			val relativePivot = Vector3d(x.toDouble(), y.toDouble(), 0.0)
-			val albedo = tile.albedo
-			val metallic = tile.metallic
-			val roughness = tile.roughness
-			builder.add(Quad(
-					Vertex(relativePivot + pivot + Vector3d(0.0, 1.0, 0.0), uvAlbedo = Vector2d(albedo.min.x, albedo.max.y), uvMetallic = Vector2d(metallic.min.x, metallic.max.y), uvRoughness = Vector2d(roughness.min.x, roughness.max.y)),
-					Vertex(relativePivot + pivot + Vector3d(1.0, 1.0, 0.0), uvAlbedo = Vector2d(albedo.max.x, albedo.max.y), uvMetallic = Vector2d(metallic.max.x, metallic.max.y), uvRoughness = Vector2d(roughness.max.x, roughness.max.y)),
-					Vertex(relativePivot + pivot + Vector3d(1.0, 0.0, 0.0), uvAlbedo = Vector2d(albedo.max.x, albedo.min.y), uvMetallic = Vector2d(metallic.max.x, metallic.min.y), uvRoughness = Vector2d(roughness.max.x, roughness.min.y)),
-					Vertex(relativePivot + pivot + Vector3d(0.0, 0.0, 0.0), uvAlbedo = Vector2d(albedo.min.x, albedo.min.y), uvMetallic = Vector2d(metallic.min.x, metallic.min.y), uvRoughness = Vector2d(roughness.min.x, roughness.min.y))
-			))
-		}
-	}
-	return builder.get()
-}
 
 fun Atlas.getTextureRegion(name: String): Box2d? {
 	val (page, region) = this.getRegion(name) ?: return null
@@ -115,22 +80,6 @@ fun main() {
 							Light(Vector3d(-1.5, -0.5, -0.5), 2.0),
 							true
 					)
-					val albedoPage = albedoAtlas.pages.values.first()
-					val albedo = TextureReference(albedoPage.bitmap, "atlas-albedo")
-
-					val specialPage = specialAtlas.pages.values.first()
-					val special = TextureReference(specialPage.bitmap, "atlas-special")
-
-					val roughness = MapUtil.takeChannel(special.data, 1)
-					val metallic = MapUtil.takeChannel(special.data, 2)
-					val material = MaterialReference(name = "atlas", data = Material(albedo = albedo, roughness = FloatMapReference(roughness), metallic = FloatMapReference(metallic)))
-
-					val tiles = listOf(
-							TileInfo.create(albedoAtlas, specialAtlas, "rock"),
-							TileInfo.create(albedoAtlas, specialAtlas, "sand"),
-							TileInfo.create(albedoAtlas, specialAtlas, "soil"),
-							TileInfo.create(albedoAtlas, specialAtlas, "water")
-					)
 
 					assets.getSceneFuture("animation.babylon").thenAccept { animationData ->
 						assets.getSceneFuture("drill.babylon").thenAccept { drillData ->
@@ -139,14 +88,7 @@ fun main() {
 
 							createDrills(render, drillData)
 							createAnimatedCube(render, templateBitmap)
-
-							val size = 8
-							for (s in 0 until size) {
-								for (t in 0 until size) {
-									val vertices = createTiles(size, Vector3d((s * size).toDouble(), (t * size).toDouble(), 0.0), tiles)
-									render.addChild(SceneNode(model = SceneModel(VerticesReference(vertices), material, name = "tile")))
-								}
-							}
+							createTileDemo(render, albedoAtlas, specialAtlas)
 						}
 					}
 				}
@@ -156,3 +98,4 @@ fun main() {
 
 	render.runRenderLoop()
 }
+

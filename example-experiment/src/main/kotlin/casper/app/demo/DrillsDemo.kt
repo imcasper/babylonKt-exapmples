@@ -1,4 +1,4 @@
-package casper.app
+package casper.app.demo
 
 import casper.geometry.Quaternion
 import casper.geometry.Transform
@@ -38,7 +38,7 @@ fun createDrills(render: Render, sceneData: SceneData) {
 	})
 
 
-	val size = 8
+	val size = 32
 	for (x in 0 until size) {
 		for (y in 0 until size) {
 			val wireframe = x == size - y

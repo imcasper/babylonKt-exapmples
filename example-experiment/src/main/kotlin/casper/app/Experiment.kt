@@ -140,7 +140,7 @@ fun main() {
 							createDrills(render, drillData)
 							createAnimatedCube(render, templateBitmap)
 
-							val size = 32
+							val size = 8
 							for (s in 0 until size) {
 								for (t in 0 until size) {
 									val vertices = createTiles(size, Vector3d((s * size).toDouble(), (t * size).toDouble(), 0.0), tiles)

@@ -38,7 +38,7 @@ fun createDrills(render: Render, sceneData: SceneData) {
 	})
 
 
-	val size = 32
+	val size = 8
 	for (x in 0 until size) {
 		for (y in 0 until size) {
 			val wireframe = x == size - y

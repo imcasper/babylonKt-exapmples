@@ -15,12 +15,14 @@ import casper.render.SceneData
 import casper.render.model.AnimationPlayMode
 import casper.render.model.SceneNode
 import casper.render.model.TimeLine
+import casper.signal.util.then
 import kotlin.math.roundToInt
 
 class TransformAnimationDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : UIComponent(uiScene.createNode()) {
 	val timeScroll = UIScroll.create(uiScene, false)
 	val speedScroll = UIScroll.create(uiScene, false)
 
+	private var frameTime = 0.0
 	val textNode = UIText.create(uiScene, "")
 	val sceneNode = SceneNode(
 			Transform(position = Vector3d(9.0, 9.0, 0.0), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
@@ -68,10 +70,14 @@ class TransformAnimationDemo(uiScene: UIScene, val render: Render, sceneData: Sc
 		speedScroll.logic.setValue(1.0)
 
 		render.addChild(sceneNode)
+		uiScene.onFrame.then(components) {
+			frameTime = frameTime * 0.9 + 0.1 * it.toDouble()
+			updateInfo()
+		}
 	}
 
 	private fun updateInfo() {
-		textNode.text = "time offset: ${(sceneNode.timeLine.timeOffset).toPrecision(2)} sec\nspeed: ${sceneNode.timeLine.timeScale.toPrecision(2)}"
+		textNode.text = "frameTime: ${frameTime.toPrecision(1)} ms\n time offset: ${(sceneNode.timeLine.timeOffset).toPrecision(2)} sec\nspeed: ${sceneNode.timeLine.timeScale.toPrecision(2)}"
 	}
 
 	override fun dispose() {

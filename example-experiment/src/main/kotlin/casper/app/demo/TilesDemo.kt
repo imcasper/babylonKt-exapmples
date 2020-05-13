@@ -4,8 +4,10 @@ import casper.app.getTextureRegion
 import casper.collection.map.MapUtil
 import casper.collection.nextItem
 import casper.geometry.Vector2d
+import casper.geometry.Vector2i
 import casper.geometry.Vector3d
 import casper.geometry.basis.Box2d
+import casper.geometry.nextVector2i
 import casper.geometry.polygon.Quad
 import casper.render.babylon.BabylonRender
 import casper.render.extension.VerticesBuilder
@@ -34,7 +36,7 @@ data class TileInfo(val albedo: Box2d, val metallic: Box2d, val roughness: Box2d
 	}
 }
 
-fun createTiles(size: Int, pivot: Vector3d, tiles:List<TileInfo>): Vertices {
+fun createTiles(size: Int, pivot: Vector3d, tiles: List<TileInfo>): Vertices {
 
 
 	val random = Random(pivot.hashCode())
@@ -78,12 +80,36 @@ fun createTileDemo(render: BabylonRender, albedoAtlas: Atlas, specialAtlas: Atla
 	val metallic = MapUtil.takeChannel(special.data, 2)
 	val material = MaterialReference(name = "atlas", data = Material(albedo = albedo, roughness = FloatMapReference(roughness), metallic = FloatMapReference(metallic)))
 
-	val size = 64
-	for (s in 0 until size) {
-		for (t in 0 until size) {
-			val vertices = createTiles(1, Vector3d((s ).toDouble(), (t ).toDouble(), 0.0), tiles)
-			render.addChild(SceneNode(model = SceneModel(VerticesReference(vertices), material, "tile"), timeLine = TimeLine(timeScale = 0.0)))
+	val size = 32
+	val random = Random(0)
+	val nodes = mutableSetOf<SceneNode>()
+
+	val step: () -> Unit = {
+		val pos = random.nextVector2i(Vector2i(size))
+		val append = if (nodes.size < 100) true else random.nextBoolean()
+
+		if (append) {
+			val subSize = 4
+			val vertices = createTiles(subSize, Vector3d((subSize * pos.x).toDouble(), (subSize*pos.y).toDouble(), 0.0), tiles)
+			val node = SceneNode(model = SceneModel(VerticesReference(vertices), material, "tile"), timeLine = TimeLine(timeScale = 0.0))
+			nodes.add(node)
+			render.addChild(node)
+		} else {
+			val iterator = nodes.iterator()
+			if (iterator.hasNext()) {
+				val node = iterator.next()
+				nodes.remove(node)
+				render.removeChild(node)
+			}
+		}
+	}
+
+
+	render.nextTimeFuture.then {
+		for (i in 1..100) {
+			step()
 		}
 	}
 
 }
+

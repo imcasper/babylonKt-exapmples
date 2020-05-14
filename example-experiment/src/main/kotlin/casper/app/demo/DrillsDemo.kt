@@ -41,7 +41,7 @@ class DrillsDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : U
 		})
 
 
-		val size = 8
+		val size = 4
 		val interval = 3.0
 		for (x in 0 until size) {
 			for (y in 0 until size) {

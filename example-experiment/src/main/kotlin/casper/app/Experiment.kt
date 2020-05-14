@@ -83,7 +83,7 @@ fun main() {
 							uiScene.root += tabMenu.node
 
 							createAnimatedCube(render, templateBitmap)
-							createTileDemo(render, albedoAtlas, specialAtlas)
+//							createTileDemo(render, albedoAtlas, specialAtlas)
 						}
 					}
 				}

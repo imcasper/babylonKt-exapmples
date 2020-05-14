@@ -80,13 +80,13 @@ fun createTileDemo(render: BabylonRender, albedoAtlas: Atlas, specialAtlas: Atla
 	val metallic = MapUtil.takeChannel(special.data, 2)
 	val material = MaterialReference(name = "atlas", data = Material(albedo = albedo, roughness = FloatMapReference(roughness), metallic = FloatMapReference(metallic)))
 
-	val size = 32
+	val size = 16
 	val random = Random(0)
 	val nodes = mutableSetOf<SceneNode>()
 
 	val step: () -> Unit = {
 		val pos = random.nextVector2i(Vector2i(size))
-		val append = if (nodes.size < 100) true else random.nextBoolean()
+		val append = if (nodes.size < 1000) true else random.nextBoolean()
 
 		if (append) {
 			val subSize = 4
@@ -106,7 +106,7 @@ fun createTileDemo(render: BabylonRender, albedoAtlas: Atlas, specialAtlas: Atla
 
 
 	render.nextTimeFuture.then {
-		for (i in 1..100) {
+		for (i in 1..1) {
 			step()
 		}
 	}

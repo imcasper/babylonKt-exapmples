@@ -7,6 +7,7 @@ import casper.geometry.Vector3d
 import casper.gui.UIScene
 import casper.gui.component.UIComponent
 import casper.gui.component.button.UIButton
+import casper.gui.component.panel.UIPanel
 import casper.gui.component.scroll.UIScroll
 import casper.gui.component.text.UIText
 import casper.gui.layout.Layout
@@ -18,7 +19,7 @@ import casper.render.model.TimeLine
 import casper.signal.util.then
 import kotlin.math.roundToInt
 
-class TransformAnimationDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : UIComponent(uiScene.createNode()) {
+class AnimationDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : UIComponent(uiScene.createNode()) {
 	val timeScroll = UIScroll.create(uiScene, false)
 	val speedScroll = UIScroll.create(uiScene, false)
 
@@ -31,30 +32,28 @@ class TransformAnimationDemo(uiScene: UIScene, val render: Render, sceneData: Sc
 	)
 
 	init {
+		UIPanel(node)
 		node.layout = Layout.VERTICAL
 		node += textNode.node.setSize(400, 60)
 		node += timeScroll.node.setSize(800, 20)
 		node += speedScroll.node.setSize(200, 20)
 
 		node += 		UIButton.createWithText(uiScene, "clamp") {
-			sceneNode.setAnimationPlayMode(AnimationPlayMode.CLAMP)
+			sceneNode.setPlayMode(AnimationPlayMode.CLAMP)
 		}.node.setSize(80, 30)
 		node += 		UIButton.createWithText(uiScene, "wrap") {
-			sceneNode.setAnimationPlayMode(AnimationPlayMode.WRAP)
+			sceneNode.setPlayMode(AnimationPlayMode.WRAP)
 		}.node.setSize(80, 30)
 		node += 		UIButton.createWithText(uiScene, "mirror") {
-			sceneNode.setAnimationPlayMode(AnimationPlayMode.MIRROR)
+			sceneNode.setPlayMode(AnimationPlayMode.MIRROR)
 		}.node.setSize(80, 30)
-
-		sceneNode.timeLine.timeScale = 0.0
-		sceneNode.timeLine.timeOffset = 0.0
 
 
 		timeScroll.logic.setMin(-10.0)
 		timeScroll.logic.setMax(20.0)
 		timeScroll.logic.onValue.then {
 			val rounded = (it * 20.0).roundToInt() * 0.05
-			sceneNode.timeLine.timeOffset = rounded
+			sceneNode.setTimeOffset(rounded)
 			updateInfo()
 		}
 
@@ -62,7 +61,7 @@ class TransformAnimationDemo(uiScene: UIScene, val render: Render, sceneData: Sc
 		speedScroll.logic.setMax(5.0)
 		speedScroll.logic.onValue.then {
 			val rounded = (it * 20.0).roundToInt() * 0.05
-			sceneNode.timeLine.timeScale = rounded
+			sceneNode.setPlaySpeed(rounded)
 			updateInfo()
 		}
 

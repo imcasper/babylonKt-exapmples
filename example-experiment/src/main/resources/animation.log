@@ -25,14 +25,13 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 		animation processing begun
 			processing action PlaneAction:  in[1 - 100], out[0 - 100]
 		processing begun of material:  Material.002
-		num positions      :  230
-		num normals        :  230
+		num positions      :  179
+		num normals        :  179
 		num tangents       :  0
-		num uvs            :  460
+		num uvs            :  358
 		num uvs2           :  0
 		num colors         :  0
-		num indices        :  288
-		WARNING: # of 0 area faces found:  8
+		num indices        :  276
 	processing begun of mesh:  Cylinder
 		processing begun of material:  Material.001
 		num positions      :  99
@@ -51,4 +50,4 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 	writing mesh:  Cylinder
 ========= Writing of JSON file completed =========
 ========= end of processing =========
-elapsed time:  0 min, 0.0378 secs
+elapsed time:  0 min, 0.0441 secs

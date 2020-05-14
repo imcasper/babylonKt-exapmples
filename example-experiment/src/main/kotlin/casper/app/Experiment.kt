@@ -1,33 +1,23 @@
 package casper.app
 
 import babylon.BabylonUIScene
-import casper.app.demo.TransformAnimationDemo
-import casper.app.demo.createDrills
+import casper.app.demo.AnimationDemo
+import casper.app.demo.DrillsDemo
 import casper.app.demo.createTileDemo
-import casper.collection.map.MapUtil
-import casper.collection.nextItem
+import casper.collection.observableListOf
 import casper.geometry.SphericalCoordinate
 import casper.geometry.Vector2d
+import casper.geometry.Vector2i
 import casper.geometry.Vector3d
 import casper.geometry.basis.Box2d
-import casper.geometry.polygon.Quad
-import casper.gui.component.scroll.UIScroll
+import casper.gui.component.tab.UITab
+import casper.gui.component.tab.UITabMenu
 import casper.input.InputDispatcher
 import casper.render.Environment
 import casper.render.Light
 import casper.render.Render
 import casper.render.babylon.BabylonRender
 import casper.render.extension.TextureUtil
-import casper.render.extension.VerticesBuilder
-import casper.render.material.FloatMapReference
-import casper.render.material.Material
-import casper.render.material.MaterialReference
-import casper.render.material.TextureReference
-import casper.render.model.SceneModel
-import casper.render.model.SceneNode
-import casper.render.vertex.Vertex
-import casper.render.vertex.Vertices
-import casper.render.vertex.VerticesReference
 import casper.scene.camera.orbital.CameraSupport
 import casper.scene.camera.orbital.OrbitalCameraInputSettings
 import casper.scene.camera.orbital.OrbitalCameraSettings
@@ -36,7 +26,6 @@ import casper.types.Color4d
 import casper.util.AssetsStorage
 import casper.util.atlas.Atlas
 import kotlin.math.PI
-import kotlin.random.Random
 
 fun Atlas.getTextureRegion(name: String): Box2d? {
 	val (page, region) = this.getRegion(name) ?: return null
@@ -84,9 +73,15 @@ fun main() {
 					assets.getSceneFuture("animation.babylon").thenAccept { animationData ->
 						assets.getSceneFuture("drill.babylon").thenAccept { drillData ->
 
-							uiScene.root += TransformAnimationDemo(uiScene, render, animationData).node
+							val tabs = observableListOf(
+									UITab.createWithText(uiScene, "animation", Vector2i(100, 30), AnimationDemo(uiScene, render, animationData).node),
+									UITab.createWithText(uiScene, "drills", Vector2i(100, 30), DrillsDemo(uiScene, render, drillData).node)
+							)
 
-							createDrills(render, drillData)
+
+							val tabMenu = UITabMenu.create(uiScene, tabs = tabs)
+							uiScene.root += tabMenu.node
+
 							createAnimatedCube(render, templateBitmap)
 							createTileDemo(render, albedoAtlas, specialAtlas)
 						}

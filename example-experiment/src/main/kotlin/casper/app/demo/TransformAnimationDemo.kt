@@ -10,6 +10,7 @@ import casper.gui.component.button.UIButton
 import casper.gui.component.panel.UIPanel
 import casper.gui.component.scroll.UIScroll
 import casper.gui.component.text.UIText
+import casper.gui.component.toggle.UIToggleWithLabel
 import casper.gui.layout.Layout
 import casper.render.Render
 import casper.render.SceneData
@@ -19,33 +20,46 @@ import casper.render.model.TimeLine
 import casper.signal.util.then
 import kotlin.math.roundToInt
 
-class AnimationDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : UIComponent(uiScene.createNode()) {
+class TransformAnimationDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : UIComponent(uiScene.createNode()) {
 	val timeScroll = UIScroll.create(uiScene, false)
 	val speedScroll = UIScroll.create(uiScene, false)
 
 	private var frameTime = 0.0
 	val textNode = UIText.create(uiScene, "")
-	val sceneNode = SceneNode(
-			Transform(position = Vector3d(9.0, 9.0, 0.0), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
+	val simpleAnimation = SceneNode(
+			Transform(position = Vector3d(0.0, -8.0, 0.0), scale = Vector3d.ONE, rotation = Quaternion.IDENTITY),
 			sceneData.model,
 			TimeLine()
 	)
 
+	val customAnimation = SceneNode()
+
 	init {
+
+		customAnimation.addChild(SceneNode(Transform(position = Vector3d(4.0, 0.0, 0.0)), model = sceneData.model))
+		var angle = 0.0
+		render.nextTimeFuture.then {
+			angle += it
+			customAnimation.transform = Transform(position = Vector3d(0.0, -8.0, 4.0), rotation = Quaternion.fromAxisAnge(Vector3d.Z, angle))
+		}
+
 		UIPanel(node)
 		node.layout = Layout.VERTICAL
 		node += textNode.node.setSize(400, 60)
 		node += timeScroll.node.setSize(800, 20)
 		node += speedScroll.node.setSize(200, 20)
+		node += UIToggleWithLabel.create(uiScene, UIText.create(uiScene, "show"), true, {
+			update(it)
+		}).node
 
 		node += 		UIButton.createWithText(uiScene, "clamp") {
-			sceneNode.setPlayMode(AnimationPlayMode.CLAMP)
+			simpleAnimation.setPlayMode(AnimationPlayMode.CLAMP)
 		}.node.setSize(80, 30)
 		node += 		UIButton.createWithText(uiScene, "wrap") {
-			sceneNode.setPlayMode(AnimationPlayMode.WRAP)
+			simpleAnimation.setPlayMode(AnimationPlayMode.WRAP)
 		}.node.setSize(80, 30)
 		node += 		UIButton.createWithText(uiScene, "mirror") {
-			sceneNode.setPlayMode(AnimationPlayMode.MIRROR)
+			simpleAnimation.setPlayMode(AnimationPlayMode.MIRROR)
 		}.node.setSize(80, 30)
 
 
@@ -53,7 +67,7 @@ class AnimationDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) 
 		timeScroll.logic.setMax(20.0)
 		timeScroll.logic.onValue.then {
 			val rounded = (it * 20.0).roundToInt() * 0.05
-			sceneNode.setTimeOffset(rounded)
+			simpleAnimation.setTimeOffset(rounded)
 			updateInfo()
 		}
 
@@ -61,26 +75,36 @@ class AnimationDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) 
 		speedScroll.logic.setMax(5.0)
 		speedScroll.logic.onValue.then {
 			val rounded = (it * 20.0).roundToInt() * 0.05
-			sceneNode.setPlaySpeed(rounded)
+			simpleAnimation.setPlaySpeed(rounded)
 			updateInfo()
 		}
 
 		timeScroll.logic.setValue(0.0)
 		speedScroll.logic.setValue(1.0)
 
-		render.addChild(sceneNode)
+		render.addChild(simpleAnimation)
 		uiScene.onFrame.then(components) {
 			frameTime = frameTime * 0.9 + 0.1 * it.toDouble()
 			updateInfo()
 		}
 	}
 
+	private fun update(show:Boolean) {
+		if (show) {
+			render.addChild(simpleAnimation)
+			render.addChild(customAnimation)
+		} else {
+			render.removeChild(simpleAnimation)
+			render.removeChild(customAnimation)
+		}
+	}
+
 	private fun updateInfo() {
-		textNode.text = "frameTime: ${frameTime.toPrecision(1)} ms\n time offset: ${(sceneNode.timeLine.timeOffset).toPrecision(2)} sec\nspeed: ${sceneNode.timeLine.timeScale.toPrecision(2)}"
+		textNode.text = "frameTime: ${frameTime.toPrecision(1)} ms\n time offset: ${(simpleAnimation.timeLine.timeOffset).toPrecision(2)} sec\nspeed: ${simpleAnimation.timeLine.timeScale.toPrecision(2)}"
 	}
 
 	override fun dispose() {
-		render.removeChild(sceneNode)
+		render.removeChild(simpleAnimation)
 		super.dispose()
 	}
 

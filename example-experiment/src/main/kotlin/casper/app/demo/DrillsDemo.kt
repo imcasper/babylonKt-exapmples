@@ -54,7 +54,7 @@ class DrillsDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : U
 			"drills: ${currentSize}x${currentSize}"
 		}.node.setSize(160, 30)
 
-		node += UIScroll.create(uiScene, false, currentSize.toDouble(), 1.0, 64.0) {
+		node += UIScroll.create(uiScene, false, currentSize.toDouble(), 0.0, 64.0) {
 			val nextSize = it.roundToInt()
 			if (nextSize != currentSize) {
 				currentSize = nextSize

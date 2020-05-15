@@ -47,7 +47,7 @@ class TransformAnimationDemo(uiScene: UIScene, val render: Render, sceneData: Sc
 		node.layout = Layout.VERTICAL
 		node += textNode.node.setSize(400, 60)
 		node += timeScroll.node.setSize(800, 20)
-		node += speedScroll.node.setSize(200, 20)
+		node += speedScroll.node.setSize(400, 20)
 		node += UIToggleWithLabel.create(uiScene, UIText.create(uiScene, "show"), true, {
 			update(it)
 		}).node

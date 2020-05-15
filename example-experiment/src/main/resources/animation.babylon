@@ -18,7 +18,7 @@
 ,19,33,4,21,34,20,24,35,23]
 ,"subMeshes":[{"materialIndex":0,"verticesStart":0,"verticesCount":36,"indexStart":0,"indexCount":60}]
 ,"instances":[{"name":"Cube.001","position":[0,-0.8,0.7],"rotation":[0,0,0],"scaling":[1,1,1],"freezeWorldMatrix":false,"tags":"","checkCollisions":false,"pickable":true}]}
-,{"name":"Plane","id":"Plane","materialId":"Material.002","billboardMode":0,"position":[0,0,1],"rotation":[1.5708,-1.5708,0],"scaling":[1,1,1],"isVisible":true,"freezeWorldMatrix":false,"isEnabled":true,"checkCollisions":false,"receiveShadows":false,"pickable":true,"tags":""
+,{"name":"Plane","id":"Plane","materialId":"Material.002","billboardMode":0,"position":[0,0,1],"rotation":[1.5708,1.5708,0],"scaling":[1,1,1],"isVisible":true,"freezeWorldMatrix":false,"isEnabled":true,"checkCollisions":false,"receiveShadows":false,"pickable":true,"tags":""
 ,"positions":[0.1,0.3,-0.3,-0.1,0.7,-0.3,0.1,0.7,-0.3,0.1,0.3,0.3,-0.1,0.7,0.3,-0.1,0.3,0.3,0.8,0.7,-0.3,0.8,0.1,-0.3,0.6,0.5,-0.3,-0.3,0.1,-0.3,0.3,0.1,-0.3,0.15,-0.3,-0.3,-0.2,0.9,-0.3,0.2,0.9,-0.3,-0.6,0.5,-0.3,-0.8,0.7,-0.3,0.35,-0.1,-0.3
 ,1,-0.1,-0.3,1,0.1,-0.3,-1,0.1,-0.3,-0.8,0.1,-0.3,-1,-0.1,-0.3,-0.35,-0.1,-0.3,0.8,0.7,0.3,0.6,0.5,0.3,0.8,0.1,0.3,-0.3,0.1,0.3,0.15,-0.3,0.3,0.3,0.1,0.3,-0.2,0.9,0.3,0.1,0.7,0.3,0.2,0.9,0.3,-0.6,0.5,0.3,-0.8,0.7,0.3
 ,0.35,-0.1,0.3,1,-0.1,0.3,1,0.1,0.3,-1,0.1,0.3,-1,-0.1,0.3,-0.8,0.1,0.3,-0.35,-0.1,0.3,-0.8,0.7,-0.3,-0.2,0.9,0.3,-0.2,0.9,-0.3,0.3,0.1,-0.3,0.8,0.1,0.3,0.8,0.1,-0.3,1,0.1,-0.3,0.8,0.7,0.3,1,0.1,0.3,-0.2,0.9,-0.3
@@ -57,11 +57,11 @@
 ,160,159,158,163,162,161,166,165,164,169,168,167,172,171,170,175,174,173,178,177,176]
 ,"subMeshes":[{"materialIndex":0,"verticesStart":0,"verticesCount":179,"indexStart":0,"indexCount":276}]
 ,"animations":[{"dataType":1,"framePerSecond":24,"keys":[
-{"frame":1,"values":[1.5708,-1.5708,0]},
+{"frame":0,"values":[1.5708,-1.5708,0]},
 {"frame":100,"values":[1.5708,1.5708,0]}],"loopBehavior":1,"name":"rotation animation","property":"rotation"},{"dataType":1,"framePerSecond":24,"keys":[
-{"frame":1,"values":[0,0,1]},
+{"frame":0,"values":[0,0,1]},
 {"frame":100,"values":[0,0,1]}],"loopBehavior":1,"name":"position animation","property":"position"},{"dataType":1,"framePerSecond":24,"keys":[
-{"frame":1,"values":[1,1,1]},
+{"frame":0,"values":[1,1,1]},
 {"frame":100,"values":[1,1,1]}],"loopBehavior":1,"name":"scaling animation","property":"scaling"}],"ranges":[{"name":"PlaneAction","from":0,"to":100}]
 ,"instances":[]}
 ,{"name":"Cylinder","id":"Cylinder","materialId":"Material.001","billboardMode":0,"position":[0,0,1],"rotation":[1.5708,0,0],"scaling":[1,1,1],"isVisible":true,"freezeWorldMatrix":false,"isEnabled":true,"checkCollisions":false,"receiveShadows":false,"pickable":true,"tags":""

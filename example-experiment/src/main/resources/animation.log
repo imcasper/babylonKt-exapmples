@@ -23,7 +23,7 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 	processing begun of camera (UniversalCamera):  Camera
 	processing begun of mesh:  Plane
 		animation processing begun
-			processing action PlaneAction:  in[1 - 100], out[0 - 100]
+			processing action PlaneAction:  in[0 - 100], out[0 - 100]
 		processing begun of material:  Material.002
 		num positions      :  179
 		num normals        :  179
@@ -50,4 +50,4 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 	writing mesh:  Cylinder
 ========= Writing of JSON file completed =========
 ========= end of processing =========
-elapsed time:  0 min, 0.0441 secs
+elapsed time:  0 min, 0.0501 secs

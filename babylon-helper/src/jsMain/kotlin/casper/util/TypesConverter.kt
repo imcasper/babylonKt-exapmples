@@ -8,8 +8,19 @@ import casper.geometry.polygon.Line3d
 import casper.math.clamp
 import casper.types.Color3d
 import casper.types.Color4d
+import org.khronos.webgl.get
 import kotlin.math.roundToInt
 
+fun Matrix.toMatrix4d(): Matrix4d {
+	return Matrix4d(DoubleArray(16) { m[it].toDouble() })
+}
+
+fun Matrix4d.toMatrix4(): Matrix {
+	val m = Matrix()
+	val floats = data.map { it.toFloat() }
+	m.m.set(floats.toTypedArray())
+	return m
+}
 
 fun Vector2i.toVector2(): Vector2 {
 	return Vector2(x.toDouble(), y.toDouble())

@@ -41,6 +41,7 @@ class TransformAnimationDemo(uiScene: UIScene, val render: Render, sceneData: Sc
 		render.nextTimeFuture.then {
 			angle += it
 			customAnimation.transform = Transform(position = Vector3d(0.0, -8.0, 4.0), rotation = Quaternion.fromAxisAnge(Vector3d.Z, angle))
+			customAnimation.setPlaySpeed(0.0)
 		}
 
 		UIPanel(node)

@@ -11,158 +11,47 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 		Keep Z-up r-handed  :  yes
 		Texture directory   :  /home/casper/projects/babylonKt-examples/example-experiment/src/main/resources/
 	Python World class constructor completed
-	processing begun of camera (UniversalCamera):  Camera.001
-	processing begun of mesh:  Icosphere
-		processing begun of material:  Material.008
-		num positions      :  274
-		num normals        :  274
+	processing begun of mesh:  circle
+		animation processing begun
+			processing action Plane.002Action:  in[0 - 100], out[0 - 100]
+		processing begun of material:  Paint2
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+		num positions      :  126
+		num normals        :  126
 		num tangents       :  0
-		num uvs            :  548
+		num uvs            :  252
 		num uvs2           :  0
 		num colors         :  0
-		num indices        :  960
-	processing begun of mesh:  Icosphere.001
-		processing begun of material:  Material.001
-		num positions      :  274
-		num normals        :  274
-		num tangents       :  0
-		num uvs            :  548
-		num uvs2           :  0
-		num colors         :  0
-		num indices        :  960
-	processing begun of mesh:  Icosphere.002
-		processing begun of material:  Material
-		num positions      :  274
-		num normals        :  274
-		num tangents       :  0
-		num uvs            :  548
-		num uvs2           :  0
-		num colors         :  0
-		num indices        :  960
-	processing begun of mesh:  Icosphere.003
-		processing begun of material:  Material.009
-		num positions      :  274
-		num normals        :  274
-		num tangents       :  0
-		num uvs            :  548
-		num uvs2           :  0
-		num colors         :  0
-		num indices        :  960
-	processing begun of mesh:  Icosphere.004
-		processing begun of material:  Material.003
-		num positions      :  274
-		num normals        :  274
-		num tangents       :  0
-		num uvs            :  548
-		num uvs2           :  0
-		num colors         :  0
-		num indices        :  960
-	processing begun of mesh:  Icosphere.005
-		processing begun of material:  Material.004
-		num positions      :  274
-		num normals        :  274
-		num tangents       :  0
-		num uvs            :  548
-		num uvs2           :  0
-		num colors         :  0
-		num indices        :  960
-	processing begun of mesh:  Icosphere.006
-		processing begun of material:  Material.010
-		num positions      :  274
-		num normals        :  274
-		num tangents       :  0
-		num uvs            :  548
-		num uvs2           :  0
-		num colors         :  0
-		num indices        :  960
-	processing begun of mesh:  Icosphere.007
-		processing begun of material:  Material.006
-		num positions      :  274
-		num normals        :  274
-		num tangents       :  0
-		num uvs            :  548
-		num uvs2           :  0
-		num colors         :  0
-		num indices        :  960
-	processing begun of mesh:  Icosphere.008
-		processing begun of material:  Material.005
-		num positions      :  274
-		num normals        :  274
-		num tangents       :  0
-		num uvs            :  548
-		num uvs2           :  0
-		num colors         :  0
-		num indices        :  960
-	processing begun of mesh:  Cube.006
-		processing begun of material:  BLACK
-		num positions      :  18
-		num normals        :  18
-		num tangents       :  0
-		num uvs            :  36
-		num uvs2           :  0
-		num colors         :  0
-		num indices        :  24
-	processing begun of mesh:  Cube.003
+		num indices        :  288
+	processing begun of mesh:  base
 		processing begun of material:  Concrete
 			processing texture concrete
 				texture type:  diffuseTexture, mapped using: "UVMap"
-		num positions      :  56
-		num normals        :  56
+		num positions      :  29
+		num normals        :  29
 		num tangents       :  0
-		num uvs            :  112
+		num uvs            :  58
 		num uvs2           :  0
 		num colors         :  0
-		num indices        :  108
-	processing begun of mesh:  Cube.000
-		processing begun of material:  Paint2
-			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
-			WARNING: Roughness channel baking required, but not possible, ignored
+		num indices        :  36
+	processing begun of mesh:  circle2
+		processing begun of material:  Paint1
 			processing texture smooth_paint
 				texture type:  value not meaningful 2, mapped using: "UVMap"
-			bake time:  0 min, 0.0053 secs
-		num positions      :  90
-		num normals        :  90
+		num positions      :  126
+		num normals        :  126
 		num tangents       :  0
-		num uvs            :  180
+		num uvs            :  252
 		num uvs2           :  0
 		num colors         :  0
-		num indices        :  120
-	processing begun of mesh:  Plane
-		animation processing begun
-			processing action PlaneAction:  in[1 - 180], out[0 - 180]
-		processing begun of material:  Iron
-			processing texture metall_special
-				texture type:  metallicTexture, mapped using: "UVMap"
-			processing texture metall_special
-				texture type:  value not meaningful 2, mapped using: "UVMap"
-		num positions      :  262
-		num normals        :  262
-		num tangents       :  0
-		num uvs            :  524
-		num uvs2           :  0
-		num colors         :  0
-		num indices        :  774
+		num indices        :  288
 	processing begun of camera (UniversalCamera):  Camera
-	processing begun of mesh:  Cube.001
-		mesh is an instance of :  Cube.000.  Processing halted.
-	processing begun of mesh:  Cube.005
-		mesh is an instance of :  Cube.006.  Processing halted.
-	processing begun of light (POINT):  Point
 	processing begun of light (POINT):  Lamp
 ========= Writing of JSON file started =========
-	writing mesh:  Icosphere
-	writing mesh:  Icosphere.001
-	writing mesh:  Icosphere.002
-	writing mesh:  Icosphere.003
-	writing mesh:  Icosphere.004
-	writing mesh:  Icosphere.005
-	writing mesh:  Icosphere.006
-	writing mesh:  Icosphere.007
-	writing mesh:  Icosphere.008
-	writing mesh:  Cube.006
-	writing mesh:  Cube.003
-	writing mesh:  Cube.000
-	writing mesh:  Plane
+	writing mesh:  circle
+	writing mesh:  base
+	writing mesh:  circle2
 ========= Writing of JSON file completed =========
 ========= end of processing =========
-elapsed time:  0 min, 0.3629 secs
+elapsed time:  0 min, 0.0359 secs

@@ -71,12 +71,12 @@ fun main() {
 							true
 					)
 
-					assets.getSceneFuture("animation.babylon").thenAccept { animationData ->
-						assets.getSceneFuture("drill.babylon").thenAccept { drillData ->
+		//			assets.getSceneFuture("animation.babylon").thenAccept { animationData ->
+						assets.getSceneFuture("pump.babylon").thenAccept { drillData ->
 
 							val tabs = observableListOf(
-									UITab.createWithText(uiScene, "transform-anim", Vector2i(160, 30), TransformAnimationDemo(uiScene, render, animationData).node),
-									UITab.createWithText(uiScene, "texture-anim", Vector2i(160, 30), TextureAnimationDemo(uiScene, render, templateBitmap).node),
+//									UITab.createWithText(uiScene, "transform-anim", Vector2i(160, 30), TransformAnimationDemo(uiScene, render, animationData).node),
+	//								UITab.createWithText(uiScene, "texture-anim", Vector2i(160, 30), TextureAnimationDemo(uiScene, render, templateBitmap).node),
 									UITab.createWithText(uiScene, "drills", Vector2i(160, 30), DrillsDemo(uiScene, render, drillData).node)
 							)
 
@@ -87,7 +87,7 @@ fun main() {
 //							createTileDemo(render, albedoAtlas, specialAtlas)
 						}
 					}
-				}
+//				}
 			}
 		}
 	}

@@ -1,0 +1,159 @@
+Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		Inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		Keep Z-up r-handed  :  yes
+		Texture directory   :  /home/casper/projects/babylonKt-examples/example-experiment/src/main/resources/
+	Python World class constructor completed
+	processing begun of mesh:  main basis
+		processing begun of material:  Paint1
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+		num positions      :  51
+		num normals        :  51
+		num tangents       :  0
+		num uvs            :  102
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  60
+	processing begun of mesh:  blue console
+		animation processing begun
+			processing action Plane.001Action:  in[0 - 100], out[0 - 100]
+		processing begun of material:  Paint3
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+		num positions      :  165
+		num normals        :  165
+		num tangents       :  0
+		num uvs            :  330
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  330
+	processing begun of mesh:  circle
+		animation processing begun
+			processing action Plane.002Action:  in[0 - 100], out[0 - 100]
+		processing begun of material:  Paint2
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+		num positions      :  126
+		num normals        :  126
+		num tangents       :  0
+		num uvs            :  252
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  288
+	processing begun of mesh:  base
+		processing begun of material:  Concrete
+			processing texture concrete
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  29
+		num normals        :  29
+		num tangents       :  0
+		num uvs            :  58
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  36
+	processing begun of mesh:  pipe out
+		processing begun of material:  Concrete
+		registered as also a user of material:  Concrete
+		num positions      :  29
+		num normals        :  29
+		num tangents       :  0
+		num uvs            :  58
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  36
+	processing begun of mesh:  right wheel
+		animation processing begun
+			processing action Cylinder.002Action:  in[0 - 100], out[0 - 100]
+		processing begun of material:  Paint3
+		registered as also a user of material:  Paint3
+		num positions      :  144
+		num normals        :  144
+		num tangents       :  0
+		num uvs            :  288
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  360
+	processing begun of mesh:  sub axis
+		animation processing begun
+			processing action Cylinder.003Action:  in[0 - 100], out[0 - 100]
+		processing begun of material:  Iron
+			processing texture metall_special
+				texture type:  metallicTexture, mapped using: "UVMap"
+			processing texture metall_special
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+		num positions      :  116
+		num normals        :  116
+		num tangents       :  0
+		num uvs            :  232
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  264
+	processing begun of mesh:  sub sub axis
+		animation processing begun
+			processing action Cylinder.003Action.001:  in[0 - 100], out[0 - 100]
+		processing begun of material:  Iron
+		registered as also a user of material:  Iron
+		num positions      :  57
+		num normals        :  57
+		num tangents       :  0
+		num uvs            :  114
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  132
+	processing begun of mesh:  green console
+		animation processing begun
+			processing action Cube.003Action.001:  in[0 - 100], out[0 - 100]
+		processing begun of material:  Paint2
+		registered as also a user of material:  Paint2
+		num positions      :  56
+		num normals        :  56
+		num tangents       :  0
+		num uvs            :  112
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  72
+	processing begun of mesh:  main axis
+		processing begun of material:  Iron
+		registered as also a user of material:  Iron
+		num positions      :  68
+		num normals        :  68
+		num tangents       :  0
+		num uvs            :  136
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  180
+	processing begun of mesh:  engine
+		processing begun of material:  Paint1
+		registered as also a user of material:  Paint1
+		num positions      :  51
+		num normals        :  51
+		num tangents       :  0
+		num uvs            :  102
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  60
+	processing begun of camera (UniversalCamera):  Camera
+	processing begun of light (POINT):  Lamp
+========= Writing of JSON file started =========
+	writing mesh:  main basis
+	writing mesh:  blue console
+	writing mesh:  circle
+	writing mesh:  base
+	writing mesh:  pipe out
+	writing mesh:  right wheel
+	writing mesh:  sub axis
+	writing mesh:  sub sub axis
+	writing mesh:  green console
+	writing mesh:  main axis
+	writing mesh:  engine
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 0.1462 secs

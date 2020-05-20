@@ -14,6 +14,7 @@ import casper.gui.component.scroll.UIScroll
 import casper.gui.component.text.UIText
 import casper.gui.component.toggle.UIToggleWithLabel
 import casper.gui.layout.Layout
+import casper.loader.BitmapReference
 import casper.render.Render
 import casper.render.extension.TextureUVAnimator
 import casper.render.extension.VerticesBuilder
@@ -23,7 +24,7 @@ import casper.render.model.SceneNode
 import casper.render.vertex.Vertex
 import casper.types.Bitmap
 
-class TextureAnimationDemo(uiScene: UIScene, val render: Render, templateBitmap: Bitmap) : UIComponent(uiScene.createNode()) {
+class TextureAnimationDemo(uiScene: UIScene, val render: Render, templateBitmap: BitmapReference) : UIComponent(uiScene.createNode()) {
 
 	val list = VerticesBuilder().add(
 			Octagon(
@@ -36,8 +37,8 @@ class TextureAnimationDemo(uiScene: UIScene, val render: Render, templateBitmap:
 					Vertex(uvAlbedo = Vector2d(1.0, 0.0), uvMetallic = Vector2d(1.0, 0.0), position = Vector3d(2.0, 0.0, 0.2)),
 					Vertex(uvAlbedo = Vector2d(1.0, 1.0), uvMetallic = Vector2d(1.0, 1.0), position = Vector3d(2.0, 2.0, 0.2))
 			))
-	val albedoAnimated = TextureReference(templateBitmap, "animated", TextureTransform(matrix = Matrix4d.IDENTITY))
-	val specialAnimated = TextureReference(templateBitmap, "animated", TextureTransform(matrix = Matrix4d.IDENTITY))
+	val albedoAnimated = TextureReference(templateBitmap.data, templateBitmap.name, TextureTransform(matrix = Matrix4d.IDENTITY))
+	val specialAnimated = TextureReference(templateBitmap.data, templateBitmap.name, TextureTransform(matrix = Matrix4d.IDENTITY))
 
 	val specialChannel = FloatMapReference(MapUtil.takeChannel(specialAnimated.data, 0), null, specialAnimated.transform)
 

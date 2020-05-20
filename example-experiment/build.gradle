@@ -65,4 +65,6 @@ task copyHTML(type: Copy, group: "Custom", description: "Copies sources to the d
 
     dependsOn copyKotlin
 }
+
 assemble.dependsOn copyHTML
+compileKotlin2Js.dependsOn cleanSourceMap

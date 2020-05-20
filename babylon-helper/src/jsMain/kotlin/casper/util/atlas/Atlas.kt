@@ -4,7 +4,7 @@ import casper.types.Bitmap
 
 class AtlasPage(val bitmap: Bitmap, val info: AtlasPageInfo)
 
-class Atlas(val pages: Map<String, AtlasPage>) {
+data class Atlas(val name:String, val pages: Map<String, AtlasPage>) {
 	fun getRegion(name: String): Pair<AtlasPage, AtlasRegion>? {
 		pages.values.forEach { page ->
 			val region = page.info.regions.get(name)

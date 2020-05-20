@@ -11,11 +11,12 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 		Keep Z-up r-handed  :  yes
 		Texture directory   :  /home/casper/projects/babylonKt-examples/example-experiment/src/main/resources/
 	Python World class constructor completed
+	WARNING: No active camera has been assigned, or is not in a currently selected Blender layer
 	processing begun of skeleton:  Armature, id:  0
 		processing begun of bone:  engine wheel, index:  0
 		processing begun of bone:  first console, index:  1
 		processing begun of bone:  last console, index:  2
-		processing action ArmatureAction.005:  in[0 - 100], out[0 - 100]
+		processing action ArmatureAction:  in[0 - 100], out[0 - 100]
 	processing begun of mesh:  base
 		processing begun of material:  Concrete
 			processing texture concrete
@@ -149,7 +150,6 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 		mesh is an instance of :  right wheel.  Processing halted.
 	processing begun of mesh:  sub axis.001
 		mesh is an instance of :  sub axis.  Processing halted.
-	processing begun of camera (UniversalCamera):  Camera
 ========= Writing of JSON file started =========
 	writing mesh:  base
 	writing mesh:  engine
@@ -165,4 +165,4 @@ Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
 	writing mesh:  main axis.001
 ========= Writing of JSON file completed =========
 ========= end of processing =========
-elapsed time:  0 min, 0.2104 secs
+elapsed time:  0 min, 0.1853 secs

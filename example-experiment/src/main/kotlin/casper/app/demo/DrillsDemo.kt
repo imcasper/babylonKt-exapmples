@@ -24,7 +24,7 @@ import kotlin.math.roundToInt
 class DrillsDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : UIComponent(uiScene.createNode()) {
 	val original = sceneData.model
 
-	val blueModel = MaterialReplacer.execute(original, "Blue-drill") {
+	val blueModel = original/*MaterialReplacer.execute(original, "Blue-drill") {
 		if (it.name == "Paint3") {
 			MaterialReference(it.data.copy(albedo = ColorConstantReference(Color4d(1.0, 0.0, 1.0, 0.0))), "Paint3-M")
 		} else if (it.name == "Paint2") {
@@ -32,17 +32,17 @@ class DrillsDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : U
 		} else if (it.name == "Paint1") {
 			MaterialReference(it.data.copy(albedo = ColorConstantReference(Color4d(0.0, 0.0, 1.0, 0.0))), "Paint1-M")
 		} else null
-	}
+	}*/
 
-	val redModel = MaterialReplacer.execute(original, "Red-drill") {
+	val redModel = original/*MaterialReplacer.execute(original, "Red-drill") {
 		if (it.name == "Paint2") {
 			MaterialReference(it.data.copy(albedo = ColorConstantReference(Color4d(1.0, 0.0, 0.0, 0.0))), "Red-Paint")
 		} else null
-	}
+	}*/
 
-	val wireFrameModel = MaterialReplacer.execute(original, "WireFrame-drill") {
+	val wireFrameModel = original/*MaterialReplacer.execute(original, "WireFrame-drill") {
 		MaterialReference(Material(wireFrame = true))
-	}
+	}*/
 
 	private val nodes = mutableListOf<SceneNode>()
 	private var currentSize = 4
@@ -71,7 +71,7 @@ class DrillsDemo(uiScene: UIScene, val render: Render, sceneData: SceneData) : U
 			render.removeChild(it)
 		}
 
-		val interval = 5.0
+		val interval = 8.0
 		for (x in 0 until size) {
 			for (y in 0 until size) {
 				val wireframe = x == size - y

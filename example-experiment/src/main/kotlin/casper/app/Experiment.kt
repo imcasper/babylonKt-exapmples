@@ -11,12 +11,15 @@ import casper.geometry.Vector2i
 import casper.geometry.Vector3d
 import casper.geometry.basis.Box2d
 import casper.geometry.basis.Box3d
+import casper.gui.UIScene
 import casper.gui.component.tab.UITab
 import casper.gui.component.tab.UITabMenu
 import casper.input.InputDispatcher
+import casper.loader.BitmapReference
 import casper.render.Environment
 import casper.render.Light
 import casper.render.Render
+import casper.render.SceneData
 import casper.render.babylon.BabylonRender
 import casper.render.extension.TextureUtil
 import casper.scene.camera.orbital.CameraSupport
@@ -27,6 +30,36 @@ import casper.types.Color4d
 import casper.util.AssetsStorage
 import casper.util.atlas.Atlas
 import kotlin.math.PI
+
+
+fun main() {
+	val render = BabylonRender.create("renderCanvas")
+	val uiScene = BabylonUIScene(render.nativeScene)
+	val assets = AssetsStorage(render.nativeScene)
+	createStyle(uiScene)
+	createCamera(render, uiScene.dispatcher)
+
+
+	assets.getAtlasFuture("albedo.atlas").thenAccept { albedoAtlas ->
+		assets.getAtlasFuture("special.atlas").thenAccept { specialAtlas ->
+			assets.getBitmapFuture("skybox_hdr.png").thenAccept { skyBoxBitmap ->
+				assets.getBitmapFuture("template.png").thenAccept { templateBitmap ->
+					assets.getSceneFuture("test.gltf").thenAccept { drillData ->
+						assets.getSceneFuture("animation.babylon").thenAccept { animationData ->
+							try {
+								buildScene(render, uiScene, skyBoxBitmap, drillData, animationData, templateBitmap)
+							} catch (error: Throwable) {
+								println(error.message)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	render.runRenderLoop()
+}
 
 fun Atlas.getTextureRegion(name: String): Box2d? {
 	val (page, region) = this.getRegion(name) ?: return null
@@ -50,48 +83,24 @@ fun createCamera(render: Render, inputDispatcher: InputDispatcher) {
 }
 
 
-fun main() {
-	val render = BabylonRender.create("renderCanvas")
-	val uiScene = BabylonUIScene(render.nativeScene)
-	val assets = AssetsStorage(render.nativeScene)
-
-	createStyle(uiScene)
-	createCamera(render, uiScene.dispatcher)
-
-	assets.getAtlasFuture("albedo.atlas").thenAccept { albedoAtlas ->
-		assets.getAtlasFuture("special.atlas").thenAccept { specialAtlas ->
-			assets.getBitmapFuture("skybox_hdr.png").thenAccept { skyBoxBitmap ->
-				assets.getBitmapFuture("template.png").thenAccept { templateBitmap ->
-
-					val skyboxTexture = TextureUtil.createCubeFromPlane(skyBoxBitmap, "skybox")
-					render.environment = Environment(
-							Color4d(0.1, 0.5, 0.8, 1.0),
-							skyboxTexture,
-							Light(Vector3d(-1.5, -0.5, -0.5), 2.0),
-							true
-					)
-
-		//			assets.getSceneFuture("animation.babylon").thenAccept { animationData ->
-						assets.getSceneFuture("pump.babylon").thenAccept { drillData ->
-
-							val tabs = observableListOf(
-//									UITab.createWithText(uiScene, "transform-anim", Vector2i(160, 30), TransformAnimationDemo(uiScene, render, animationData).node),
-	//								UITab.createWithText(uiScene, "texture-anim", Vector2i(160, 30), TextureAnimationDemo(uiScene, render, templateBitmap).node),
-									UITab.createWithText(uiScene, "drills", Vector2i(160, 30), DrillsDemo(uiScene, render, drillData).node)
-							)
+fun buildScene(render: Render, uiScene: UIScene, skyBoxBitmap: BitmapReference, drillData: SceneData, animationData: SceneData, templateBitmap: BitmapReference) {
+	val skyboxTexture = TextureUtil.createCubeFromPlane(skyBoxBitmap.data, skyBoxBitmap.name)
+	render.environment = Environment(
+			Color4d(0.1, 0.5, 0.8, 1.0),
+			skyboxTexture,
+			Light(Vector3d(-1.5, -0.5, -0.5), 2.0),
+			true
+	)
+	val tabs = observableListOf(
+			UITab.createWithText(uiScene, "transform-anim", Vector2i(160, 30), TransformAnimationDemo(uiScene, render, animationData).node),
+			UITab.createWithText(uiScene, "texture-anim", Vector2i(160, 30), TextureAnimationDemo(uiScene, render, templateBitmap).node),
+			UITab.createWithText(uiScene, "drills", Vector2i(160, 30), DrillsDemo(uiScene, render, drillData).node)
+	)
 
 
-							val tabMenu = UITabMenu.create(uiScene, tabs = tabs)
-							uiScene.root += tabMenu.node
+	val tabMenu = UITabMenu.create(uiScene, tabs = tabs)
+	uiScene.root += tabMenu.node
 
 //							createTileDemo(render, albedoAtlas, specialAtlas)
-						}
-					}
-//				}
-			}
-		}
-	}
-
-	render.runRenderLoop()
 }
 

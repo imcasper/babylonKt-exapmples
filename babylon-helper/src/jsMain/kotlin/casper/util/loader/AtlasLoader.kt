@@ -10,13 +10,13 @@ import casper.util.atlas.AtlasInfo
 import casper.util.atlas.AtlasPage
 import casper.util.atlas.AtlasPageInfo
 
-fun createAtlas(map:Map<AtlasPageInfo, Bitmap>): Atlas {
+fun createAtlas(name:String, map:Map<AtlasPageInfo, Bitmap>): Atlas {
 	val pages = map.entries.mapping {
 		val pageInfo = it.key
 		val bitmap = map.get(pageInfo)!!
 		Pair(pageInfo.name, AtlasPage(bitmap, pageInfo))
 	}
-	return Atlas(pages)
+	return Atlas(name, pages)
 }
 
 fun createAtlasLoader(atlasUrl: String): EitherFuture<Atlas, String> {
@@ -24,7 +24,7 @@ fun createAtlasLoader(atlasUrl: String): EitherFuture<Atlas, String> {
 
 	loadTextData(atlasUrl).then({
 		try {
-			val atlasInfo = parseAtlasInfo(it)
+			val atlasInfo = parseAtlasInfo(atlasUrl, it)
 			createAtlasLoaderFromInfo(atlasInfo).then({
 				signal.accept(it)
 			}, {
@@ -48,9 +48,9 @@ private fun createAtlasLoaderFromInfo(atlasInfo: AtlasInfo): EitherFuture<Atlas,
 
 	atlasInfo.pages.forEach { page ->
 		createBitmapLoader(page.name).then({
-			map.set(page, it)
+			map.set(page, it.data)
 			if (--loading == 0) {
-				signal.accept(createAtlas(map))
+				signal.accept(createAtlas(atlasInfo.name, map))
 			}
 		}, {
 			signal.reject("Image ${page.name} loading for atlas failed: $it")

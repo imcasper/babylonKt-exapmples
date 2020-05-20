@@ -11,8 +11,7 @@ class ModelFactory {
 		fun createModelData(scene: Scene, name: String, container: AssetContainer): ModelData {
 			val textureMap = mutableMapOf<String, BaseTexture>()
 			val materialMap = mutableMapOf<String, Material>()
-			val meshList = mutableSetOf<Mesh>()
-			val geometryList = mutableSetOf<Geometry>()
+			val geometryList = mutableSetOf<GeometryInfo>()
 
 			container.textures.forEach {
 				textureMap.getOrPut(it.name, { it })
@@ -30,25 +29,33 @@ class ModelFactory {
 				})
 			}
 
+			val originalMeshList = mutableSetOf<Mesh>()
+			val instancedMeshList = mutableListOf<InstancedMesh>()
 			container.meshes.forEach { mesh ->
-				if (mesh !is Mesh)
-					throw Error("Must be simple mesh")
+				if (mesh is InstancedMesh) {
+					instancedMeshList.add(mesh)
+				} else {
+					if (mesh !is Mesh)
+						throw Error("Actual $mesh, but expected Mesh")
 
-				mesh.material?.let {
-					mesh.material = materialMap[it.name]
-							?: throw Error("Not found material by name: ${it.name}")
+					mesh.material?.let {
+						mesh.material = materialMap[it.name]
+								?: throw Error("Not found material by name: ${it.name}")
+					}
+
+					originalMeshList.add(mesh)
 				}
-
-				meshList.add(mesh)
 			}
 
-			val instances = mutableListOf<InstancedMesh>()
-			for (mesh in meshList) {
-				instances += createInstancesFromMesh(mesh)
-				mesh.geometry?.let { geometryList.add(it) }
+			//	todo:	i dont know how define inverse orientation
+			val clockWiseOrientation = !name.contains(".gltf")
+
+			for (mesh in originalMeshList) {
+				instancedMeshList += createInstancesFromMesh(mesh)
+				mesh.geometry?.let { geometryList.add(GeometryInfo(it, clockWiseOrientation)) }
 			}
 
-			return ModelData(name, scene, meshList.toList(), textureMap.values.toList(), materialMap.values.toList(), geometryList.toList(), container.lights.toList(), container.cameras.toList(), instances)
+			return ModelData(name, scene, originalMeshList.toList(), textureMap.values.toList(), materialMap.values.toList(), geometryList.toList(), container.lights.toList(), container.cameras.toList(), instancedMeshList)
 		}
 
 		private fun createInstancesFromMesh(originalMesh: Mesh): List<InstancedMesh> {

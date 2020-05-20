@@ -82,11 +82,11 @@ fun Line3d.toRay(): Ray {
 }
 
 fun Quaternion.toQuaternion(): BABYLON.Quaternion {
-	return BABYLON.Quaternion(-x, -y, z, w)
+	return BABYLON.Quaternion(x, y, z, w)
 }
 
 fun BABYLON.Quaternion.toQuaternion(): Quaternion {
-	return Quaternion(-x, -y, z, w)
+	return Quaternion(x, y, z, w)
 }
 
 fun AbstractMesh.getBoundingBox(): Box3d {

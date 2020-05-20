@@ -29,11 +29,13 @@ fun createImageLoader(imageUrl: String): EitherFuture<Image, String> {
 	return loader
 }
 
-fun createBitmapLoader(imageUrl: String): EitherFuture<Bitmap, String> {
-	val loader = EitherSignal<IntMap2d, String>()
+data class BitmapReference(val name:String, val data:Bitmap)
+
+fun createBitmapLoader(imageUrl: String): EitherFuture<BitmapReference, String> {
+	val loader = EitherSignal<BitmapReference, String>()
 	createImageLoader(imageUrl).then({ image ->
 		try {
-			loader.accept(getBitmap(image))
+			loader.accept(BitmapReference(imageUrl, getBitmap(image)))
 		} catch (error: Throwable) {
 			loader.reject("Internal error: $error")
 		}

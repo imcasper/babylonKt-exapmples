@@ -1,0 +1,193 @@
+Exporter version: 6.3.0, Blender version: 2.82 (sub 7)
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		Inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		Keep Z-up r-handed  :  yes
+		Texture directory   :  /home/casper/projects/babylonKt-examples/example-experiment/src/main/resources/
+	Python World class constructor completed
+	processing begun of mesh:  Cylinder2
+		processing begun of material:  Iron
+			processing texture metall_special
+				texture type:  metallicTexture, mapped using: "UVMap"
+			processing texture metall_special
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+		num positions      :  40
+		num normals        :  40
+		num tangents       :  0
+		num uvs            :  80
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  84
+	processing begun of mesh:  Cube.004
+		processing begun of material:  Paint2
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0055 secs
+		num positions      :  69
+		num normals        :  69
+		num tangents       :  0
+		num uvs            :  138
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  84
+	processing begun of mesh:  Cube.003
+		processing begun of material:  Paint2
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0037 secs
+		num positions      :  51
+		num normals        :  51
+		num tangents       :  0
+		num uvs            :  102
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  60
+	processing begun of mesh:  Cube.002
+		processing begun of material:  Paint2
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0046 secs
+		num positions      :  51
+		num normals        :  51
+		num tangents       :  0
+		num uvs            :  102
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  60
+	processing begun of mesh:  Nozzle1
+		processing begun of material:  Paint1
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0066 secs
+		num positions      :  17
+		num normals        :  17
+		num tangents       :  0
+		num uvs            :  34
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  24
+	processing begun of mesh:  SonarLeft
+		processing begun of material:  Paint1
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0047 secs
+		num positions      :  34
+		num normals        :  34
+		num tangents       :  0
+		num uvs            :  68
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  66
+	processing begun of mesh:  SonarRight
+		mesh is an instance of :  SonarLeft.  Processing halted.
+	processing begun of mesh:  Nozzle2
+		mesh is an instance of :  Nozzle1.  Processing halted.
+	processing begun of mesh:  Nozzle3
+		mesh is an instance of :  Nozzle1.  Processing halted.
+	processing begun of mesh:  Nozzle4
+		mesh is an instance of :  Nozzle1.  Processing halted.
+	processing begun of mesh:  Cylinder3
+		mesh is an instance of :  Cylinder2.  Processing halted.
+	processing begun of mesh:  Cylinder1
+		mesh is an instance of :  Cylinder2.  Processing halted.
+	processing begun of mesh:  SonarLeft.001
+		processing begun of material:  IdealSteel
+		num positions      :  9
+		num normals        :  9
+		num tangents       :  0
+		num uvs            :  18
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  24
+	processing begun of mesh:  SonarLeft.002
+		mesh is an instance of :  SonarLeft.001.  Processing halted.
+	processing begun of mesh:  Nozzle2.001
+		processing begun of material:  BLACK
+		num positions      :  17
+		num normals        :  17
+		num tangents       :  0
+		num uvs            :  34
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  24
+	processing begun of mesh:  Nozzle2.002
+		mesh is an instance of :  Nozzle2.001.  Processing halted.
+	processing begun of mesh:  Nozzle2.003
+		mesh is an instance of :  Nozzle2.001.  Processing halted.
+	processing begun of mesh:  Nozzle2.004
+		mesh is an instance of :  Nozzle2.001.  Processing halted.
+	processing begun of mesh:  Cube.001
+		processing begun of material:  Paint1
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0043 secs
+		num positions      :  39
+		num normals        :  39
+		num tangents       :  0
+		num uvs            :  78
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  48
+	processing begun of mesh:  Cube
+		processing begun of material:  Paint1
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0038 secs
+		num positions      :  38
+		num normals        :  38
+		num tangents       :  0
+		num uvs            :  76
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  48
+	processing begun of camera (UniversalCamera):  Camera
+	processing begun of mesh:  BodyBase
+		processing begun of material:  Paint1
+			WARNING: unsupported node type(ShaderNodeMath) will trigger baking
+			WARNING: Roughness channel baking required, but not possible, ignored
+			processing texture smooth_paint
+				texture type:  value not meaningful 2, mapped using: "UVMap"
+			bake time:  0 min, 0.0056 secs
+		num positions      :  145
+		num normals        :  145
+		num tangents       :  0
+		num uvs            :  290
+		num uvs2           :  0
+		num colors         :  0
+		num indices        :  180
+	processing begun of light (POINT):  Point
+========= Writing of JSON file started =========
+	writing mesh:  Cylinder2
+	writing mesh:  Cube.004
+	writing mesh:  Cube.003
+	writing mesh:  Cube.002
+	writing mesh:  Nozzle1
+	writing mesh:  SonarLeft
+	writing mesh:  SonarLeft.001
+	writing mesh:  Nozzle2.001
+	writing mesh:  Cube.001
+	writing mesh:  Cube
+	writing mesh:  BodyBase
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 0.128 secs

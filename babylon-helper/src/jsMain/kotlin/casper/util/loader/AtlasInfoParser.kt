@@ -26,7 +26,7 @@ private fun parseVector(node: TextNode, name: String): Vector2i? {
 }
 
 
-fun parseAtlasInfo(text: String): AtlasInfo {
+fun parseAtlasInfo(name:String, text: String): AtlasInfo {
 	val pages = mutableListOf<AtlasPageInfo>()
 	val textInfo = parseText(text)
 	textInfo.forEach { mainNode ->
@@ -44,6 +44,6 @@ fun parseAtlasInfo(text: String): AtlasInfo {
 
 		pages.add(AtlasPageInfo(mainNode.name, pageSize, regions))
 	}
-	return AtlasInfo(pages)
+	return AtlasInfo(name, pages)
 }
 

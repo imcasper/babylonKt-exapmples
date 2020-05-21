@@ -44,7 +44,7 @@ fun main() {
 		assets.getAtlasFuture("special.atlas").thenAccept { specialAtlas ->
 			assets.getBitmapFuture("skybox_hdr.png").thenAccept { skyBoxBitmap ->
 				assets.getBitmapFuture("template.png").thenAccept { templateBitmap ->
-					assets.getSceneFuture("pump2.gltf").thenAccept { drillData ->
+					assets.getSceneFuture("drill.gltf").thenAccept { drillData ->
 						assets.getSceneFuture("animation.babylon").thenAccept { animationData ->
 							try {
 								buildScene(render, uiScene, skyBoxBitmap, drillData, animationData, templateBitmap)

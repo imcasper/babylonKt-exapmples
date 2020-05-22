@@ -87,12 +87,12 @@ fun buildScene(assets: AssetsStorage, render: Render, uiScene: UIScene, skyBoxBi
 			true
 	)
 	val tabs = observableListOf(
-//			UITab.createWithText(uiScene, "transform-anim", Vector2i(160, 30), TransformAnimationDemo(uiScene, render, animationData).node),
-//			UITab.createWithText(uiScene, "texture-anim", Vector2i(160, 30), TextureAnimationDemo(uiScene, render, templateBitmap).node),
-//			UITab.createWithText(uiScene, "drills", Vector2i(160, 30), ModelLoader(uiScene, assets, render, "models/drill.gltf", Transform(position = Vector3d(8.0, 0.0, 0.0))).node),
-//			UITab.createWithText(uiScene, "builder", Vector2i(160, 30), ModelLoader(uiScene, assets, render, "models/robot_builder.gltf", Transform(position = Vector3d(12.0, 0.0, 0.0))).node),
-//			UITab.createWithText(uiScene, "truck", Vector2i(160, 30), ModelLoader(uiScene, assets, render, "models/robot_truck.gltf", Transform(position = Vector3d(16.0, 0.0, 0.0))).node),
-			UITab.createWithText(uiScene, "pump", Vector2i(160, 30), ModelLoader(uiScene, assets, render, "models/pump_test.gltf", Transform(position = Vector3d(4.0, 0.0, 0.0))).node)
+			UITab.createWithText(uiScene, "transform-anim", Vector2i(160, 30), TransformAnimationDemo(uiScene, render, animationData).node),
+			UITab.createWithText(uiScene, "texture-anim", Vector2i(160, 30), TextureAnimationDemo(uiScene, render, templateBitmap).node),
+			UITab.createWithText(uiScene, "drills", Vector2i(160, 30), ModelLoader(uiScene, assets, render, "models/drill.gltf", Transform(position = Vector3d(8.0, 0.0, 0.0))).node),
+			UITab.createWithText(uiScene, "builder", Vector2i(160, 30), ModelLoader(uiScene, assets, render, "models/robot_builder.gltf", Transform(position = Vector3d(12.0, 0.0, 0.0))).node),
+			UITab.createWithText(uiScene, "truck", Vector2i(160, 30), ModelLoader(uiScene, assets, render, "models/robot_truck.gltf", Transform(position = Vector3d(16.0, 0.0, 0.0))).node),
+			UITab.createWithText(uiScene, "pump", Vector2i(160, 30), ModelLoader(uiScene, assets, render, "models/pump.gltf", Transform(position = Vector3d(4.0, 0.0, 0.0))).node)
 	)
 
 

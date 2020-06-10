@@ -64,7 +64,7 @@ class TextureAnimationDemo(uiScene: UIScene, val render: Render, templateBitmap:
 		UIPanel(node)
 		node.layout = Layout.VERTICAL
 		node += textNode.node.setSize(400, 60)
-		node += UIText.create(uiScene, { "speed: ${speed.toPrecision(1)}" }).node.setSize(240, 20)
+		node += UIText.create(uiScene, true, { "speed: ${speed.toPrecision(1)}" }).node.setSize(240, 20)
 		node += dxScroll.node.setSize(480, 20)
 		node += dyScroll.node.setSize(480, 20)
 		node += UIToggleWithLabel.create(uiScene, UIText.create(uiScene, "show"), true, {

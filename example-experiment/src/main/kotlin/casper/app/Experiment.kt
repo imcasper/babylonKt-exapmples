@@ -4,6 +4,7 @@ import babylon.BabylonUIScene
 import casper.app.demo.ModelLoader
 import casper.app.demo.TextureAnimationDemo
 import casper.app.demo.TransformAnimationDemo
+import casper.app.demo.createTileDemo
 import casper.collection.observableListOf
 import casper.geometry.*
 import casper.geometry.basis.Box2d
@@ -31,7 +32,7 @@ import kotlin.math.PI
 
 fun main() {
 	val render = BabylonRender.create("renderCanvas")
-	val uiScene = BabylonUIScene(render.nativeScene)
+	val uiScene = BabylonUIScene(render.nativeScene, false)
 	val assets = AssetsStorage(render.nativeScene)
 	createStyle(uiScene)
 	createCamera(render, uiScene.dispatcher)
@@ -44,6 +45,7 @@ fun main() {
 					assets.getSceneFuture("models/animation.gltf").thenAccept { animationData ->
 						try {
 							buildScene(assets, render, uiScene, skyBoxBitmap, animationData, templateBitmap)
+							createTileDemo(render, albedoAtlas, specialAtlas)
 						} catch (error: Throwable) {
 							println(error.message)
 						}
@@ -98,7 +100,5 @@ fun buildScene(assets: AssetsStorage, render: Render, uiScene: UIScene, skyBoxBi
 
 	val tabMenu = UITabMenu.create(uiScene, tabs = tabs)
 	uiScene.root += tabMenu.node
-
-//							createTileDemo(render, albedoAtlas, specialAtlas)
 }
 

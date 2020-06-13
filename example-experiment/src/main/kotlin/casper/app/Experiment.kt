@@ -9,6 +9,8 @@ import casper.collection.observableListOf
 import casper.geometry.*
 import casper.geometry.basis.Box2d
 import casper.geometry.basis.Box3d
+import casper.geometry.polygon.Octagon3d
+import casper.geometry.polygon.Quad3d
 import casper.gui.UIScene
 import casper.gui.component.tab.UITab
 import casper.gui.component.tab.UITabMenu
@@ -20,11 +22,20 @@ import casper.render.Render
 import casper.render.SceneData
 import casper.render.babylon.BabylonRender
 import casper.render.extension.TextureUtil
+import casper.render.extension.VerticesBuilder
+import casper.render.material.FloatConstantReference
+import casper.render.material.Material
+import casper.render.model.SceneModel
+import casper.render.model.SceneNode
+import casper.render.vertex.Vertex
 import casper.scene.camera.orbital.CameraSupport
 import casper.scene.camera.orbital.OrbitalCameraInputSettings
 import casper.scene.camera.orbital.OrbitalCameraSettings
 import casper.scene.camera.orbital.SimpleOrbitalCamera
+import casper.types.BLUE
 import casper.types.Color4d
+import casper.types.RED
+import casper.types.setAlpha
 import casper.util.AssetsStorage
 import casper.util.atlas.Atlas
 import kotlin.math.PI
@@ -46,6 +57,7 @@ fun main() {
 						try {
 							buildScene(assets, render, uiScene, skyBoxBitmap, animationData, templateBitmap)
 							createTileDemo(render, albedoAtlas, specialAtlas)
+							createGeometryDemo(render)
 						} catch (error: Throwable) {
 							println(error.message)
 						}
@@ -56,6 +68,15 @@ fun main() {
 	}
 
 	render.runRenderLoop()
+}
+
+fun createGeometryDemo(render: Render) {
+	val builder = VerticesBuilder()
+	builder.add(Octagon3d(Vector3d.ONE * 0.0, Vector3d.ONE * 1.0).convert { Vertex(it, color = RED.setAlpha(1.0)) })
+	builder.add(Octagon3d(Vector3d.ONE * 1.0, Vector3d.ONE * 2.0).convert { Vertex(it, color = BLUE.setAlpha(1.0)) })
+
+	val node = SceneNode(model = SceneModel(vertices = builder.get(), material = Material(metallic = FloatConstantReference(0.5), roughness = FloatConstantReference(0.5))))
+	render.addChild(node)
 }
 
 fun Atlas.getTextureRegion(name: String): Box2d? {

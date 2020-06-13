@@ -56,7 +56,7 @@ fun main() {
 					assets.getSceneFuture("models/animation.gltf").thenAccept { animationData ->
 						try {
 							buildScene(assets, render, uiScene, skyBoxBitmap, animationData, templateBitmap)
-							createTileDemo(render, albedoAtlas, specialAtlas)
+//							createTileDemo(render, albedoAtlas, specialAtlas)
 							createGeometryDemo(render)
 						} catch (error: Throwable) {
 							println(error.message)
@@ -75,7 +75,7 @@ fun createGeometryDemo(render: Render) {
 	builder.add(Octagon3d(Vector3d.ONE * 0.0, Vector3d.ONE * 1.0).convert { Vertex(it, color = RED.setAlpha(1.0)) })
 	builder.add(Octagon3d(Vector3d.ONE * 1.0, Vector3d.ONE * 2.0).convert { Vertex(it, color = BLUE.setAlpha(1.0)) })
 
-	val node = SceneNode(model = SceneModel(vertices = builder.get(), material = Material(metallic = FloatConstantReference(0.5), roughness = FloatConstantReference(0.5))))
+	val node = SceneNode(model = SceneModel(vertices = builder.get(), material = Material(opacity = FloatConstantReference(0.5), metallic = FloatConstantReference(0.5), roughness = FloatConstantReference(0.5))))
 	render.addChild(node)
 }
 

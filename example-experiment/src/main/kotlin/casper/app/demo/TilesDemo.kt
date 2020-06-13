@@ -80,7 +80,7 @@ fun createTileDemo(render: BabylonRender, albedoAtlas: Atlas, specialAtlas: Atla
 	val metallic = MapUtil.takeChannel(special.data, 2)
 	val material = MaterialReference(name = "atlas", data = Material(albedo = albedo, roughness = FloatMapReference(roughness), metallic = FloatMapReference(metallic)))
 
-	val size = 16
+	val size = 8
 	val random = Random(0)
 	val nodes = mutableSetOf<SceneNode>()
 

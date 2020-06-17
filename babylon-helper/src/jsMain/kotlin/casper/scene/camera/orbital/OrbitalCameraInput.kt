@@ -51,11 +51,14 @@ class OrbitalCameraInput(val support: CameraSupport, val camera: OrbitalCameraCo
 	}
 
 	private fun onMouseDown(it: MouseDown) {
-		if (it.button == settings.rotateButton) {
+		if (rotation || translation) return
+
+		if (settings.rotateEvent(it.button, it.position)) {
 			lockCursor()
 			rotation = true
 			refreshActionListeners()
-		} else if (it.button == settings.translateButton) {
+		} else if (settings.translateEvent(it.button, it.position)) {
+			lockCursor()
 			translation = true
 			refreshActionListeners()
 		}
@@ -92,11 +95,14 @@ class OrbitalCameraInput(val support: CameraSupport, val camera: OrbitalCameraCo
 	private fun onMouseUp(it: MouseUp) {
 		applyPointerMove(it.movement)
 
-		if (it.button == settings.rotateButton) {
+		if (settings.rotateEvent(it.button, it.position)) {
 			unlockCursor()
 			rotation = false
+			translation = false
 		}
-		if (it.button == settings.translateButton) {
+		if (settings.translateEvent(it.button, it.position)) {
+			unlockCursor()
+			rotation = false
 			translation = false
 		}
 
